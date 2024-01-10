@@ -24,40 +24,25 @@ const LearnerSchedule = ({navigation, route}) =>{
         cafeDetails, 
         updateSelectedCafes,
         updateScheduledDates,
-        updateTargetSkill,
-        updateMonthName,
-        updateClinicMonthName,
-        updateYear,
-        updateCafeDateList
+        updateEditScheduleVariables,
+        updateEditScheduleVariablesClear
         } = useContext(CafeContext)
     const [modalIsVisble, setModalIsVisble] = useState(false)
-    const [modalVariables, setModalVariables] = useState({
-        cafeDateList: [], 
-        monthNumber: "", 
-        year: "",
-        targetSkill: "",
-        monthName: "",
-        monthNumber: "",
-        year: "",
-        clinicMonthName: "",
-        time: ""
-    })
 
-    // console.log('from LEARNERSCHEDULE, modal variables: ')
-    // console.log(modalVariables)
 
     
     useEffect(()=>{
         async function retrieveAssessment(){
             try{
-                const response = await getAssessment(credentials.employeeId, season._id)
-                if(response){
-                    updateAssessment(response)
+                const assessment = await getAssessment(credentials.employeeId, season._id)
+                if(assessment){
+                    updateAssessment(assessment)
                     try{
-                        updateSelectedCafes(response.currentSkillsChallenges)
-                        const selectedIds = await getSelectedCafeIds(response.currentSkillsChallenges.map(entry => entry._id))
+                        updateSelectedCafes(assessment.currentSkillsChallenges)
+                        const selectedIds = await getSelectedCafeIds(assessment.currentSkillsChallenges.map(entry => entry._id))
                         if(selectedIds){
                             try{
+                                //these are the offered dates, from the 'cafes' table
                                 const cafeDates = await getCafeDates(selectedIds)
                                 if(cafeDates){
                                     updateScheduledDates(cafeDates)
@@ -89,32 +74,14 @@ const LearnerSchedule = ({navigation, route}) =>{
         navigation.toggleDrawer()
     }
 
-    function openModalHandler(targetSkill, monthName, monthNumber, year, cafeDateList, clinicMonthName, time){
-        setModalVariables({
-            targetSkill: targetSkill,
-            monthName: monthName,
-            monthNumber: monthNumber,
-            year: year,
-            cafeDateList: cafeDateList,
-            clinicMonthName: clinicMonthName,
-            time: time
-        })
+
+    function openModalHandler(variableGroup){
+        updateEditScheduleVariables(variableGroup)
         setModalIsVisble(true)
     }
 
     function closeModalHandler(){
-        setModalVariables
-        ({
-            cafeDateList: [], 
-            monthNumber: "", 
-            year: "",
-            targetSkill: "",
-            monthName: "",
-            monthNumber: "",
-            year: "",
-            clinicMonthName: "",
-            time: ""
-        })
+        updateEditScheduleVariablesClear()
         setModalIsVisble(false)
     }
     
@@ -137,34 +104,15 @@ const LearnerSchedule = ({navigation, route}) =>{
             <View style={styles.container}>
                 <ScrollView style={styles.nodeContainer}>
                     {
+                        //'selectedCafes' is assessment.currentSkillsChallenges, 'scheduledDates' is an array of all the offered dates per selectedCafe 
                         (selectedCafes.length < 1 && scheduledDates.length < 1) ? <Loader size="large" color={Colors.accentColor} /> : selectedCafes.map(
                             entry => {
-                                let date = ""
-                                let monthGroup = {}
+                                const currentIndex = selectedCafes.indexOf(entry)
 
-                                let cafeDateList = []
-
-                                if(scheduledDates.length > 0){
-                                    date = new Date(scheduledDates[selectedCafes.indexOf(entry)][0].date)
-                                    
-                                    monthGroup = {
-                                        monthName: scheduledDates[selectedCafes.indexOf(entry)][0].monthName,
-                                        monthNumber:scheduledDates[selectedCafes.indexOf(entry)][0].monthNumber,
-                                        clinicMonthName: scheduledDates[selectedCafes.indexOf(entry)][0].clinicMonthName,
-                                        year: date.getFullYear()
-                                    }
-                                    
-                                    cafeDateList = scheduledDates[selectedCafes.indexOf(entry)]
-                                  
-                                }
                                 return <ScheduleNode 
                                 key={entry._id}
+                                currentIndex={currentIndex}
                                 targetSkill={entry.title} 
-                                monthName={monthGroup.monthName} 
-                                monthNumber={monthGroup.monthNumber} 
-                                clinicMonthName={monthGroup.clinicMonthName} 
-                                year={monthGroup.year} 
-                                cafeDateList={cafeDateList} 
                                 companyCafeDesignation={'ExSellerator'} 
                                 openModalHandler={openModalHandler}/>
                             }
@@ -183,7 +131,7 @@ const LearnerSchedule = ({navigation, route}) =>{
     
                 </ScrollView>
             </View>
-            {(scheduledDates.length > 0 && modalIsVisble) && <EditSchedule visible={modalIsVisble} closeModalHandler={closeModalHandler} variables={modalVariables}/> }
+            {(scheduledDates.length > 0 && modalIsVisble) && <EditSchedule visible={modalIsVisble} closeModalHandler={closeModalHandler}/> }
         </LinearGradient>
     )
 }

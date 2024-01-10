@@ -7,9 +7,34 @@ import ScheduleNodeOption from './ScheduleNodeOption'
 import { wordSplitter } from '../../utils/helperFunctions'
 import { CafeContext } from '../../store/cafe-context'
 
-const ScheduleNode = ({ targetSkill, monthName,  monthNumber, clinicMonthName, cafeDateList, companyCafeDesignation, year, openModalHandler}) =>{
+const ScheduleNode = ({ targetSkill,   companyCafeDesignation,  openModalHandler, currentIndex}) =>{
     const [expanded, setExpanded] = useState(false)
     const {cafeDetails} = useContext(CafeContext)
+
+    const {scheduledDates, cafeTracker} = cafeDetails
+
+
+    let date = ""
+    let variableGroup = {}
+
+
+    if(scheduledDates!== undefined && scheduledDates.length > 0){
+        //this isn't to print a date, but a year (check the dateGroup below)
+        date = new Date(scheduledDates[currentIndex][0].date)
+        
+        variableGroup = {
+            monthName: scheduledDates[currentIndex][0].monthName,
+            monthNumber:scheduledDates[currentIndex][0].monthNumber,
+            clinicMonthName: scheduledDates[currentIndex][0].clinicMonthName,
+            year: date.getFullYear(),
+            currentCafeOfferedSet : scheduledDates[currentIndex],
+            targetSkill: targetSkill
+        }
+        
+      
+    }
+
+    const {monthName, monthNumber, clinicMonthName} = variableGroup
 
     const expandHandler = () =>{
         setExpanded(prev => !prev)
@@ -17,12 +42,11 @@ const ScheduleNode = ({ targetSkill, monthName,  monthNumber, clinicMonthName, c
 
     const separatedStr = wordSplitter(targetSkill) 
 
-    const {cafeTracker} = cafeDetails
 
     const currentListTarget = cafeTracker.list.find(entry => entry.monthNumber === monthNumber)
 
 
-    let rightSidePrompt
+    let rightSidePrompt = ''
     
     if(cafeTracker.list.length > 0 && currentListTarget !== undefined){
         if(currentListTarget.id !== ""){
@@ -80,11 +104,6 @@ const ScheduleNode = ({ targetSkill, monthName,  monthNumber, clinicMonthName, c
                     />
                 <ScheduleNodeOption 
                     title={'Schedule'}
-                    targetSkill={targetSkill}
-                    monthName={monthName}
-                    monthNumber={monthNumber}
-                    year={year}
-                    cafeDateList={cafeDateList}
                     topTitle={'Edit'}
                     roundR={true}
                     bgColor={Colors.secondaryColor400} 
@@ -92,6 +111,7 @@ const ScheduleNode = ({ targetSkill, monthName,  monthNumber, clinicMonthName, c
                     iconSize={36} 
                     iconColor={Colors.highlightColor}
                     textColor={Colors.highlightColor}
+                    variableGroup={variableGroup}
                     openModalHandler={openModalHandler}
                     />
                 {/* <View style={styles.captionContainer}>

@@ -18,12 +18,15 @@ import { SignInContext } from '../../store/signin-context'
 import _ from 'lodash'
 
 
-const EditSchedule = ({visible, closeModalHandler, variables}) =>{
-    const {targetSkill, monthName, monthNumber, year, cafeDateList} = variables
-    const separatedTitle = wordSplitter(targetSkill) 
+const EditSchedule = ({visible, closeModalHandler}) =>{
     const separatedSaveTitle = wordSplitter("Save Changes?")
     const [isDifferent, setIsDifferent]=useState(false)
-    const {cafeDetails, updateCafeTracker, updateCafeTrackerAll, updateShallowTrackerAll} = useContext(CafeContext)
+    const {
+        cafeDetails, 
+        updateCafeTracker, 
+        updateCafeTrackerAll, 
+        updateShallowTrackerAll,
+    } = useContext(CafeContext)
     const {season} = useContext(SeasonContext)
     const {credentials} = useContext(SignInContext)
     const [solidSnapshot, setSolidSnapshot] = useState({})
@@ -31,11 +34,13 @@ const EditSchedule = ({visible, closeModalHandler, variables}) =>{
     const [submitOption, setSubmitOption] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const {udpateToDealId} = useContext(HubspotContext)
-
-    const {cafeTracker, shallowTracker} = cafeDetails
+    const {cafeTracker, shallowTracker, editScheduleVariables} = cafeDetails
     const {employeeId} = credentials
     const seasonId = season._id
 
+    const{targetSkill, monthName, monthNumber, year, currentCafeOfferedSet} = editScheduleVariables
+
+    const separatedTitle = wordSplitter(targetSkill) 
 
     useEffect(()=>{
         setSolidSnapshot(
@@ -52,18 +57,6 @@ const EditSchedule = ({visible, closeModalHandler, variables}) =>{
 
         return ()=>{}
     },[cafeTracker, shallowTracker])
- 
-    // console.log('from EDITSCHEDULE solid snap shot: ')
-    // console.log(solidSnapshot)
-
-    // console.log('from EDITSCHEDULE shallow snap shot: ')
-    // console.log(shallowSnapshot)
-
-    // console.log('from EDITSCHEDULE is different?')
-    // console.log(isDifferent)
-
-    // console.log('from EDITSCHEDULE month number')
-    // console.log(monthNumber)
 
     useEffect(()=>{
     
@@ -179,6 +172,9 @@ const EditSchedule = ({visible, closeModalHandler, variables}) =>{
         </View>
     </View>
     }
+
+    console.log("EDIT SCHEDULE CURRENT CAFE OFFERED SET:")
+    console.log(currentCafeOfferedSet)
     
     return(
         <Modal visible={visible} animationType='slide' style={styles.modal}>
@@ -211,9 +207,9 @@ const EditSchedule = ({visible, closeModalHandler, variables}) =>{
                             </View>
                             <View style={styles.scheduleBody}>
                                 {
-                                    cafeDateList.length < 1? <Loader size='large' color={Colors.accentColor} /> : 
+                                    currentCafeOfferedSet.length < 1? <Loader size='large' color={Colors.accentColor} /> : 
 
-                                    cafeDateList.map(entry =>{
+                                    currentCafeOfferedSet.map(entry =>{
                                         const originalDate = new Date(entry.date) 
                                         const fullMonth = originalDate.toLocaleString('default', {month: 'long'})
                                         const numericDay = originalDate.toLocaleString('default', {day: 'numeric'})
@@ -227,7 +223,7 @@ const EditSchedule = ({visible, closeModalHandler, variables}) =>{
                                             <ScheduleEntry 
                                                 key={entry._id} 
                                                 id={entry._id} 
-                                                monthNumber={cafeDateList[0].monthNumber} 
+                                                monthNumber={currentCafeOfferedSet[0].monthNumber} 
                                                 monthName={entry.monthName} 
                                                 date={headlineDate} 
                                                 time={time}
@@ -245,7 +241,7 @@ const EditSchedule = ({visible, closeModalHandler, variables}) =>{
                                     {
                                         isLoading? 
 
-                                            <Loader size="large" color={Colors.accentColor}/>
+                                            <Loader size="large" color={Colors.highlightColor}/>
                                         
                                         :
 

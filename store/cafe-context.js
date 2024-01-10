@@ -8,20 +8,14 @@ function cafeReducer(state, action){
             return {...state, selectedCafes: action.payload}
         case 'update_scheduledDates':
             return {...state, scheduledDates: action.payload}
-        case 'update_targetSkill':
-            return {...state, targetSkill: action.payload}
-        case 'update_monthName':
-            return {...state, monthName: action.payload}
-        case 'update_clinicMonthName':
-            return {...state, clinicMonthName: action.payload}
-        case 'update_year':
-            return {...state, year: action.payload}
-        case 'update_cafeDateList':
-            return {...state, cafeDateList: action.payload}
         case 'update_cafeTrackerAll':
             return {...state, cafeTracker: action.payload}
         case 'update_shallowTrackerAll':
             return {...state, shallowTracker: action.payload}
+        case 'update_editScheduleVariables':
+            return {...state, editScheduleVariables: action.payload}
+        case 'update_editScheduleVariablesClear':
+            return {...state, editScheduleVariables: action.payload}
         case 'update_cafeTracker':
             let modified = [...state.shallowTracker.list.filter(entry => entry.monthNumber !== action.payload.monthNumber)]
             modified.splice(action.payload.monthNumber - 1, 0, action.payload)
@@ -40,14 +34,16 @@ function cafeReducer(state, action){
             return {
                 selectedCafes: [],
                 scheduledDates: [],
-                targetSkill: '',
-                monthName: '',
-                clinicMonthName: '',
-                year: '', 
-                cafeDateList: [],
                 cafeTracker: {list: []},
-                shallowTracker: {list: []}
-
+                shallowTracker: {list: []},
+                editScheduleVariables:{
+                    monthName: "",
+                    monthNumber: "", 
+                    clinicMonthName: "",
+                    year: "",
+                    currentCafeOfferedSet: [], 
+                    targetSkill: "",
+                }
             }
     }
 }
@@ -56,13 +52,16 @@ const CafeContextProvider = ({children}) =>{
     const [cafeDetails, dispatch] = useReducer(cafeReducer, {
         selectedCafes: [],
         scheduledDates: [],
-        targetSkill: '',
-        monthName: '',
-        clinicMonthName: '',
-        year: '', 
-        cafeDateList: [],
         cafeTracker: {list:[]},
-        shallowTracker: {list: []}
+        shallowTracker: {list: []},
+        editScheduleVariables:{
+            monthName: "",
+            monthNumber: "", 
+            clinicMonthName: "",
+            year: "",
+            currentCafeOfferedSet: [], 
+            targetSkill: "",
+        }
     })
 
     function updateSelectedCafes(cafeArray){
@@ -72,27 +71,7 @@ const CafeContextProvider = ({children}) =>{
     function updateScheduledDates(scheduledDateArray){
         dispatch({type:'update_scheduledDates', payload: scheduledDateArray})
     }
-    
-    function updateTargetSkill(skillTitle){     
-        dispatch({type:'update_targetSkill', payload: skillTitle})
-    }
-
-    function updateMonthName(monthName){     
-        dispatch({type:'update_monthName', payload: monthName})
-    }
-
-    function updateClinicMonthName(monthName){     
-        dispatch({type:'update_clinicMonthName', payload: monthName})
-    }
-
-    function updateYear(year){
-        dispatch({type: 'update_year', payload: year})
-    }
-
-    function updateCafeDateList(cafeDateList){
-        dispatch({type: 'update_cafeDateList', payload: cafeDateList})
-    }
-
+  
     function updateCafeTrackerAll(tracker){
         dispatch({type: 'update_cafeTrackerAll', payload: tracker})
     }
@@ -108,7 +87,21 @@ const CafeContextProvider = ({children}) =>{
     function updateShallowTracker(monthNumber, id, date){
         dispatch({type: 'update_shallowTracker', payload: {monthNumber: monthNumber, id:id, date:date}})
     }
+    
+    function updateEditScheduleVariables(object){
+        dispatch({type: 'update_editScheduleVariables', payload: object})
+    }
 
+    function updateEditScheduleVariablesClear(){
+        dispatch({type: 'update_editScheduleVariablesClear', payload: {
+            monthName: "",
+            monthNumber: "", 
+            clinicMonthName: "",
+            year: "",
+            currentCafeOfferedSet: [], 
+            targetSkill: "",
+        }})
+    }
 
     function updateCafeClear(){
         dispatch({type: '', payload: ''})
@@ -118,16 +111,13 @@ const CafeContextProvider = ({children}) =>{
         cafeDetails: cafeDetails,
         updateSelectedCafes: updateSelectedCafes,
         updateScheduledDates: updateScheduledDates,
-        updateTargetSkill: updateTargetSkill,
-        updateMonthName: updateMonthName,
-        updateClinicMonthName: updateClinicMonthName,
-        updateYear: updateYear,
-        updateCafeDateList: updateCafeDateList,
         updateCafeTrackerAll: updateCafeTrackerAll,
         updateShallowTrackerAll: updateShallowTrackerAll,
         updateCafeTracker: updateCafeTracker,
         updateShallowTracker: updateShallowTracker,
         updateCafeClear: updateCafeClear,
+        updateEditScheduleVariables: updateEditScheduleVariables,
+        updateEditScheduleVariablesClear: updateEditScheduleVariablesClear
     }
     return(
         <CafeContext.Provider value={value}>

@@ -92,8 +92,6 @@ const HomeScreen = ({navigation}) =>{
         async function retrieveHBId(){
             try{
                 const response = await getContact(credentials.email)
-                console.log('RETRIEVE HBID')
-                console.log(response.results[0].id)
                 if(response.total > 0){
                     updateContactId(response.results[0].id)
                 }
@@ -152,6 +150,12 @@ const HomeScreen = ({navigation}) =>{
 
     // console.log('from HOMESCREEN, shallow tracker: ')
     // console.log(shallowTracker.list)
+
+    // console.log('from HOMESCREEN, scheduled Dates: ')
+    // console.log(cafeDetails.scheduledDates)
+
+    // console.log('from HOMESCREEN, selected Cafes: ')
+    // console.log(cafeDetails.selectedCafes)
 
     function signOutHandler(){
         updateSignInClear()
