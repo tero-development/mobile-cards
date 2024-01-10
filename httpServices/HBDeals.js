@@ -6,9 +6,6 @@ const url = 'http://10.0.2.2:4002'
 
 const hubspotApi = 'https://api.hubapi.com'
 
-const config = {
-    headers: { Authorization: `Bearer pat-na1-f337c609-d6f3-44c9-b679-0615ee271da6` }
-}
 
 const dealToContactId = '3'
 
