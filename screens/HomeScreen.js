@@ -153,7 +153,10 @@ const HomeScreen = ({navigation}) =>{
 
     // console.log('from HOMESCREEN, scheduled Dates: ')
     // console.log(cafeDetails.scheduledDates)
-
+    // console.log('')
+    // console.log('')
+    // console.log('')
+    // console.log('')
     // console.log('from HOMESCREEN, selected Cafes: ')
     // console.log(cafeDetails.selectedCafes)
 

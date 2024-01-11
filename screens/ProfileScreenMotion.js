@@ -248,7 +248,7 @@ const ProfileScreenMotion = ({navigation}) =>{
                             Edit Profile
                         </Title>
                         <View style={styles.centeringContainer}>
-                            {isLoading? <Loader size='large' color={Colors.accentColor}/> : <MidContent variables={midContentVariables}/>}
+                            {isLoading? <View style={styles.loadingHeightContainer}><Loader size='large' color={Colors.accentColor}/></View> : <MidContent variables={midContentVariables}/>}
                         </View>
                     </View>
                 </View>
@@ -327,6 +327,11 @@ const styles = StyleSheet.create({
         color: Colors.secondaryColor,
         fontWeight: 'bold',
         fontSize: 12
+    },
+    loadingHeightContainer:{
+        height: DeviceFractions.deviceHeight / 2,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })
 

@@ -21,7 +21,7 @@ const ScheduleNode = ({ targetSkill,   companyCafeDesignation,  openModalHandler
     if(scheduledDates!== undefined && scheduledDates.length > 0){
         //this isn't to print a date, but a year (check the dateGroup below)
         date = new Date(scheduledDates[currentIndex][0].date)
-        
+      
         variableGroup = {
             monthName: scheduledDates[currentIndex][0].monthName,
             monthNumber:scheduledDates[currentIndex][0].monthNumber,

@@ -15,7 +15,7 @@ import { getDealByMongoId } from '../../httpServices/HBDeals'
 import { HubspotContext } from '../../store/hubspot-context'
 import ClickBox from '../ClickBox'
 import { SignInContext } from '../../store/signin-context'
-import _ from 'lodash'
+import _, { filter } from 'lodash'
 
 
 const EditSchedule = ({visible, closeModalHandler}) =>{
@@ -26,6 +26,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
         updateCafeTracker, 
         updateCafeTrackerAll, 
         updateShallowTrackerAll,
+        updateEditScheduleVariables
     } = useContext(CafeContext)
     const {season} = useContext(SeasonContext)
     const {credentials} = useContext(SignInContext)
@@ -33,6 +34,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
     const [shallowSnapshot, setShallowSnapshot] = useState({})
     const [submitOption, setSubmitOption] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
+    const [filterDealArray, setFilteredDealArray] = useState([])
     const {udpateToDealId} = useContext(HubspotContext)
     const {cafeTracker, shallowTracker, editScheduleVariables} = cafeDetails
     const {employeeId} = credentials
@@ -41,6 +43,37 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
     const{targetSkill, monthName, monthNumber, year, currentCafeOfferedSet} = editScheduleVariables
 
     const separatedTitle = wordSplitter(targetSkill) 
+    
+    useEffect(()=>{
+
+
+        async function checkHBDealCapacity(array){
+
+                array.forEach(async(entry) =>{
+
+                    try{
+                        const deal = await getDealByMongoId(entry._id)
+                        if(deal){
+                            
+                            const contactCount = deal.results[0].properties.num_associated_contacts
+                            if(contactCount < entry.classLimit){
+                                setFilteredDealArray(prev => [...prev, entry])
+                            }
+                        }
+                    } catch(e){
+                        alert(e)
+                    }
+                })
+            
+        }
+
+        if(currentCafeOfferedSet !== undefined && currentCafeOfferedSet.length > 0){
+            checkHBDealCapacity(currentCafeOfferedSet)
+        }
+
+    }, [currentCafeOfferedSet])
+
+    // console.log(filterDealArray)
 
     useEffect(()=>{
         setSolidSnapshot(
@@ -76,32 +109,46 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
         setSubmitOption(false)
     }
 
-    console.log("EDIT SCHEDULE solid snapshot: ")
-    console.log(solidSnapshot)
+    // console.log("EDIT SCHEDULE solid snapshot: ")
+    // console.log(solidSnapshot)
+    
 
     async function submitYesHandler(){
             setIsLoading(true)
+            // try{
+            //     const deal = await getDealByMongoId(solidSnapshot.id)
+            //     if(deal){
+            //         console.log("EDIT SCHEDULE SubmitYes toDeal:")
+            //         console.log(deal.results[0].id)
+            //         console.log(deal.results[0].properties.num_associated_contacts)
+            //         try{
+            //             const response = await updateTracker({list: cafeTracker.list, employeeId: employeeId, seasonId: seasonId})
+            //             if(response){
+            //                 updateShallowTrackerAll(cafeTracker)
+            //                 setSolidSnapshot({})    
+            //                 setShallowSnapshot({})
+            //                 setIsLoading(false)
+            //                 closeModalHandler()
+            //             }
+            //         } catch(e){
+            //             alert(e)
+            //         }
+            //     }
+            // } catch(e){
+            //     alert(e.message)
+            // }
             try{
-                const deal = await getDealByMongoId(solidSnapshot.id)
-                if(deal){
-                    console.log("EDIT SCHEDULE SubmitYes toDeal:")
-                    console.log(deal.results[0].id)
-                    console.log(deal.results[0].properties.num_associated_contacts)
-                    try{
-                        const response = await updateTracker({list: cafeTracker.list, employeeId: employeeId, seasonId: seasonId})
-                        if(response){
-                            updateShallowTrackerAll(cafeTracker)
-                            setSolidSnapshot({})    
-                            setShallowSnapshot({})
-                            setIsLoading(false)
-                            closeModalHandler()
-                        }
-                    } catch(e){
-                        alert(e)
-                    }
+                const response = await updateTracker({list: cafeTracker.list, employeeId: employeeId, seasonId: seasonId})
+                if(response){
+                    setFilteredDealArray([])
+                    updateShallowTrackerAll(cafeTracker)
+                    setSolidSnapshot({})    
+                    setShallowSnapshot({})
+                    setIsLoading(false)
+                    closeModalHandler()
                 }
             } catch(e){
-                alert(e.message)
+                alert(e)
             }
     }
 
@@ -113,6 +160,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
     }
 
     function standardClose(){
+        setFilteredDealArray([])
         setSolidSnapshot({})
         setShallowSnapshot({})
         closeModalHandler()
@@ -173,8 +221,6 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
     </View>
     }
 
-    console.log("EDIT SCHEDULE CURRENT CAFE OFFERED SET:")
-    console.log(currentCafeOfferedSet)
     
     return(
         <Modal visible={visible} animationType='slide' style={styles.modal}>
@@ -207,9 +253,9 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                             </View>
                             <View style={styles.scheduleBody}>
                                 {
-                                    currentCafeOfferedSet.length < 1? <Loader size='large' color={Colors.accentColor} /> : 
+                                    filterDealArray.length < 1? <Loader size='large' color={Colors.accentColor} /> : 
 
-                                    currentCafeOfferedSet.map(entry =>{
+                                    filterDealArray.map(entry =>{
                                         const originalDate = new Date(entry.date) 
                                         const fullMonth = originalDate.toLocaleString('default', {month: 'long'})
                                         const numericDay = originalDate.toLocaleString('default', {day: 'numeric'})
