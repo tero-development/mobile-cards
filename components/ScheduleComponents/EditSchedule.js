@@ -81,15 +81,6 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
 
     }, [currentCafeOfferedSet])
 
-    // let mapped
-    // if(currentCafeOfferedSet.length > 0){
-    //     mapped = currentCafeOfferedSet.map(entry =>{
-    //         return parseInt(new Date(entry.date).toString().slice(8,10))
-    //     })
-    // }
-
-    // console.log(mapped)
-
  
 
     useEffect(()=>{

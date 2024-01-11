@@ -135,7 +135,7 @@ const ScheduleNode = ({ targetSkill,   companyCafeDesignation,  openModalHandler
 
 const styles = StyleSheet.create({
     container:{
-        width: DeviceFractions.deviceWidth / 10 * 8,
+        width: DeviceFractions.deviceWidth / 10 * 7.5,
         marginBottom: DeviceFractions.deviceWidth / 60,
     },
     nodeTop:{

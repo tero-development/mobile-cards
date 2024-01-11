@@ -88,7 +88,8 @@ const LearnerSchedule = ({navigation, route}) =>{
 
     return(
         <LinearGradient style={styles.rootScreen} colors={[Colors.highlightColor, Colors.primaryColor]}>
-            <IconButton isHeader={true} iconName='menu' iconSize={28} iconColor={Colors.secondaryColor} onPress={openDrawer}/>
+            <IconButton isHeader={false} iconName='menu' iconSize={28} iconColor={Colors.secondaryColor} onPress={openDrawer} viewStyle={{position: 'absolute', left: DeviceFractions.deviceW20, top: DeviceFractions.deviceH10, zIndex: 1}}/>
+            <ScrollView style={styles.scrollContainer}>
             <View style={{alignItems: 'center', marginBottom: DeviceFractions.deviceH40}}>
                 <Title 
                     color={Colors.secondaryColor} 
@@ -102,7 +103,7 @@ const LearnerSchedule = ({navigation, route}) =>{
                     </Title>
             </View>
             <View style={styles.container}>
-                <ScrollView style={styles.nodeContainer}>
+                <View style={styles.nodeContainer}>
                     {
                         //'selectedCafes' is assessment.currentSkillsChallenges, 'scheduledDates' is an array of all the offered dates per selectedCafe 
                         (selectedCafes.length < 1 && scheduledDates.length < 1) ? <Loader size="large" color={Colors.accentColor} /> : selectedCafes.map(
@@ -129,9 +130,10 @@ const LearnerSchedule = ({navigation, route}) =>{
                     <ScheduleNode targetSkill={'Be Upstanding'} dateRange={'April - May'} time={'10:00am - 11:30am'} modalTrigger={openModalHandler} />
                     <ScheduleNode targetSkill={'Meeting Effectiveness'} dateRange={'June - July'} time={'9:00am - 11:00am'} modalTrigger={openModalHandler}/>                 */}
     
-                </ScrollView>
+                </View>
             </View>
             {(scheduledDates.length > 0 && modalIsVisble) && <EditSchedule visible={modalIsVisble} closeModalHandler={closeModalHandler}/> }
+            </ScrollView>
         </LinearGradient>
     )
 }
@@ -140,12 +142,16 @@ const styles = StyleSheet.create({
     rootScreen:{
         flex: 1
     },
+    scrollContainer:{
+        paddingTop: DeviceFractions.deviceHeight / 8
+    },
     container:{
         flex: 1,
         paddingTop: DeviceFractions.deviceH40,
         alignItems: 'center',
     },
     nodeContainer:{
+        marginBottom:  DeviceFractions.deviceHeight / 7
     },
     modal:{
         flex:1
