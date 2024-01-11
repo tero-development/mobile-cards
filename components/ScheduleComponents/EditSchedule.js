@@ -36,13 +36,17 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
     const [isLoading, setIsLoading] = useState(false)
     const [filterDealArray, setFilteredDealArray] = useState([])
     const {udpateToDealId} = useContext(HubspotContext)
-    const {cafeTracker, shallowTracker, editScheduleVariables} = cafeDetails
+    const {cafeTracker, shallowTracker, scheduleCafes, editScheduleVariables} = cafeDetails
     const {employeeId} = credentials
     const seasonId = season._id
 
     const{targetSkill, monthName, monthNumber, year, currentCafeOfferedSet} = editScheduleVariables
 
     const separatedTitle = wordSplitter(targetSkill) 
+
+    function compareDayNumber(a, b){
+        return parseInt(new Date(a.date).toString().slice(8,10)) -parseInt(new Date(b.date).toString().slice(8,10)) 
+    }
     
     useEffect(()=>{
 
@@ -57,7 +61,11 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                             
                             const contactCount = deal.results[0].properties.num_associated_contacts
                             if(contactCount < entry.classLimit){
-                                setFilteredDealArray(prev => [...prev, entry])
+                                setFilteredDealArray(prev => {
+                                    const newArray = [...prev, entry]
+                                    newArray.sort(compareDayNumber)
+                                    return newArray
+                                })
                             }
                         }
                     } catch(e){
@@ -73,7 +81,16 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
 
     }, [currentCafeOfferedSet])
 
-    // console.log(filterDealArray)
+    // let mapped
+    // if(currentCafeOfferedSet.length > 0){
+    //     mapped = currentCafeOfferedSet.map(entry =>{
+    //         return parseInt(new Date(entry.date).toString().slice(8,10))
+    //     })
+    // }
+
+    // console.log(mapped)
+
+ 
 
     useEffect(()=>{
         setSolidSnapshot(
