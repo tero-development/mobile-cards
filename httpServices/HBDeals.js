@@ -46,11 +46,12 @@ export async function insertContactToDeal(dealId, contactId){
 
 export async function deleteContactFromDeal(dealId, contactId){
     try{
-        const response = await axios.delete(`${hubspotApi}/crm/v3/objects/deals/${dealId}/associations/contacts/${contactId}/${dealToContactId}`, {}, config)
-        if(response){
-            return response.data
+        const reply = await axios.delete(`${hubspotApi}/crm/v3/objects/deals/${dealId}/associations/contacts/${contactId}/${dealToContactId}`, config)
+        if(reply){
+            return reply
         }
     }catch(e){
-        return e
+        return(e)
     }
 }
+

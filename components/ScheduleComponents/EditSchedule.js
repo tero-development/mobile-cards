@@ -11,7 +11,7 @@ import { useState, useEffect, useContext } from 'react'
 import { CafeContext } from '../../store/cafe-context'
 import { SeasonContext } from '../../store/season-context'
 import { updateTracker } from '../../httpServices/cafes'
-import { getDealByMongoId } from '../../httpServices/HBDeals'
+import { getDealByMongoId, insertContactToDeal, deleteContactFromDeal } from '../../httpServices/HBDeals'
 import { HubspotContext } from '../../store/hubspot-context'
 import ClickBox from '../ClickBox'
 import { SignInContext } from '../../store/signin-context'
@@ -35,7 +35,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
     const [submitOption, setSubmitOption] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [filterDealArray, setFilteredDealArray] = useState([])
-    const {udpateToDealId} = useContext(HubspotContext)
+    const {hubspotDetails, updateToDealId, updateFromDealId, toDealId, fromDealId,} = useContext(HubspotContext)
     const {cafeTracker, shallowTracker, scheduleCafes, editScheduleVariables} = cafeDetails
     const {employeeId} = credentials
     const seasonId = season._id
@@ -43,6 +43,8 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
     const{targetSkill, monthName, monthNumber, year, currentCafeOfferedSet} = editScheduleVariables
 
     const separatedTitle = wordSplitter(targetSkill) 
+
+    const{contactId} = hubspotDetails
 
     function compareDayNumber(a, b){
         return parseInt(new Date(a.date).toString().slice(8,10)) -parseInt(new Date(b.date).toString().slice(8,10)) 
@@ -81,7 +83,6 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
 
     }, [currentCafeOfferedSet])
 
- 
 
     useEffect(()=>{
         setSolidSnapshot(
@@ -119,45 +120,90 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
 
     // console.log("EDIT SCHEDULE solid snapshot: ")
     // console.log(solidSnapshot)
-    
+
+    // console.log('toDealId: ')
+    // console.log(toDealId)
+    // console.log('fromDealId: ')
+    // console.log(fromDealId)
+
+
+    async function simplePromise(promise, arg1, arg2){
+        try{
+            const data = await promise(arg1, arg2)
+            return [data, null]
+        } catch(e){
+            return [null, e]
+        }
+    }
 
     async function submitYesHandler(){
             setIsLoading(true)
-            // try{
-            //     const deal = await getDealByMongoId(solidSnapshot.id)
-            //     if(deal){
-            //         console.log("EDIT SCHEDULE SubmitYes toDeal:")
-            //         console.log(deal.results[0].id)
-            //         console.log(deal.results[0].properties.num_associated_contacts)
-            //         try{
-            //             const response = await updateTracker({list: cafeTracker.list, employeeId: employeeId, seasonId: seasonId})
-            //             if(response){
-            //                 updateShallowTrackerAll(cafeTracker)
-            //                 setSolidSnapshot({})    
-            //                 setShallowSnapshot({})
-            //                 setIsLoading(false)
-            //                 closeModalHandler()
-            //             }
-            //         } catch(e){
-            //             alert(e)
-            //         }
-            //     }
-            // } catch(e){
-            //     alert(e.message)
-            // }
-            try{
-                const response = await updateTracker({list: cafeTracker.list, employeeId: employeeId, seasonId: seasonId})
-                if(response){
-                    setFilteredDealArray([])
-                    updateShallowTrackerAll(cafeTracker)
-                    setSolidSnapshot({})    
-                    setShallowSnapshot({})
-                    setIsLoading(false)
-                    closeModalHandler()
-                }
-            } catch(e){
+
+            //you might want to stagger the ifs (example: if(newDeal){const [oldDeal, error2] = await simplePromise...etc.})
+            //it works without, but maybe this format would make the HubspotConext methods and state variales work 
+            //such as updateToDealId actually updating toDealId fast enought that it can be used in the 
+            //next simplePromise etc.
+
+            const [newDeal, error1] = await simplePromise(getDealByMongoId, solidSnapshot.id)
+            // if(newDeal){
+            //     updateToDealId(newDeal.results[0].id)
+            // }  
+            if(error1){
                 alert(e)
+                setIsLoading(false)
+                return
             }
+
+            const [oldDeal, error2] = await simplePromise(getDealByMongoId, shallowSnapshot.id)
+            if(oldDeal){
+                console.log('old deal reply: ')
+                console.log(oldDeal)
+            } 
+            if(error2){
+                alert(error2)
+                setIsLoading(false)
+                return
+            }
+            
+            const [insertReply, error3] = await simplePromise(insertContactToDeal, newDeal.results[0].id, contactId)
+            if(insertReply.associations === undefined){
+                alert('Unable to complete date exchange, please try again later')
+                setIsLoading(false)
+                return
+            } 
+            if(error3){
+                alert(error3)
+                setIsLoading(false)
+                return
+            }
+
+            const [deleteReply, error4] = await simplePromise(deleteContactFromDeal, oldDeal.results[0].id, contactId)
+            if(deleteReply.status !== 204){
+                alert('Unable to complete date exchange, please try again later')
+                setIsLoading(false)
+                return
+            } 
+            if(error4){
+                alert(error4)
+                setIsLoading(false)
+                return
+            }
+
+            const [trackerReply, error5] = await simplePromise(updateTracker, {list: cafeTracker.list, employeeId: employeeId, seasonId: seasonId})
+            if(trackerReply){
+                setFilteredDealArray([])
+                updateShallowTrackerAll(cafeTracker)
+                setSolidSnapshot({})    
+                setShallowSnapshot({})
+                setIsLoading(false)
+                closeModalHandler()
+            } 
+            if(error5){
+                alert(error5)
+                return
+            }
+       
+            
     }
 
     function submitNoHandler(){

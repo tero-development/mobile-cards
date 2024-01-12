@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react";
+import { createContext, useReducer, useState } from "react";
 
 export const HubspotContext = createContext()
 
@@ -6,36 +6,46 @@ function hbReducer(state, action){
     switch(action.type){
         case 'update_contactId':
             return {...state, contactId: action.payload}
-        case 'update_fromDealId':
-            return {...state, fromDealId: action.payload}
-        case 'update_toDealId':
-            return {...state, toDealId: action.payload}
+        // case 'update_fromDealId':
+        //     return {...state, fromDealId: action.payload}
+        // case 'update_toDealId':
+        //     return {...state, toDealId: action.payload}
         default:
             return {
-                contactId: '',
-                fromDealId: '',
-                toDealId: ''
+                contactId: ''
+                // fromDealId: '',
+                // toDealId: ''
             }
     }
 }
 
 const HubspotContextProvider = ({children}) =>{
+    const [fromDealId, setFromDealId] = useState("")
+    const [toDealId, setToDealId] = useState("")
     const [hubspotDetails, dispatch] = useReducer(hbReducer, {
         contactId: '',
-        fromDealId: '',
-        toDealId: ''
+        // fromDealId: '',
+        // toDealId: ''
     })
 
     function updateContactId(contactId){
         dispatch({type:'update_contactId', payload: contactId})
     }
 
-    function updatefromDealId(dealId){
-        dispatch({type:'update_fromDealId', payload: dealId})
+    // function updateFromDealId(dealId){
+    //     dispatch({type:'update_fromDealId', payload: dealId})
+    // }
+
+    // function updateToDealId(dealId){
+    //     dispatch({type:'update_toDealId', payload: dealId})
+    // }
+
+    function updateFromDealId(dealId){
+        setFromDealId(dealId)
     }
 
     function updateToDealId(dealId){
-        dispatch({type:'update_toDealId', payload: dealId})
+        setToDealId(dealId)
     }
 
     function updateClearHbAll(){
@@ -45,9 +55,11 @@ const HubspotContextProvider = ({children}) =>{
     const value = {
         hubspotDetails: hubspotDetails,
         updateContactId: updateContactId,
-        updatefromDealId: updatefromDealId,
+        updateFromDealId: updateFromDealId,
         updateToDealId: updateToDealId,
-        updateClearHbAll: updateClearHbAll
+        updateClearHbAll: updateClearHbAll,
+        fromDealId: fromDealId,
+        toDealId: toDealId
     }
 
     return(
