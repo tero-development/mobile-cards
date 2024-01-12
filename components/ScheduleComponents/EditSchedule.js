@@ -118,8 +118,15 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
         setSubmitOption(false)
     }
 
-    // console.log("EDIT SCHEDULE solid snapshot: ")
-    // console.log(solidSnapshot)
+    console.log('')
+    console.log("EDIT SCHEDULE solid snapshot: ")
+    console.log(solidSnapshot)
+    console.log('')
+
+    console.log('')
+    console.log("EDIT SCHEDULE shallow snapshot: ")
+    console.log(shallowSnapshot)
+    console.log('')
 
     // console.log('toDealId: ')
     // console.log(toDealId)
@@ -137,6 +144,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
     }
 
     async function submitYesHandler(){
+        if(shallowSnapshot !== undefined){
             setIsLoading(true)
 
             //you might want to stagger the ifs (example: if(newDeal){const [oldDeal, error2] = await simplePromise...etc.})
@@ -145,31 +153,48 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
             //next simplePromise etc.
 
             const [newDeal, error1] = await simplePromise(getDealByMongoId, solidSnapshot.id)
-            // if(newDeal){
-            //     updateToDealId(newDeal.results[0].id)
-            // }  
+            if(newDeal){
+                console.log('')
+                console.log('new deal reply: ')
+                console.log(newDeal)
+                console.log('')
+            }  
+            
             if(error1){
                 alert(e)
                 setIsLoading(false)
                 return
             }
 
-            const [oldDeal, error2] = await simplePromise(getDealByMongoId, shallowSnapshot.id)
-            if(oldDeal){
-                console.log('old deal reply: ')
-                console.log(oldDeal)
-            } 
-            if(error2){
-                alert(error2)
-                setIsLoading(false)
-                return
-            }
+
+                const [oldDeal, error2] = await simplePromise(getDealByMongoId, shallowSnapshot.id)
+                if(oldDeal){
+                    console.log('')
+                    console.log('old deal reply: ')
+                    console.log(oldDeal)
+                    console.log('')
+
+                } 
+                if(error2){
+                    alert(error2)
+                    setIsLoading(false)
+                    return
+                }
+            
             
             const [insertReply, error3] = await simplePromise(insertContactToDeal, newDeal.results[0].id, contactId)
-            if(insertReply.associations === undefined){
-                alert('Unable to complete date exchange, please try again later')
-                setIsLoading(false)
-                return
+            // if(insertReply.associations === undefined){
+            //     alert('Unable to complete date exchange, please try again later')
+            //     setIsLoading(false)
+            //     return
+            // } 
+            if(insertReply){
+                console.log('')
+
+                console.log('insert deal reply: ')
+                console.log(insertReply)
+                console.log('')
+
             } 
             if(error3){
                 alert(error3)
@@ -177,17 +202,27 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                 return
             }
 
-            const [deleteReply, error4] = await simplePromise(deleteContactFromDeal, oldDeal.results[0].id, contactId)
-            if(deleteReply.status !== 204){
-                alert('Unable to complete date exchange, please try again later')
-                setIsLoading(false)
-                return
-            } 
-            if(error4){
-                alert(error4)
-                setIsLoading(false)
-                return
-            }
+
+                const [deleteReply, error4] = await simplePromise(deleteContactFromDeal, oldDeal.results[0].id, contactId)
+                // if(deleteReply.status !== 204){
+                //     alert('Unable to complete date exchange, please try again later')
+                //     setIsLoading(false)
+                //     return
+                // }
+                if(deleteReply){
+                    console.log('')
+
+                    console.log('insert delete reply: ')
+                    console.log(deleteReply)
+                    console.log('')
+
+                }  
+                if(error4){
+                    alert(error4)
+                    setIsLoading(false)
+                    return
+                }
+            
 
             const [trackerReply, error5] = await simplePromise(updateTracker, {list: cafeTracker.list, employeeId: employeeId, seasonId: seasonId})
             if(trackerReply){
@@ -202,6 +237,66 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                 alert(error5)
                 return
             }
+        } else{
+            setIsLoading(true)
+
+            //you might want to stagger the ifs (example: if(newDeal){const [oldDeal, error2] = await simplePromise...etc.})
+            //it works without, but maybe this format would make the HubspotConext methods and state variales work 
+            //such as updateToDealId actually updating toDealId fast enought that it can be used in the 
+            //next simplePromise etc.
+
+            const [newDeal, error1] = await simplePromise(getDealByMongoId, solidSnapshot.id)
+            if(newDeal){
+                console.log('')
+                console.log('new deal reply: ')
+                console.log(newDeal)
+                console.log('')
+            }  
+            
+            if(error1){
+                alert(e)
+                setIsLoading(false)
+                return
+            }
+
+
+            const [insertReply, error2] = await simplePromise(insertContactToDeal, newDeal.results[0].id, contactId)
+            // if(insertReply.associations === undefined){
+            //     alert('Unable to complete date exchange, please try again later')
+            //     setIsLoading(false)
+            //     return
+            // } 
+            if(insertReply){
+                console.log('')
+
+                console.log('insert deal reply: ')
+                console.log(insertReply)
+                console.log('')
+
+            } 
+            if(error2){
+                alert(error2)
+                setIsLoading(false)
+                return
+            }
+
+
+
+            const [trackerReply, error4] = await simplePromise(updateTracker, {list: cafeTracker.list, employeeId: employeeId, seasonId: seasonId})
+            if(trackerReply){
+                setFilteredDealArray([])
+                updateShallowTrackerAll(cafeTracker)
+                setSolidSnapshot({})    
+                setShallowSnapshot({})
+                setIsLoading(false)
+                closeModalHandler()
+            } 
+            if(error4){
+                alert(error4)
+                return
+            }
+        }
+ 
        
             
     }
