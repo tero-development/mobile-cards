@@ -1,12 +1,9 @@
 import axios from "axios";
 // import {HBT} from '@env';
 
-
 const url = 'http://10.0.2.2:4002'
 
 const hubspotApi = 'https://api.hubapi.com'
-
-
 
 const dealToContactId = '3'
 
