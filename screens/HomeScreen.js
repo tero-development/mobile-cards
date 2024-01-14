@@ -174,6 +174,10 @@ const HomeScreen = ({navigation}) =>{
         navigation.navigate('CompetencyScreen')
     }
 
+    function navigateQuiz(){
+        navigation.navigate('QuizScreen')
+    }
+
 
     //ionicons: 'calendar', 'game-controller',  'chevron-forward', 'star', 'play-circle'
 
@@ -187,7 +191,7 @@ const HomeScreen = ({navigation}) =>{
                 <HomeSelection onPress={navigateLearnerSchedule} title='Schedule' notification={isScheduleIncomplete} iconName='calendar' iconSize={24}/>
                 <HomeSelection onPress={navigateCompetency} title='Competency Cards' iconName='copy' iconSize={24}/>
                 <HomeSelection title='Achievements' iconName='game-controller' iconSize={24}/>
-                <HomeSelection title='Knowledge Check' iconName='clipboard' iconSize={24}/>
+                <HomeSelection onPress={navigateQuiz} title='Knowledge Check' iconName='clipboard' iconSize={24}/>
                 <ModularLink 
                     onPress={signOutHandler}     
                     textColor={Colors.secondaryColor}
