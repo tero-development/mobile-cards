@@ -1,3 +1,5 @@
+import { Text } from "react-native"
+
 
 // export function verifyFullPasswordHandler(password){
 //     const trimmed = password.trim()
@@ -72,6 +74,18 @@ export function verifyEmailHandler(email){
 //Used for sitautions where you want to bypass word wrapping (you want words of a title each on their row)
 export function wordSplitter(string){
     return string.split(' ').map(u => u.trim())
+}
+
+export function wordStacker(string, textStyle){
+    const separatedStr = wordSplitter(string)
+        
+            return separatedStr.map(word =>{
+                return(
+                    <Text style={textStyle && textStyle} key={separatedStr[separatedStr.indexOf(word)]}>{word}</Text>
+                )
+            })
+        
+    
 }
 
 export function nameFormatter(string) {

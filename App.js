@@ -22,6 +22,8 @@ import SeasonContextProvider from './store/season-context';
 import AssessmentContextProvider from './store/assessment-context';
 import CafeContextProvider from './store/cafe-context';
 import HubspotContextProvider from './store/hubspot-context';
+import AdminScreen from './screens/AdminScreen';
+import QuizAdminScreen from './screens/QuizAdminScreen';
 
 
 export default function App() {
@@ -38,10 +40,12 @@ export default function App() {
           headerBackground: Colors.secondaryColor300
         }}>
             <Drawer.Screen name="HomeScreen" component={HomeScreen} options={{title: "Home"}}/>
+            {/* <Drawer.Screen name="AdminScreen" component={AdminScreen} options={{title: "Home"}}/> */}
             <Drawer.Screen name="ProfileScreenMotion" component={ProfileScreenMotion} options={{title: "Profile"}}/>
             <Drawer.Screen name="LearnerSchedule" component={LearnerSchedule} options={{title: 'My Schedule'}}/>
             <Drawer.Screen name="CompetencyScreen" component={AssessmentScreen}options={{title: 'Competency Cards'}}/>
-            <Drawer.Screen name="QuizScreen" component={QuizScreen} options={{title: 'Quiz'}}/>
+            <Drawer.Screen name="QuizScreen" component={QuizScreen} options={{title: 'Knowledge Check'}}/>
+            <Drawer.Screen name="QuizAdminScreen" component={QuizAdminScreen} options={{title: 'Quiz Builder'}}/>
         </Drawer.Navigator>
       </DismissKeyboard>
       

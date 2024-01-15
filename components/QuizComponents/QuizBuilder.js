@@ -1,46 +1,47 @@
-import {View, StyleSheet, Text} from 'react-native'
-import React, { useMemo, useState } from 'react';
-import RadioGroup from 'react-native-radio-buttons-group';
+import {View, StyleSheet, ScrollView} from 'react-native'
+import Title from '../../UI/Title';
+import Colors from '../../utils/colors';
 import DeviceFractions from '../../utils/dimensions';
 import QuestionNode from './QuestionNode';
+import { wordStacker } from '../../utils/helperFunctions';
 
-const QuizBuilder = ()=>{
+const QuizBuilder = ({questionArray, cafeTitle})=>{
 
-    const answerList = [
-        {
-            id: '1', // acts as primary key, should be unique and non-empty string
-            label: 'One',
-            value: 'option1'
-        },
-        {
-            id: '2',
-            label: 'Two',
-            value: 'option2'
-        },
-        {
-            id: '3',
-            label: 'Three',
-            value: 'option3'
-        }
-    ]
 
+    
     return (
-        <View style={styles.container}>
-            <QuestionNode questionNum={1} questionText={'How many sides are there on the Triforce?'} answerArray={answerList}/>
-            <QuestionNode questionNum={1} questionText={'How many sides are there on the Triforce?'} answerArray={answerList}/>
-        </View>
+        <ScrollView style={styles.screen}>
+            <View style={styles.titleContainer}>
+                    {
+                        wordStacker(cafeTitle, {color: Colors.secondaryColor, fontSize: DeviceFractions.deviceHeight /22, fontWeight: 'bold', textAlign: 'right'})
+                        
+                    }
+                    <Title color={Colors.secondaryColor}  textSize={DeviceFractions.deviceH30} textStyle={{fontWeight: 'normal',  textAlign: 'right'}} >Knowledge Check</Title>
+            </View>
+            <View style={styles.container}>
+                {
+                    questionArray.map(question => 
+                        <QuestionNode key={questionArray.indexOf(question)} number={questionArray.indexOf(question)+1} questionObj={question} />)
+                }
+            </View>
+        </ScrollView>
     );
 
 }
 
 const styles = StyleSheet.create({
     screen:{
-        flex: 1
+        paddingTop: DeviceFractions.deviceHeight / 8
     },
     container:{
+        flex: 1,
+        paddingTop: DeviceFractions.deviceH40,
+        alignItems: 'center',
+        marginBottom: DeviceFractions.deviceHeight / 10 * 2
     },
-    radioGroupContainer:{
-        alignItems: 'flex-start'
+    titleContainer:{
+        paddingRight: DeviceFractions.deviceWidth / 8,
+        marginBottom: DeviceFractions.deviceH50,
     },
     questionLineText:{
         fontSize: DeviceFractions.deviceH50
