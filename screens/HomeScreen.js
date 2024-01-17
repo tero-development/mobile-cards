@@ -186,10 +186,10 @@ const HomeScreen = ({navigation}) =>{
             <LinearGradient style={styles.rootScreen} colors={[Colors.highlightColor, Colors.primaryColor]}>
             <IconButton isHeader={true} hasEditProfile={true} iconName='menu' iconSize={28} iconColor={Colors.secondaryColor} onPress={openDrawer}/>
             <View style={styles.container}>
-                <ScoreGreeting points={35} rank={23} name={firstName? firstName : <Loader size='small' color={Colors.accentColor} />}/>
+                <ScoreGreeting points={10} rank={1} name={firstName? firstName : <Loader size='small' color={Colors.accentColor} />}/>
                 {credentials.employeeId? <View style={styles.profileContainer}>
                 <HomeSelection onPress={navigateLearnerSchedule} title='Schedule' notification={isScheduleIncomplete} iconName='calendar' iconSize={24}/>
-                <HomeSelection onPress={navigateCompetency} title='Competency Cards' iconName='copy' iconSize={24}/>
+                {/* <HomeSelection onPress={navigateCompetency} title='Competency Cards' iconName='copy' iconSize={24}/> */}
                 <HomeSelection title='Achievements' iconName='game-controller' iconSize={24}/>
                 <HomeSelection onPress={navigateQuiz} title='Knowledge Check' iconName='clipboard' iconSize={24}/>
                 <ModularLink 

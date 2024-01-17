@@ -122,9 +122,9 @@ const ConfirmAccount = ({navigation, route}) =>{
     <KeyboardAvoidingView behavior='height' style={styles.keyboardView}>
     <LinearGradient style={styles.gradient}  colors={['white', Colors.primaryColor]}>
         <View style={styles.container}>
-            <IconButton isHeader={true} iconName='close' iconSize={42} iconColor={Colors.accentColor} onPress={navigateSplashScreen}/>
+            <IconButton isHeader={true} iconName='close' iconSize={28} iconColor={Colors.accentColor} onPress={navigateSplashScreen} viewStyle={{marginBottom: DeviceFractions.deviceH20}}/>
             <View style={styles.imageWrapper}>
-                <Image style={{width:'100%', height:'100%'}} source={require('../assets/images/corteva-logo.png')} />
+                <Image style={{width:'100%', height:'100%'}} source={require('../assets/images/ExSell_logo_vertical_color.png')} />
             </View>
             <Title color={'#016B72'} textSize={28} style={{marginBottom: DeviceFractions.deviceH50}}>Update Your Account</Title>
             {isLoading? <Loader size='large' color={Colors.accentColor}/> : midContent}

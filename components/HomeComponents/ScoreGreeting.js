@@ -11,7 +11,7 @@ const ScoreGreeting = ({points, rank, name}) =>{
                 <Text style={styles.scoreText}>{points}</Text>
             </View>
         </View>
-        <Title color={Colors.secondaryColor} textSize={20}>{name}</Title>
+        <Title color={Colors.secondaryColor} textSize={20}>John</Title>
         <Title color={Colors.secondaryColor} textSize={16}>Leaderboard Rank: {rank}</Title>
     </View>
     )

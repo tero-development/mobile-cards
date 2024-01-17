@@ -58,7 +58,8 @@ const SplashScreen = ({navigation}) =>{
         else if(!employee.verified){
             setIsLoading(false)
             navigation.navigate('ConfirmAccount', employee)
-        } else{
+        } 
+        else{
             setIsLoading(false)
             navigation.navigate('SignIn', employee)
         }
@@ -103,8 +104,8 @@ const SplashScreen = ({navigation}) =>{
             >
                 <ImageBackground 
                     // source={require('../assets/images/competency-cover.jpg')}
-                    source={require('../assets/images/exsell_logo_h.png')}
-                    resizeMode='contain'
+                    source={require('../assets/images/2024-corteva-splash-image.jpg')}
+                    resizeMode='cover'
                     style={styles.image}
                     imageStyle={styles.imageBackground}
                 />
@@ -163,7 +164,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     imageBackground:{
-        opacity: 0.65
+        opacity: 1
     },
     titleLine:{
         flexDirection: 'row',

@@ -93,11 +93,11 @@ const SignIn = ({navigation}) =>{
             label={'Password'} 
             style={{marginBottom: DeviceFractions.deviceH50}}
             color={colorHandler(errorType, [], password)}
+            type='password'
             textInputConfig={{
                 value: password,
                 onChangeText:(text) => updateHandler( text, updatePassword),
-                autoCorrect: false, 
-                autoCapitalize:'words'
+                autoCorrect: false
             }}   
         />
         <ModularLink 
@@ -134,7 +134,7 @@ const SignIn = ({navigation}) =>{
                 <View style={styles.container}>
                     <IconButton isHeader={true} iconName='close' iconSize={28} iconColor={Colors.accentColor} onPress={navigateSplashScreen} viewStyle={{marginBottom: DeviceFractions.deviceH20}}/>
                     <View style={styles.imageWrapper}>
-                        <Image style={{width:'100%', height:'100%'}} source={require('../assets/images/corteva-logo.png')} />
+                        <Image style={{width:'100%', height:'100%'}} source={require('../assets/images/ExSell_logo_vertical_color.png')} />
                     </View>
                     <View >
                         <Title color={Colors.secondaryColor} textSize={28} style={{marginBottom: DeviceFractions.deviceH20, textAlign: 'center'}}>Sign In</Title>

@@ -41,8 +41,8 @@ export default function App() {
           headerShown: false,
           headerBackground: Colors.secondaryColor300
         }}>
-            {/* <Drawer.Screen name="HomeScreen" component={HomeScreen} options={{title: "Home"}}/> */}
-            <Drawer.Screen name="AdminScreen" component={AdminScreen} options={{title: "Home"}}/>
+            <Drawer.Screen name="HomeScreen" component={HomeScreen} options={{title: "Home"}}/>
+            {/* <Drawer.Screen name="AdminScreen" component={AdminScreen} options={{title: "Home"}}/> */}
             <Drawer.Screen name="ProfileScreenMotion" component={ProfileScreenMotion} options={{title: "Profile"}}/>
             <Drawer.Screen name="LearnerSchedule" component={LearnerSchedule} options={{title: 'My Schedule'}}/>
             <Drawer.Screen name="CompetencyScreen" component={AssessmentScreen}options={{title: 'Competency Cards'}}/>

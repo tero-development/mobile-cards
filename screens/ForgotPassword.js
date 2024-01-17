@@ -126,7 +126,7 @@ const ForgotPassword = ({navigation, route}) =>{
                 <View style={styles.container}>
                     <IconButton isHeader={true} iconName='close' iconSize={28} iconColor={Colors.accentColor} onPress={navigateSignIn} viewStyle={{marginBottom: DeviceFractions.deviceH20}}/>
                     <View style={styles.imageWrapper}>
-                        <Image style={{width:'100%', height:'100%'}} source={require('../assets/images/corteva-logo.png')} />
+                        <Image style={{width:'100%', height:'100%'}} source={require('../assets/images/ExSell_logo_vertical_color.png')} />
                     </View>
                     <Title color={Colors.secondaryColor} textSize={28} style={{marginBottom: DeviceFractions.deviceH20}}>Forgot Password?</Title>
                     {isLoading? <Loader size='large' color={Colors.accentColor}/> : midContent}

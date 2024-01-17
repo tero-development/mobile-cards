@@ -42,7 +42,7 @@ const CreateAccount = ({navigation, route}) =>{
     let {email, confirmEmail, password, confirmPassword} = fitleredCredentials
     
 
-    function navigateSplash(){
+    function navigateSplashScreen(){
         navigation.navigate('SplashScreen')
     }
     
@@ -75,9 +75,9 @@ const CreateAccount = ({navigation, route}) =>{
     <KeyboardAvoidingView behavior='height' style={styles.keyboardView}>
     <LinearGradient style={styles.gradient}  colors={['white', Colors.primaryColor]}>
         <View style={styles.container}>
-            <IconButton isHeader={true} iconName='close' iconSize={42} iconColor={Colors.accentColor} onPress={navigateSplash}/>
+        <IconButton isHeader={true} iconName='close' iconSize={28} iconColor={Colors.accentColor} onPress={navigateSplashScreen} viewStyle={{marginBottom: DeviceFractions.deviceH20}}/>
             <View style={styles.imageWrapper}>
-                <Image style={{width:'100%', height:'100%'}} source={require('../assets/images/corteva-logo.png')} />
+                <Image style={{width:'100%', height:'100%'}} source={require('../assets/images/ExSell_logo_vertical_color.png')} />
             </View>
             <Title color={'#016B72'} textSize={28} style={{marginBottom: DeviceFractions.deviceH40}}>Create Your Account</Title>
             <PasswordRules />
