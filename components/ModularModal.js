@@ -5,9 +5,9 @@ const ModularModal = ({children, modalIsVisible, modalOff}) =>{
 
     return(
         <Modal visible={modalIsVisible} animationType="slide">
-            <View>
+        
                 {children}
-            </View>
+     
             <Button title="close" onPress={modalOff}/>
         </Modal>
     )

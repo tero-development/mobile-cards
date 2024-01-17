@@ -12,7 +12,7 @@ import ClickBox from '../ClickBox'
 import Loader from '../../UI/Loader'
 
 
-const Body = ({phraseGenerator, submitOption, modeSelection, submitHandler, toggleYesHandler, toggleNoHandler}) =>{
+const Body = ({phraseGenerator, submitOption, modeSelection, deleteSubmitHandler, replaceSubmitHandler, toggleYesHandler, toggleNoHandler}) =>{
 
     if(modeSelection==='delete'){
         return(
@@ -47,7 +47,7 @@ const Body = ({phraseGenerator, submitOption, modeSelection, submitHandler, togg
                         textSize={DeviceFractions.deviceW30} 
                         textStyles={{fontWeight: 'bold'}} 
                         textColor={Colors.highlightColor}
-                        onPress={submitHandler}
+                        onPress={deleteSubmitHandler}
                     >
                         Submit
                     </ModularButton>
@@ -56,11 +56,55 @@ const Body = ({phraseGenerator, submitOption, modeSelection, submitHandler, togg
           
       )
     }
+    if(modeSelection==='replace'){
+        //this should also bring up the modal, with similar fields as the add version of the modal
+        return(
+    
+            <View style={styles.footerSaveOptions}>
+                <View>
+                    {
+                       wordStacker( phraseGenerator(modeSelection), styles.footerTitleStyle)
+                    }
+                </View>
+                <View style={styles.submitContainer}>
+                    <Pressable onPress={toggleYesHandler} style={styles.submitOption}>
+                        <Text style={styles.submitText}>Yes</Text>
+                        <ClickBox height={15} width={15} borderRadius={3} toggle={submitOption} toggleColor={Colors.secondaryColor300} />
+                    </Pressable>
+                    <Pressable onPress={toggleNoHandler} style={styles.submitOption}>
+                        <Text style={styles.submitText}>No</Text>
+                        <ClickBox height={15} width={15} borderRadius={3} toggle={!submitOption} toggleColor={Colors.secondaryColor300} />
+                    </Pressable>
+                    <ModularButton 
+                        style={{
+                            width: '75%', 
+                            height: DeviceFractions.deviceH40,
+                            borderRadius: 4,
+                            shadowColor: 'black',
+                            shadowOpacity: 0.25,
+                            shadowOffset: {width: 0, height: 2},
+                            shadowRadius: 8,
+                            elevation: 4
+                        }} 
+                        buttonColor={Colors.secondaryColor300} 
+                        textSize={DeviceFractions.deviceW30} 
+                        textStyles={{fontWeight: 'bold'}} 
+                        textColor={Colors.highlightColor}
+                        onPress={replaceSubmitHandler}
+                    >
+                        Submit
+                    </ModularButton>
+                </View>
+            </View>
+          
+      )
+    }
+    
         
 }
     
 
-const FooterOptions = ({isDifferent, submitOption, modeSelection, submitHandler, toggleYesHandler, toggleNoHandler, closeEditingHandler}) =>{
+const FooterOptions = ({isDifferent, submitOption, modeSelection, deleteSubmitHandler, replaceSubmitHandler, toggleYesHandler, toggleNoHandler, closeEditingHandler, modalOpenHandler}) =>{
 
 const phraseGenerator = (mode) =>{
     switch(mode){
@@ -69,7 +113,7 @@ const phraseGenerator = (mode) =>{
         case 'delete':
             return 'Delete Date?'
         case 'replace':
-            return 'Replace Date'
+            return 'Replace Date?'
         default:
         return ''
     }
@@ -79,9 +123,42 @@ const inherit = {
     isDifferent: isDifferent,
     submitOption: submitOption,
     modeSelection: modeSelection,
-    submitHandler: submitHandler,
+    deleteSubmitHandler: deleteSubmitHandler,
+    replaceSubmitHandler: replaceSubmitHandler,
     toggleYesHandler: toggleYesHandler,
-    toggleNoHandler: toggleNoHandler
+    toggleNoHandler: toggleNoHandler,
+    modalOpenHandler: modalOpenHandler
+}
+
+if(!isDifferent && modeSelection === 'add'){
+    return (
+        <View style={styles.addPairContainer}>
+            {/* this button's onPress should open a modal with the 
+            necessary fields for adding a new cafe_date
+            it will be the only version of the footer that doesn't change,
+            just gets covered by the modal, which can cancel back to it */}
+            <ModularButton 
+                buttonColor={Colors.secondaryColor300} 
+                textColor={Colors.highlightColor}
+                textSize={DeviceFractions.deviceH50}
+                textStyles={{fontWeight: 'bold'}}
+                style={{
+                    width: DeviceFractions.deviceWidth / 10 * 3,
+                    marginBottom: DeviceFractions.deviceHeight / 75
+                }}
+                onPress={modalOpenHandler}
+            >
+                Add
+            </ModularButton>
+            <ModularLink 
+                textColor={Colors.highlightColor} 
+                textSize={DeviceFractions.deviceH50} 
+                onPress={closeEditingHandler}
+            >
+                Close
+            </ModularLink>
+        </View>
+    )
 }
 
 if(!isDifferent){
@@ -93,6 +170,7 @@ if(!isDifferent){
     Close
 </ModularLink>
 }
+
 if(isDifferent){
         return(
             <Body {...inherit} phraseGenerator={phraseGenerator}/>
@@ -198,6 +276,9 @@ const styles = StyleSheet.create({
         fontSize: DeviceFractions.deviceHeight / 35, 
         color: Colors.highlightColor,
         fontWeight: 'bold'
+    },
+    addPairContainer:{
+        alignItems: 'center'
     }
     
 })

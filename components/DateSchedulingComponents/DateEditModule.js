@@ -11,6 +11,7 @@ import DateEntry from './DateEntry'
 import ClickBox from '../ClickBox'
 import Loader from '../../UI/Loader'
 import FooterOptions from './FooterOptions'
+import DateScheduleModal from './DateSchedulingModal'
 
 const DateEditModule = ({targetCafe, cafes, offeredDateIds, modeSelection, closeEditingHandler}) =>{
   const [isLoading, setIsLoading] = useState(false)
@@ -18,7 +19,7 @@ const DateEditModule = ({targetCafe, cafes, offeredDateIds, modeSelection, close
   const [pressedEntry, setPressedEntry] = useState({})
   const [isDifferent, setIsDifferent] = useState(false)
   const [submitOption, setSubmitOption] = useState(false)
-  
+  const [isModalVisible, setIsModalVisible] = useState(false)
 
   useEffect(()=>{
     async function determineData(targetCafe, cafes, offeredDateIds){
@@ -44,6 +45,14 @@ const DateEditModule = ({targetCafe, cafes, offeredDateIds, modeSelection, close
         setIsDifferent(true)
     }
   },[pressedEntry])
+
+  function modalOpenHandler(){
+    setIsModalVisible(true)
+  }
+
+  function modalCloseHandler(){
+    setIsModalVisible(false)
+  }
 
   console.log('is different')
   console.log(isDifferent)
@@ -85,8 +94,12 @@ function toggleNoHandler(){
     setSubmitOption(false)
 }
 
-function submitHandler(){
-    submitOption? deleteYesHandler() : deleteNoHandler()
+function deleteSubmitHandler(){
+    submitOption? deleteYesHandler() : submitNoHandler()
+}
+
+function replaceSubmitHandler(){
+    submitOption? modalOpenHandler() : submitNoHandler()
 }
 
   async function deleteYesHandler(){
@@ -101,18 +114,22 @@ function submitHandler(){
 
 }
 
-function deleteNoHandler(){
+function submitNoHandler(){
       closeEditingHandler()
 }
+
+
 
 const footerVariables = {
     isDifferent: isDifferent,
     submitOption: submitOption,
     modeSelection: modeSelection,
-    submitHandler: submitHandler,
+    deleteSubmitHandler: deleteSubmitHandler,
+    replaceSubmitHandler: replaceSubmitHandler,
     toggleYesHandler: toggleYesHandler,
     toggleNoHandler: toggleNoHandler,
-    closeEditingHandler: closeEditingHandler
+    closeEditingHandler: closeEditingHandler,
+    modalOpenHandler: modalOpenHandler
 }
 
   let footerContent = <FooterOptions {...footerVariables}/>
@@ -126,7 +143,7 @@ const footerVariables = {
     return(
         <View style={styles.scheduleContainer}>
             <View style={styles.scheduleHeader}>
-                <Text style={styles.topTitle}>Topic</Text>
+                <Text style={styles.topTitle}>{targetCafe.title}</Text>
             </View>
             <View style={styles.scheduleBody}>
                 <DateEntryList />
@@ -134,6 +151,7 @@ const footerVariables = {
             <View style={styles.scheduleFooter}>
                 {footerContent}
             </View>
+            <DateScheduleModal isModalVisible={isModalVisible} modalCloseHandler={modalCloseHandler} modeSelection={modeSelection}/>
         </View>
     )
 }
@@ -158,7 +176,7 @@ const styles = StyleSheet.create({
     },
     topTitle:{
         color: 'white',
-        fontSize: DeviceFractions.deviceHeight / 54,
+        fontSize: DeviceFractions.deviceHeight / 45,
         fontWeight: 'bold'
     },
     
