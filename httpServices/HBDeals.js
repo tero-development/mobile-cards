@@ -8,6 +8,7 @@ const hubspotApi = 'https://api.hubapi.com'
 const dealToContactId = '3'
 
 
+
 export async function getDealByMongoId(cafeDateId){
     try{
         const response = await axios.get(`${url}/hb/deals/${cafeDateId}`)
@@ -33,7 +34,12 @@ export async function getDealAssociations(dealId){
 
 export async function insertContactToDeal(dealId, contactId){
     try{
-        const response = await axios.put(`${hubspotApi}/crm/v3/objects/deals/${dealId}/associations/contacts/${contactId}/${dealToContactId}`, {}, config)
+        const response = await axios.put(`${hubspotApi}/crm/v4/objects/contact/${contactId}/associations/deal/${dealId}`, [
+            {
+                    "associationCategory": "USER_DEFINED",
+                    "associationTypeId": 4
+                }
+        ], config)
         if(response){
             return response.data
         }
@@ -53,3 +59,13 @@ export async function deleteContactFromDeal(dealId, contactId){
     }
 }
 
+export async function archiveDeal(dealId){
+    try{
+        const response = await axios.delete(` https://api.hubapi.com/crm/v3/objects/deals/${dealId}`)
+        if(response){
+            return response 
+        }
+    }catch(e){
+        return(e)
+    }
+}

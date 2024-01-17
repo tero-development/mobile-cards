@@ -6,7 +6,7 @@ import {SeasonContext} from '../store/season-context'
 import SeasonContextProvider from '../store/season-context'
 import {searchEmployee} from '../httpServices/employees'
 import { getActiveSeason } from '../httpServices/seasons'
-import { getCafeTracker } from '../httpServices/cafes'
+import { getCafeTracker, getAllCafes } from '../httpServices/cafes'
 import { getContact } from '../httpServices/HBcontacts'
 import IconButton from '../UI/IconButton'
 import Colors from '../utils/colors'
@@ -40,9 +40,21 @@ const AdminScreen = ({navigation}) =>{
         updateCafeClear} = useContext(CafeContext)
     const [isScheduleIncomplete, setIsScheduleIncomplete] = useState(false)
     const {hubspotDetails, updateContactId} = useContext(HubspotContext)
+    const [allCafes, setAllCafes] = useState([])
     
     useEffect(()=>{
         let tempEmail = credentials.email
+
+        async function getCafes(companyId){
+            try{
+                const response = await getAllCafes(companyId)
+                if(response){
+                   setAllCafes(response)
+                }
+            }catch(e){
+                alert(e.message)
+            }
+        }
 
         async function retrieveEmployee(){
             try{
@@ -83,6 +95,8 @@ const AdminScreen = ({navigation}) =>{
         
         updateSignInClear()
         retrieveEmployee()
+        getCafes(`62d47c7a36aeee14652966cd`)
+
    
         return () =>{}
 
@@ -108,16 +122,6 @@ const AdminScreen = ({navigation}) =>{
     }, [])
 
 
-    //if cafeTracker is of type Object:
-    // useEffect(()=>{
-    //     let value = false
-    //     for (let instance in cafeDetails.cafeTracker){
-    //         if(Object.keys(cafeDetails.cafeTracker[instance]).length === 0){
-    //             value = true
-    //         }
-    //     }
-    //     setIsScheduleIncomplete(value)
-    // },[cafeDetails.cafeTracker])
 
     const {cafeTracker, shallowTracker} = cafeDetails
 
@@ -142,23 +146,6 @@ const AdminScreen = ({navigation}) =>{
         navigation.toggleDrawer()
     }
 
-    // console.log("HOME SCREEN, hToDeal:")
-    // console.log(hubspotDetails.toDealId)
-
-    // console.log('from HOMESCREEN, cafe tracker: ')
-    // console.log(cafeTracker)
-
-    // console.log('from HOMESCREEN, shallow tracker: ')
-    // console.log(shallowTracker.list)
-
-    // console.log('from HOMESCREEN, scheduled Dates: ')
-    // console.log(cafeDetails.scheduledDates)
-    // console.log('')
-    // console.log('')
-    // console.log('')
-    // console.log('')
-    // console.log('from HOMESCREEN, selected Cafes: ')
-    // console.log(cafeDetails.selectedCafes)
 
     function signOutHandler(){
         updateSignInClear()
@@ -166,12 +153,13 @@ const AdminScreen = ({navigation}) =>{
         navigation.navigate('SplashScreen')
     }
 
-    function navigateLearnerSchedule(){
-        navigation.navigate('LearnerSchedule')
+    function navigateDateScheduling(){
+        const cafes = allCafes
+        navigation.navigate('DateSchedulingScreen', cafes)
     }
 
-    function navigateCompetency(){
-        navigation.navigate('CompetencyScreen')
+    function navigateLinkScreen(){
+        navigation.navigate('LinkScreen')
     }
 
     function navigateAdminQuiz(){
@@ -188,8 +176,8 @@ const AdminScreen = ({navigation}) =>{
             <View style={styles.container}>
                 <AdminGreeting points={'A'} rank={23} name={firstName? firstName : <Loader size='small' color={Colors.accentColor} />}/>
                 {credentials.employeeId? <View style={styles.profileContainer}>
-                <HomeSelection onPress={navigateLearnerSchedule} title='Links' notification={isScheduleIncomplete} iconName='link-outline' iconSize={24}/>
-                {/* <HomeSelection onPress={navigateCompetency} title='Competency Cards' iconName='copy' iconSize={24}/> */}
+                <HomeSelection onPress={navigateDateScheduling} title='Edit dates' iconName='calendar' iconSize={24}/>
+                <HomeSelection onPress={navigateLinkScreen} title='Links'  iconName='link-outline' iconSize={24}/>
                 <HomeSelection title='Statistics' iconName='analytics-outline' iconSize={24}/>
                 <HomeSelection onPress={navigateAdminQuiz} title='Quiz Builder' iconName='clipboard' iconSize={24}/>
                 <ModularLink 

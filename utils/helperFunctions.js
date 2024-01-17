@@ -133,3 +133,12 @@ export function verifyPhoneHandler(phone){
 
     return false
 }
+
+export async function simplePromise(promise, arg1, arg2){
+    try{
+        const data = await promise(arg1, arg2)
+        return [data, null]
+    } catch(e){
+        return [null, e]
+    }
+}

@@ -13,6 +13,17 @@ export async function getSelectedCafeIds(idArray){
     }
 }
 
+export async function getAllCafes(companyId){
+    try{
+        const response = await axios.get(`${url}/cafes/allcafes/${companyId}`)
+        if(response){
+            return response.data
+        }
+    }catch(e){
+        return e
+    }
+}
+
 export async function getCafeDates(idArray){
     try{
         const response = await axios.post(`${url}/cafes/cafedates`, {idArray: idArray})
@@ -23,6 +34,18 @@ export async function getCafeDates(idArray){
         return e
     }
 }
+
+export async function getCafeSingularDates(idArray){
+    try{
+        const response = await axios.post(`${url}/cafes/cafesingulardates`, {idArray: idArray})
+        if(response){
+            return response.data
+        }
+    }catch(e){
+        return e
+    }
+}
+
 
 
 export async function getCafeTracker(employeeId, seasonId){
