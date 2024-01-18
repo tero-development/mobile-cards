@@ -155,40 +155,27 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
 
             const [newDeal, error1] = await simplePromise(getDealByMongoId, solidSnapshot.id)
             if(newDeal){
-                console.log('')
-                console.log('new deal reply: ')
-                console.log(newDeal)
-                console.log('')
+
                 const [oldDeal, error2] = await simplePromise(getDealByMongoId, shallowSnapshot.id)
                 if(oldDeal){
-                    console.log('')
-                    console.log('old deal reply (standard): ')
-                    console.log(oldDeal)
-                    console.log('')
+
                     const [insertReply, error3] = await simplePromise(insertContactToDeal, newDeal.results[0].id, contactId)
-                    // if(insertReply.associations === undefined){
-                    //     alert('Unable to complete date exchange, please try again later')
-                    //     setIsLoading(false)
-                    //     return
-                    // } 
+                    if(insertReply.fromObjectId === undefined){
+                        alert('Unable to complete date exchange, please try again later')
+                        setIsLoading(false)
+                        return
+                    } 
                     if(insertReply){
-                        console.log('')
-                        console.log('insert deal reply (standard): ')
-                        console.log(insertReply)
-                        console.log('')
+
 
                         const [deleteReply, error4] = await simplePromise(deleteContactFromDeal, oldDeal.results[0].id, contactId)
-                        // if(deleteReply.status !== 204){
-                        //     alert('Unable to complete date exchange, please try again later')
-                        //     setIsLoading(false)
-                        //     return
-                        // }
+                        if(deleteReply.status !== 204){
+                            alert('Unable to complete date exchange, please try again later')
+                            setIsLoading(false)
+                            return
+                        }
                         if(deleteReply){
-                            console.log('')
-        
-                            console.log('insert delete reply: ')
-                            console.log(deleteReply)
-                            console.log('')
+
                             const [trackerReply, error5] = await simplePromise(updateTracker, {list: cafeTracker.list, employeeId: employeeId, seasonId: seasonId})
                             if(trackerReply){
                                 setFilteredDealArray([])
@@ -228,16 +215,6 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                 return
             }
 
-
-                
-            
-            
-          
-
-
-                
-            
-
             
         } 
         else{
@@ -250,22 +227,15 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
 
             const [newDeal, error1] = await simplePromise(getDealByMongoId, solidSnapshot.id)
             if(newDeal){
-                console.log('')
-                console.log('new deal reply: ')
-                console.log(newDeal)
-                console.log('')
+   
                 const [insertReply, error2] = await simplePromise(insertContactToDeal, newDeal.results[0].id, contactId)
-                // if(insertReply.associations === undefined){
-                //     alert('Unable to complete date exchange, please try again later')
-                //     setIsLoading(false)
-                //     return
-                // } 
+                if(insertReply.fromObjectId === undefined){
+                    alert('Unable to complete date exchange, please try again later')
+                    setIsLoading(false)
+                    return
+                } 
                 if(insertReply){
-                    console.log('')
-
-                    console.log('insert deal reply: ')
-                    console.log(insertReply)
-                    console.log('')
+                 
                     const [trackerReply, error3] = await simplePromise(updateTracker, {list: cafeTracker.list, employeeId: employeeId, seasonId: seasonId})
                     if(trackerReply){
                         setFilteredDealArray([])

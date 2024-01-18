@@ -12,8 +12,8 @@ const LabeledInput = ({style, viewStyle, label, textSize, color, textInputConfig
        // Function to toggle the password visibility state 
        const toggleShowPassword = () => { 
            setShowPassword(!showPassword); 
-       }; 
-console.log(showPassword)
+       }
+       
     if(type==='password'){
         return(
             <View style={viewStyle}>

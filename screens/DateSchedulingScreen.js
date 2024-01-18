@@ -56,8 +56,6 @@ const DateSchedulingScreen = ({navigation, route}) =>{
 
     }
 
-    console.log('mode selection')
-    console.log(modeSelection)
 
     let initialContent = <ButtonGroup selectionHandler={selectionHandler} />
     

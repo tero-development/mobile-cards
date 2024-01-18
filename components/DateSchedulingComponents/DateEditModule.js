@@ -54,8 +54,6 @@ const DateEditModule = ({targetCafe, cafes, offeredDateIds, modeSelection, close
     setIsModalVisible(false)
   }
 
-  console.log('is different')
-  console.log(isDifferent)
 
   const DateEntryList = () =>{
         return currentCafeOfferedSet.length > 0 && currentCafeOfferedSet.map(entry=>{

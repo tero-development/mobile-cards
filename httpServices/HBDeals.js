@@ -1,5 +1,5 @@
 import axios from "axios";
-// import {HBT} from '@env';
+import {HB_T} from '@env';
 
 const url = 'http://10.0.2.2:4002'
 
@@ -7,9 +7,9 @@ const hubspotApi = 'https://api.hubapi.com'
 
 const dealToContactId = '3'
 
-
-
-
+const config = {
+    headers: {Authorization: `Bearer ${HB_T}`}
+}
 
 export async function getDealByMongoId(cafeDateId){
     try{
