@@ -29,22 +29,24 @@ const LearnerSchedule = ({navigation, route}) =>{
         } = useContext(CafeContext)
     const [modalIsVisble, setModalIsVisble] = useState(false)
 
-
     
     useEffect(()=>{
         async function retrieveAssessment(){
             try{
                 const assessment = await getAssessment(credentials.employeeId, season._id)
                 if(assessment){
+
                     updateAssessment(assessment)
                     try{
                         updateSelectedCafes(assessment.currentSkillsChallenges)
+
                         const selectedIds = await getSelectedCafeIds(assessment.currentSkillsChallenges.map(entry => entry._id))
                         if(selectedIds){
                             try{
                                 //these are the offered dates, from the 'cafes' table
                                 const cafeDates = await getCafeDates(selectedIds)
                                 if(cafeDates){
+
                                     updateScheduledDates(cafeDates)
                                 }
                             }catch(e){
