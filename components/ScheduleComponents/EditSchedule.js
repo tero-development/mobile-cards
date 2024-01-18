@@ -143,6 +143,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
         }
     }
 
+
     async function submitYesHandler(){
         if(shallowSnapshot !== undefined){
             setIsLoading(true)
@@ -161,7 +162,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                 const [oldDeal, error2] = await simplePromise(getDealByMongoId, shallowSnapshot.id)
                 if(oldDeal){
                     console.log('')
-                    console.log('old deal reply: ')
+                    console.log('old deal reply (standard): ')
                     console.log(oldDeal)
                     console.log('')
                     const [insertReply, error3] = await simplePromise(insertContactToDeal, newDeal.results[0].id, contactId)
@@ -172,8 +173,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                     // } 
                     if(insertReply){
                         console.log('')
-        
-                        console.log('insert deal reply: ')
+                        console.log('insert deal reply (standard): ')
                         console.log(insertReply)
                         console.log('')
 

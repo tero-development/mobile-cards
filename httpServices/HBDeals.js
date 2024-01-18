@@ -9,6 +9,8 @@ const dealToContactId = '3'
 
 
 
+
+
 export async function getDealByMongoId(cafeDateId){
     try{
         const response = await axios.get(`${url}/hb/deals/${cafeDateId}`)
@@ -33,6 +35,7 @@ export async function getDealAssociations(dealId){
 }
 
 export async function insertContactToDeal(dealId, contactId){
+
     try{
         const response = await axios.put(`${hubspotApi}/crm/v4/objects/contact/${contactId}/associations/deal/${dealId}`, [
             {
@@ -41,7 +44,7 @@ export async function insertContactToDeal(dealId, contactId){
                 }
         ], config)
         if(response){
-            return response.data
+            return response.data 
         }
     }catch(e){
         return e

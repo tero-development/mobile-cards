@@ -63,8 +63,6 @@ const DateScheduleModal = ({isModalVisible, modalCloseHandler, modeSelection}) =
             {label: 31, value: 31}, 
         ]
     }
-
-    console.log(monthSelection)
     
     if(modeSelection === "add"){
         return(
