@@ -16,6 +16,7 @@ import HomeSelection from '../components/HomeComponents/HomeSelection'
 import Loader from '../UI/Loader'
 import { CafeContext } from '../store/cafe-context'
 import { HubspotContext } from '../store/hubspot-context'
+import { slice } from 'lodash'
 
 
 const HomeScreen = ({navigation}) =>{
@@ -145,7 +146,7 @@ const HomeScreen = ({navigation}) =>{
     // console.log("HOME SCREEN, hToDeal:")
     // console.log(hubspotDetails.toDealId)
 
-    // console.log('from HOMESCREEN, cafe tracker: ')
+    // console.log('HomeScreen ln 149 cafe tracker: ')
     // console.log(cafeTracker)
 
     // console.log('from HOMESCREEN, shallow tracker: ')
@@ -221,3 +222,4 @@ const styles = StyleSheet.create({
 })
 
 export default HomeScreen
+

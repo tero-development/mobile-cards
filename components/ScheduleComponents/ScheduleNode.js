@@ -34,7 +34,9 @@ const ScheduleNode = ({ targetSkill,   companyCafeDesignation,  openModalHandler
       
     }
 
+
     const {monthName, monthNumber, clinicMonthName} = variableGroup
+    
 
     const expandHandler = () =>{
         setExpanded(prev => !prev)

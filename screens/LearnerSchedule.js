@@ -35,18 +35,24 @@ const LearnerSchedule = ({navigation, route}) =>{
             try{
                 const assessment = await getAssessment(credentials.employeeId, season._id)
                 if(assessment){
-
+                    // console.log('LearnerSchedule ln 38 assessment:')
+                    // console.log(assessment)
                     updateAssessment(assessment)
                     try{
                         updateSelectedCafes(assessment.currentSkillsChallenges)
-
+                        // console.log('LearnerSchedule ln 43 currentSkillChallenges:')
+                        // console.log(assessment.currentSkillsChallenges)
                         const selectedIds = await getSelectedCafeIds(assessment.currentSkillsChallenges.map(entry => entry._id))
+                       
                         if(selectedIds){
+                            // console.log('LearnerSchedule ln 49 selectedIds:')
+                            // console.log(selectedIds)
                             try{
                                 //these are the offered dates, from the 'cafes' table
                                 const cafeDates = await getCafeDates(selectedIds)
                                 if(cafeDates){
-
+                                    // console.log('LearnerSchedule ln 51 cafeDates:')
+                                    // console.log(cafeDates)
                                     updateScheduledDates(cafeDates)
                                 }
                             }catch(e){
@@ -165,5 +171,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'turquoise'
     }
 })
+
 
 export default LearnerSchedule

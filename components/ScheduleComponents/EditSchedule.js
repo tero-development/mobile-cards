@@ -1,4 +1,4 @@
-import {Modal, View, Text, StyleSheet, Pressable} from 'react-native'
+import {Modal, View, Text, StyleSheet, Pressable, ScrollView} from 'react-native'
 import Colors from '../../utils/colors'
 import Title from '../../UI/Title'
 import DeviceFractions from '../../utils/dimensions'
@@ -49,19 +49,20 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
     function compareDayNumber(a, b){
         return parseInt(new Date(a.date).toString().slice(8,10)) -parseInt(new Date(b.date).toString().slice(8,10)) 
     }
-    
     useEffect(()=>{
 
 
         async function checkHBDealCapacity(array){
 
                 array.forEach(async(entry) =>{
-
+                    
                     try{
                         const deal = await getDealByMongoId(entry._id)
                         if(deal){
-                            
-                            const contactCount = deal.results[0].properties.num_associated_contacts
+                            console.log('Edit Schedule ln 63: ')
+                            console.log(deal)
+                            setTimeout(()=>{
+                                const contactCount = deal.results[0].properties.num_associated_contacts
                             if(contactCount < entry.classLimit){
                                 setFilteredDealArray(prev => {
                                     const newArray = [...prev, entry]
@@ -69,6 +70,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                                     return newArray
                                 })
                             }
+                            }, 4000)
                         }
                     } catch(e){
                         alert(e)
@@ -77,25 +79,27 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
             
         }
 
-        if(currentCafeOfferedSet !== undefined && currentCafeOfferedSet.length > 0){
             checkHBDealCapacity(currentCafeOfferedSet)
-        }
-
-    }, [currentCafeOfferedSet])
+            return ()=>{}
+    }, [])
 
 
     useEffect(()=>{
-        setSolidSnapshot(
-            cafeTracker.list.find(entry => {
-                return entry["monthNumber"] === monthNumber
-            })
-        )
 
-        setShallowSnapshot(
-            shallowTracker.list.find(entry => {
-                return entry["monthNumber"] === monthNumber
-            })
-        )
+            setSolidSnapshot(
+                cafeTracker.list.find(entry => {
+                    return entry["monthNumber"] === monthNumber
+                })
+            )
+   
+
+    
+            setShallowSnapshot(
+                shallowTracker.list.find(entry => {
+                    return entry["monthNumber"] === monthNumber
+                })
+            )
+        
 
         return ()=>{}
     },[cafeTracker, shallowTracker])
@@ -118,15 +122,15 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
         setSubmitOption(false)
     }
 
-    console.log('')
-    console.log("EDIT SCHEDULE solid snapshot: ")
-    console.log(solidSnapshot)
-    console.log('')
+    // console.log('')
+    // console.log("EDIT SCHEDULE solid snapshot: ")
+    // console.log(solidSnapshot)
+    // console.log('')
 
-    console.log('')
-    console.log("EDIT SCHEDULE shallow snapshot: ")
-    console.log(shallowSnapshot)
-    console.log('')
+    // console.log('')
+    // console.log("EDIT SCHEDULE shallow snapshot: ")
+    // console.log(shallowSnapshot)
+    // console.log('')
 
     // console.log('toDealId: ')
     // console.log(toDealId)
@@ -374,7 +378,10 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                                     <Text style={styles.topDate}>{year}</Text>
                                 </View>    
                             </View>
-                            <View style={styles.scheduleBody}>
+                            <ScrollView style={styles.scheduleBody}>
+                                <View style={styles.scheduleBodyInnerContainer}>
+
+                                </View>
                                 {
                                     filterDealArray.length < 1? <Loader size='large' color={Colors.accentColor} /> : 
 
@@ -383,8 +390,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                                         const fullMonth = originalDate.toLocaleString('default', {month: 'long'})
                                         const numericDay = originalDate.toLocaleString('default', {day: 'numeric'})
                                         const headlineDate = `${fullMonth}, ${numericDay}`
-                                        const timeDate = originalDate.toLocaleString()
-                                        const time = timeDate.slice(timeDate.length - 11, timeDate.length)
+                                        const time = entry.time
 
 
 
@@ -404,7 +410,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                                     )
                                 }
                                 
-                            </View>
+                            </ScrollView>
                             <View style={styles.scheduleFooter}>
                                 
                                     {
@@ -465,6 +471,9 @@ const styles = StyleSheet.create({
         height: '65%',
         backgroundColor: Colors.highlightColor,
         padding: DeviceFractions.deviceW30,
+    },
+    scheduleBodyInnerContainer:{
+        flex: 1,
         justifyContent: 'center'
     },
     scheduleFooter:{

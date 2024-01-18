@@ -12,6 +12,7 @@ const config = {
 }
 
 export async function getDealByMongoId(cafeDateId){
+ 
     try{
         const response = await axios.get(`${url}/hb/deals/${cafeDateId}`)
         if(response){

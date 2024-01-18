@@ -51,6 +51,8 @@ const SplashScreen = ({navigation}) =>{
     async function submitNavigationHandler(){
         setIsLoading(true)
         const employee = await searchEmployee(email)
+        console.log(`SplashScreen ln 54 employee:`)
+        console.log(employee)
         if(employee === 'not found'){
             setIsLoading(false)
             navigation.navigate("CreateAccount")
@@ -192,3 +194,4 @@ const styles = StyleSheet.create({
 })
 
 export default SplashScreen
+
