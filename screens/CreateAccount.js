@@ -111,8 +111,9 @@ const CreateAccount = ({navigation, route}) =>{
                 }} 
                 label={'Password'} 
                 color={colorHandler(errorType, ['password_invalid', 'password_mismatch'], password)} 
-                style={{marginBottom: DeviceFractions.deviceH50}
-                }/>
+                style={{marginBottom: DeviceFractions.deviceH50}}
+                type="password"
+                />
                 <LabeledInput 
                 textInputConfig={{
                     value: confirmPassword,
@@ -122,8 +123,9 @@ const CreateAccount = ({navigation, route}) =>{
                 }} 
                 label={'Confirm Password'} 
                 color={colorHandler(errorType, [null, 'password_mismatch'], confirmPassword)}
-                style={{marginBottom: DeviceFractions.deviceH50}
-                }/>
+                style={{marginBottom: DeviceFractions.deviceH50}}
+                type="password"
+                />
             <ModularLink
                 textColor={Colors.secondaryColor}
                 textSize={20}

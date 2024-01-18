@@ -45,11 +45,11 @@ export default function App() {
             {/* <Drawer.Screen name="AdminScreen" component={AdminScreen} options={{title: "Home"}}/> */}
             <Drawer.Screen name="ProfileScreenMotion" component={ProfileScreenMotion} options={{title: "Profile"}}/>
             <Drawer.Screen name="LearnerSchedule" component={LearnerSchedule} options={{title: 'My Schedule'}}/>
-            <Drawer.Screen name="CompetencyScreen" component={AssessmentScreen}options={{title: 'Competency Cards'}}/>
+            {/* <Drawer.Screen name="CompetencyScreen" component={AssessmentScreen}options={{title: 'Competency Cards'}}/> */}
             <Drawer.Screen name="QuizScreen" component={QuizScreen} options={{title: 'Knowledge Check'}}/>
-            <Drawer.Screen name="QuizAdminScreen" component={QuizAdminScreen} options={{title: 'Quiz Builder'}}/>
-            <Drawer.Screen name="DateSchedulingScreen" component={DateSchedulingScreen} options={{title: 'Date Scheduling'}}/>
-            <Drawer.Screen name="LinkScreen" component={LinkScreen} options={{title: 'Links'}}/>
+            {/* <Drawer.Screen name="QuizAdminScreen" component={QuizAdminScreen} options={{title: 'Quiz Builder'}}/> */}
+            {/* <Drawer.Screen name="DateSchedulingScreen" component={DateSchedulingScreen} options={{title: 'Date Scheduling'}}/> */}
+            {/* <Drawer.Screen name="LinkScreen" component={LinkScreen} options={{title: 'Links'}}/> */}
         </Drawer.Navigator>
       </DismissKeyboard>
       

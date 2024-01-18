@@ -87,7 +87,9 @@ const ConfirmAccount = ({navigation, route}) =>{
             label={'Password'} 
             color={colorHandler(errorType, ['password_invalid', 'password_mismatch'], password)} 
             style={{marginBottom: DeviceFractions.deviceH50}
-            }/>
+            }
+            type="password"
+        />
             <LabeledInput 
             textInputConfig={{
                 value: credentials.confirmPassword,
@@ -97,8 +99,10 @@ const ConfirmAccount = ({navigation, route}) =>{
             }} 
             label={'Confirm Password'} 
             color={colorHandler(errorType, [null, 'password_mismatch'], confirmPassword)}
-            style={{marginBottom: DeviceFractions.deviceH50}
-            }/>
+            style={{marginBottom: DeviceFractions.deviceH50}}
+            type='password'
+
+            />
             <Text style={styles.returnText}>Email recognized! Create a password to finalize your account and retrieve your previous data</Text>
 
         <ModularLink

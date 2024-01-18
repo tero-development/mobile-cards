@@ -72,7 +72,8 @@ const ResetPassword = ({navigation, route}) =>{
                     onChangeText: (text)=>{updateHandler(text, updatePassword)},
                     autoCorrect: false, 
                     autoCapitalize:'none'
-                }} 
+                }}
+                type="password" 
                 label={'Password'} 
                 color={colorHandler(errorType, ['password_invalid', 'password_mismatch'], password)} 
                 style={{marginBottom: DeviceFractions.deviceH50}
@@ -83,7 +84,8 @@ const ResetPassword = ({navigation, route}) =>{
                     onChangeText: (text)=>{updateHandler(text, updateConfirmPassword)},
                     autoCorrect: false, 
                     autoCapitalize:'none'
-                }} 
+                }}
+                type="password" 
                 label={'Confirm Password'} 
                 color={colorHandler(errorType, [null, 'password_mismatch'], confirmPassword)}
                 style={{marginBottom: DeviceFractions.deviceH50}
