@@ -41,11 +41,8 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
         setExpanded(prev => !prev)
     }
 
-    const separatedStr = wordSplitter(targetSkill) 
-
 
     const currentListTarget = cafeTracker.list.find(entry => entry.monthNumber === monthNumber)
-
 
     let rightSidePrompt = ''
     
@@ -63,14 +60,9 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
     return(
         <View style={styles.container}>
             <Pressable onPress={expandHandler} style={[styles.nodeTop, expanded && styles.nodeTopExpanded]}>
+                <View style={styles.nodeTopInnerContainer}>
                 <View style={styles.topTitleContainer}>
-                    {
-                        separatedStr.map(word =>{
-                            return(
-                                <Text style={styles.topTitle} key={separatedStr[separatedStr.indexOf(word)]}>{word}</Text>
-                            )
-                        })
-                    }                
+                    <Text style={styles.topTitle}>{targetSkill}</Text>
                 </View>
                 <View style={styles.topDetailContainer}>
                     <Text style={styles.topDate}>{monthName}</Text>
@@ -79,7 +71,11 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
                         {rightSidePrompt}
                     </Text>
                     <Ionicons name={expanded? 'chevron-up' : 'chevron-down'} size={35} color={'white'}/>
+                </View>            
                 </View>
+
+                <Text style={{color: Colors.highlightColor}}></Text>
+
             </Pressable>
             <View style={expanded? styles.nodeBottomExpanded : styles.nodeBottom}>
                 <ScheduleNodeOption 
@@ -142,34 +138,40 @@ const styles = StyleSheet.create({
     },
     nodeTop:{
         backgroundColor: Colors.accentColor400,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
         borderRadius: 20,
-        paddingHorizontal: 24,
+        paddingHorizontal: DeviceFractions.deviceH40,
+        paddingVertical: DeviceFractions.deviceH50,
         borderBottomRightRadius: 20,
         borderBottomLeftRadius: 20,
         height: DeviceFractions.deviceHeight / 7
     },
     nodeTopExpanded:{
         backgroundColor: Colors.accentColor400,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        // flexDirection: 'row',
+        // justifyContent: 'space-between',
         borderRadius: 20,
-        paddingHorizontal: 24,
+        paddingHorizontal: DeviceFractions.deviceH40,
+        paddingVertical: DeviceFractions.deviceH50,
         borderBottomLeftRadius: 0, 
         borderBottomRightRadius: 0,
         height: DeviceFractions.deviceHeight / 7
     },
+    nodeTopInnerContainer:{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        flex:1
+    },
     topTitleContainer:{
-        paddingVertical: DeviceFractions.deviceH40 
+        flexShrink: 1,
+        flex: 0.9,
     },
     topTitle:{
         color: 'white',
-        fontSize: 22,
+        fontSize: DeviceFractions.deviceHeight / 45,
         fontWeight: 'bold',
+        flexWrap: 'wrap'
     },
     topDetailContainer:{
-        paddingVertical: DeviceFractions.deviceH40 ,
         justifyContent: 'space-evenly',
         alignItems: 'flex-end'
     },

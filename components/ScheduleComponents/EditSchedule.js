@@ -371,14 +371,15 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
         </View>
                         <View style={styles.scheduleContainer}>
                             <View style={styles.scheduleHeader}>
-                                <View>
-                                    {
+                                <View style={styles.topTitleContainer}>
+                                    <Text style={styles.topTitle}>{targetSkill}</Text>
+                                    {/* {
                                         separatedTitle.map(title =>{
                                             return(
                                                 <Text style={styles.topTitle} key={separatedTitle[separatedTitle.indexOf(title)]}>{title}</Text>
                                             )
                                         })
-                                    }   
+                                    }    */}
                                 </View>
                                 <View>
                                     {/* {
@@ -462,12 +463,16 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center'
     },
+    topTitleContainer:{
+        flexShrink: 1,
+        flex: 0.9,
+    },
     topTitle:{
         color: 'white',
-        fontSize: DeviceFractions.deviceHeight / 54,
-        fontWeight: 'bold'
+        fontSize: DeviceFractions.deviceHeight / 45,
+        fontWeight: 'bold',
+        flexWrap: 'wrap'
     },
-    
     topDate:{
         fontSize: DeviceFractions.deviceHeight / 50,
         color: 'white',
