@@ -46,6 +46,7 @@ const HomeScreen = ({navigation}) =>{
         let tempEmail = credentials.email
 
         async function retrieveEmployee(){
+            console.log('home first useEffect re-rendered')
             try{
                 const employee = await searchEmployee(tempEmail)
                 if(employee){

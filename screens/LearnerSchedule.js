@@ -92,7 +92,7 @@ const LearnerSchedule = ({navigation, route}) =>{
         updateEditScheduleVariablesClear()
         setModalIsVisble(false)
     }
-    
+
 
     return(
         <LinearGradient style={styles.rootScreen} colors={[Colors.highlightColor, Colors.primaryColor]}>
@@ -120,6 +120,7 @@ const LearnerSchedule = ({navigation, route}) =>{
 
                                 return <ScheduleNode 
                                 key={entry._id}
+                                groupTargetId={entry._id}
                                 currentIndex={currentIndex}
                                 targetSkill={entry.title} 
                                 companyCafeDesignation={'ExSellerator'} 

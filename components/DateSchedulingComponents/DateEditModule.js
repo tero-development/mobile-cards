@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, Pressable} from 'react-native'
+import {View, Text, StyleSheet, ScrollView} from 'react-native'
 import { useState, useEffect } from 'react'
 import Colors from '../../utils/colors'
 import DeviceFractions from '../../utils/dimensions'
@@ -143,9 +143,11 @@ const footerVariables = {
             <View style={styles.scheduleHeader}>
                 <Text style={styles.topTitle}>{targetCafe.title}</Text>
             </View>
-            <View style={styles.scheduleBody}>
-                <DateEntryList />
-            </View>
+            <ScrollView style={styles.scheduleBody}>
+                <View style={styles.scheduleBodyInnerContainer}>
+                    <DateEntryList />
+                </View>
+            </ScrollView>
             <View style={styles.scheduleFooter}>
                 {footerContent}
             </View>
@@ -194,8 +196,12 @@ const styles = StyleSheet.create({
         // height: '60%',
         height: '65%',
         backgroundColor: Colors.highlightColor,
-        padding: DeviceFractions.deviceW30,
-        justifyContent: 'center'
+        padding: DeviceFractions.deviceW20,
+    },
+    scheduleBodyInnerContainer:{
+        flex: 1,
+        justifyContent: 'center',
+        marginBottom: DeviceFractions.deviceH30
     },
     scheduleFooter:{
         height: '28%',

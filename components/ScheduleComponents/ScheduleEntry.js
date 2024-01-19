@@ -14,7 +14,7 @@ const ScheduleEntry = (props) =>{
         id, 
         cafeTracker, 
     } = props
-    const {updateCafeTracker, updateShallowTracker} = useContext(CafeContext)
+    const {updateCafeTracker} = useContext(CafeContext)
 
     function determineSelected(){
         let value = false

@@ -23,6 +23,20 @@ export async function getDealByMongoId(cafeDateId){
     }
 }
 
+
+
+export async function getDealGroup(cafeGroupId){
+ 
+    try{
+        const response = await axios.get(`${url}/hb/deals/group/${cafeGroupId}`)
+        if(response){
+            return response.data
+        }
+    }catch(e){
+        return e
+    }
+}
+
 //use the getContact method from HBcontacts rather than this to get the individual employee's contact Id
 export async function getDealAssociations(dealId){
     try{

@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react'
+import { useState, useContext} from 'react'
 import {View, Text, StyleSheet, Pressable} from 'react-native'
 import Colors from '../../utils/colors'
 import DeviceFractions from '../../utils/dimensions'
@@ -7,10 +7,9 @@ import ScheduleNodeOption from './ScheduleNodeOption'
 import { wordSplitter } from '../../utils/helperFunctions'
 import { CafeContext } from '../../store/cafe-context'
 
-const ScheduleNode = ({ targetSkill,   companyCafeDesignation,  openModalHandler, currentIndex}) =>{
+const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  openModalHandler, currentIndex}) =>{
     const [expanded, setExpanded] = useState(false)
     const {cafeDetails} = useContext(CafeContext)
-
     const {scheduledDates, cafeTracker} = cafeDetails
 
 
@@ -28,15 +27,15 @@ const ScheduleNode = ({ targetSkill,   companyCafeDesignation,  openModalHandler
             clinicMonthName: scheduledDates[currentIndex][0].clinicMonthName,
             year: date.getFullYear(),
             currentCafeOfferedSet : scheduledDates[currentIndex],
-            targetSkill: targetSkill
+            targetSkill: targetSkill,
+            groupTargetId: groupTargetId
         }
         
-      
+        
     }
 
 
-    const {monthName, monthNumber, clinicMonthName} = variableGroup
-    
+    const {monthName, monthNumber, clinicMonthName, currentCafeOfferedSet} = variableGroup
 
     const expandHandler = () =>{
         setExpanded(prev => !prev)
@@ -76,7 +75,7 @@ const ScheduleNode = ({ targetSkill,   companyCafeDesignation,  openModalHandler
                 <View style={styles.topDetailContainer}>
                     <Text style={styles.topDate}>{monthName}</Text>
                     {/* <Text style={styles.topCafeType}>{companyCafeDesignation}</Text> */}
-                    <Text style={styles.topCafeType}>
+                    <Text style={[styles.topCafeType, rightSidePrompt === 'Not Scheduled'&& {color: Colors.errorColor, fontWeight:'bold'}]}>
                         {rightSidePrompt}
                     </Text>
                     <Ionicons name={expanded? 'chevron-up' : 'chevron-down'} size={35} color={'white'}/>
@@ -115,6 +114,7 @@ const ScheduleNode = ({ targetSkill,   companyCafeDesignation,  openModalHandler
                     textColor={Colors.highlightColor}
                     variableGroup={variableGroup}
                     openModalHandler={openModalHandler}
+                    groupTargetId={groupTargetId}
                     />
                 {/* <View style={styles.captionContainer}>
                     {
@@ -138,7 +138,7 @@ const ScheduleNode = ({ targetSkill,   companyCafeDesignation,  openModalHandler
 const styles = StyleSheet.create({
     container:{
         width: DeviceFractions.deviceWidth / 10 * 7.5,
-        marginBottom: DeviceFractions.deviceWidth / 60,
+        marginBottom: DeviceFractions.deviceH40,
     },
     nodeTop:{
         backgroundColor: Colors.accentColor400,

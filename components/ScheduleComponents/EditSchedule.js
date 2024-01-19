@@ -11,7 +11,7 @@ import { useState, useEffect, useContext } from 'react'
 import { CafeContext } from '../../store/cafe-context'
 import { SeasonContext } from '../../store/season-context'
 import { updateTracker } from '../../httpServices/cafes'
-import { getDealByMongoId, insertContactToDeal, deleteContactFromDeal } from '../../httpServices/HBDeals'
+import { getDealByMongoId, getDealGroup, insertContactToDeal, deleteContactFromDeal } from '../../httpServices/HBDeals'
 import { HubspotContext } from '../../store/hubspot-context'
 import ClickBox from '../ClickBox'
 import { SignInContext } from '../../store/signin-context'
@@ -34,54 +34,68 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
     const [shallowSnapshot, setShallowSnapshot] = useState({})
     const [submitOption, setSubmitOption] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
-    const [filterDealArray, setFilteredDealArray] = useState([])
+    const [filteredDealArray, setFilteredDealArray] = useState([])
     const {hubspotDetails, updateToDealId, updateFromDealId, toDealId, fromDealId,} = useContext(HubspotContext)
     const {cafeTracker, shallowTracker, scheduleCafes, editScheduleVariables} = cafeDetails
     const {employeeId} = credentials
     const seasonId = season._id
 
-    const{targetSkill, monthName, monthNumber, year, currentCafeOfferedSet} = editScheduleVariables
+    const{
+        targetSkill, 
+        monthName, 
+        monthNumber, 
+        year, 
+        currentCafeOfferedSet,
+        groupTargetId
+    } = editScheduleVariables
 
     const separatedTitle = wordSplitter(targetSkill) 
 
     const{contactId} = hubspotDetails
 
+
     function compareDayNumber(a, b){
         return parseInt(new Date(a.date).toString().slice(8,10)) -parseInt(new Date(b.date).toString().slice(8,10)) 
     }
-    useEffect(()=>{
 
+    
+        useEffect(()=>{
+            async function checkHBDealCapacity(){
+        
+                try{
+                    const groupedDeals = await getDealGroup(groupTargetId)
+                    if(groupedDeals){
 
-        async function checkHBDealCapacity(array){
+                        for(let i = 0; i < currentCafeOfferedSet.length; i++){
+                            const contactCount = groupedDeals.results[i].properties.num_associated_contacts
 
-                array.forEach(async(entry) =>{
-                    
-                    try{
-                        const deal = await getDealByMongoId(entry._id)
-                        if(deal){
-                            console.log('Edit Schedule ln 63: ')
-                            console.log(deal)
-                            setTimeout(()=>{
-                                const contactCount = deal.results[0].properties.num_associated_contacts
-                            if(contactCount < entry.classLimit){
+                            if(contactCount < currentCafeOfferedSet[i].classLimit){
+ 
                                 setFilteredDealArray(prev => {
-                                    const newArray = [...prev, entry]
+                                    const newArray = [...prev, currentCafeOfferedSet[i]]
                                     newArray.sort(compareDayNumber)
+    
                                     return newArray
                                 })
                             }
-                            }, 4000)
+        
+                        }
+        
                         }
                     } catch(e){
                         alert(e)
                     }
-                })
-            
-        }
+                }
 
-            checkHBDealCapacity(currentCafeOfferedSet)
-            return ()=>{}
-    }, [])
+             
+                    checkHBDealCapacity(groupTargetId)
+                
+                return ()=>{}
+                
+                
+        },[currentCafeOfferedSet])
+
+
 
 
     useEffect(()=>{
@@ -380,12 +394,10 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                             </View>
                             <ScrollView style={styles.scheduleBody}>
                                 <View style={styles.scheduleBodyInnerContainer}>
-
-                                </View>
                                 {
-                                    filterDealArray.length < 1? <Loader size='large' color={Colors.accentColor} /> : 
+                                    filteredDealArray.length < 1? <Loader size='large' color={Colors.accentColor} /> : 
 
-                                    filterDealArray.map(entry =>{
+                                    filteredDealArray.map(entry =>{
                                         const originalDate = new Date(entry.date) 
                                         const fullMonth = originalDate.toLocaleString('default', {month: 'long'})
                                         const numericDay = originalDate.toLocaleString('default', {day: 'numeric'})
@@ -409,6 +421,8 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                                     } 
                                     )
                                 }
+                                </View>
+                                
                                 
                             </ScrollView>
                             <View style={styles.scheduleFooter}>
@@ -470,11 +484,12 @@ const styles = StyleSheet.create({
         // height: '60%',
         height: '65%',
         backgroundColor: Colors.highlightColor,
-        padding: DeviceFractions.deviceW30,
+        padding: DeviceFractions.deviceW20,
     },
     scheduleBodyInnerContainer:{
         flex: 1,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        marginBottom: DeviceFractions.deviceH30
     },
     scheduleFooter:{
         height: '28%',

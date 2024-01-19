@@ -1,5 +1,5 @@
 import {StyleSheet, View, ImageBackground, Image, Text, KeyboardAvoidingView} from 'react-native'
-import { useState, useContext, useEffect } from 'react'
+import { useState, useContext} from 'react'
 import { SignInContext } from '../store/signin-context'
 import { LinearGradient } from 'expo-linear-gradient'
 import Colors from '../utils/colors'
@@ -51,8 +51,7 @@ const SplashScreen = ({navigation}) =>{
     async function submitNavigationHandler(){
         setIsLoading(true)
         const employee = await searchEmployee(email)
-        console.log(`SplashScreen ln 54 employee:`)
-        console.log(employee)
+  
         if(employee === 'not found'){
             setIsLoading(false)
             navigation.navigate("CreateAccount")
