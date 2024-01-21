@@ -1,7 +1,5 @@
 import axios from "axios";
-
-const url = 'http://10.0.2.2:4002'
-
+import { url } from "../utils/urlReferences";
 
 export async function sendCredentials(credentials){
     try{

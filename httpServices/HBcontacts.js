@@ -1,6 +1,5 @@
 import axios from 'axios'
-
-const url = 'http://10.0.2.2:4002'
+import { url } from '../utils/urlReferences'
 
 //use this to get the contact ID for contact swaps (rather than the get associations in HB Deals)
 export async function getContact(email){

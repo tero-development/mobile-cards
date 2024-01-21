@@ -1,11 +1,12 @@
 import axios from "axios";
 import {HB_T} from '@env';
-
-const url = 'http://10.0.2.2:4002'
+import { url } from "../utils/urlReferences";
 
 const hubspotApi = 'https://api.hubapi.com'
 
 const dealToContactId = '3'
+
+const associationTypeId = '4'
 
 const config = {
     headers: {Authorization: `Bearer ${HB_T}`}
@@ -55,7 +56,7 @@ export async function insertContactToDeal(dealId, contactId){
         const response = await axios.put(`${hubspotApi}/crm/v4/objects/contact/${contactId}/associations/deal/${dealId}`, [
             {
                     "associationCategory": "USER_DEFINED",
-                    "associationTypeId": 4
+                    "associationTypeId": associationTypeId
                 }
         ], config)
         if(response){
