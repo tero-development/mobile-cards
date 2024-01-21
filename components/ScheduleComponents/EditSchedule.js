@@ -156,10 +156,11 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
         setSubmitOption(false)
     }
 
-    console.log('')
-    console.log("EDIT SCHEDULE solid snapshot: ")
-    console.log(solidSnapshot)
-    console.log('')
+
+    // console.log('')
+    // console.log("EDIT SCHEDULE solid snapshot: ")
+    // console.log(solidSnapshot)
+    // console.log('')
 
     // console.log('')
     // console.log("EDIT SCHEDULE shallow snapshot: ")
@@ -194,12 +195,28 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
 
                     const [trackerReply, error3] = await simplePromise(updateTracker, {list: cafeTracker.list, employeeId: employeeId, seasonId: seasonId})
                         if(trackerReply){
-                            setFilteredDateArray([])
-                            updateShallowTrackerAll(cafeTracker)
-                            setSolidSnapshot({})    
-                            setShallowSnapshot({})
-                            setIsLoading(false)
-                            closeModalHandler()
+
+                            const [emailReply, error4] = await simplePromise(sendZoomEmail, {
+                                email: email, 
+                                firstName: firstName, 
+                                cafeTitle: targetSkill,
+                                date: solidSnapshot.date,
+                                time: solidSnapshot.time,
+                                zoomLink: solidSnapshot.zoomLink,
+                                clinicLink: solidSnapshot.clinicLink
+                            })
+                            if(emailReply){
+                                setFilteredDateArray([])
+                                updateShallowTrackerAll(cafeTracker)
+                                setSolidSnapshot({})    
+                                setShallowSnapshot({})
+                                setIsLoading(false)
+                                closeModalHandler()
+                            }
+                            if(error4){
+                                alert(error4)
+                                return
+                            }
                         } 
                         if(error3){
                             alert(error3)
@@ -226,13 +243,26 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                 const [trackerReply, error2] = await simplePromise(updateTracker, {list: cafeTracker.list, employeeId: employeeId, seasonId: seasonId})
                     if(trackerReply){
 
-                        // const [zoomEmailReply, error3] = await sendZoomEmail(email, firstName, targetSkill, )
-                        setFilteredDateArray([])
-                        updateShallowTrackerAll(cafeTracker)
-                        setSolidSnapshot({})    
-                        setShallowSnapshot({})
-                        setIsLoading(false)
-                        closeModalHandler()
+                        const [zoomEmailReply, error4] = await simplePromise(sendZoomEmail, { 
+                            email: email, 
+                            firstName: firstName, 
+                            cafeTitle: targetSkill,
+                            date: solidSnapshot.date,
+                            time: solidSnapshot.time,
+                            zoomLink: solidSnapshot.zoomLink,
+                            clinicLink: solidSnapshot.clinicLink})
+                        if(zoomEmailReply){
+                            setFilteredDateArray([])
+                            updateShallowTrackerAll(cafeTracker)
+                            setSolidSnapshot({})    
+                            setShallowSnapshot({})
+                            setIsLoading(false)
+                            closeModalHandler()
+                        }
+                        if(error4){
+                            alert(error4)
+                            return
+                        }
                     } 
                     if(error2){
                         alert(error2)
@@ -357,7 +387,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
 
                                     filteredDatArray.map(entry =>{
                                         const originalDate = new Date(entry.date)
-                                        const date = new Date("2024-03-08T01:00:00.000+00:00").toLocaleString('default', {dateStyle: 'long'}) 
+                                        const date = new Date(entry.date).toDateString() 
                                         const fullMonth = originalDate.toLocaleString('default', {month: 'long'})
                                         const numericDay = originalDate.toLocaleString('default', {day: 'numeric'})
                                         const headlineDate = `${fullMonth}, ${numericDay}`
