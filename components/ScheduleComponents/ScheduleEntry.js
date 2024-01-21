@@ -8,10 +8,13 @@ import _ from 'lodash'
 
 const ScheduleEntry = (props) =>{
     const {
+        headlineDate,
         date, 
         time, 
         monthNumber, 
         id, 
+        zoomLink,
+        clinicLink,
         cafeTracker, 
     } = props
     const {updateCafeTracker} = useContext(CafeContext)
@@ -36,9 +39,17 @@ const ScheduleEntry = (props) =>{
 
     
     return(
-        <Pressable style={styles.container} onPress={()=>updateCafeTracker(monthNumber, id, date)}>
+        <Pressable style={styles.container} onPress={()=>updateCafeTracker(
+            headlineDate,
+            date, 
+            time, 
+            monthNumber, 
+            id, 
+            zoomLink,
+            clinicLink 
+        )}>
             <View>
-                <Text style={styles.dateText}>{date}</Text>
+                <Text style={styles.dateText}>{headlineDate}</Text>
                 <Text style={styles.timeText}>{time}</Text>
             </View>
             <View style={[styles.clickBox, 

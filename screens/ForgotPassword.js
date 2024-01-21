@@ -12,7 +12,7 @@ import DeviceFractions from '../utils/dimensions'
 import { updateCredentials, clearErrorHandler, colorHandler, errorFormatHandler } from '../utils/inputErrorDetection'
 import ErrorOverlay from '../UI/ErrorOverlay'
 import ForgotOverlay from '../UI/ForgotOverlay'
-import { sendResetEmail } from '../httpServices/mail'
+import { sendResetEmail } from '../httpServices/email'
 import Loader from '../UI/Loader'
 
 const ForgotPassword = ({navigation, route}) =>{

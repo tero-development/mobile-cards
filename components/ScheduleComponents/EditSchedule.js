@@ -11,11 +11,12 @@ import { useState, useEffect, useContext } from 'react'
 import { CafeContext } from '../../store/cafe-context'
 import { SeasonContext } from '../../store/season-context'
 import { updateTracker, updateRoster, getCafeDatesGroupedBySkill} from '../../httpServices/cafes'
-import { getDealByMongoId, getDealGroup, insertContactToDeal, deleteContactFromDeal } from '../../httpServices/HBDeals'
+import {sendZoomEmail} from '../../httpServices/email'
+// import { getDealByMongoId, getDealGroup, insertContactToDeal, deleteContactFromDeal } from '../../httpServices/HBDeals'
 import { HubspotContext } from '../../store/hubspot-context'
 import ClickBox from '../ClickBox'
 import { SignInContext } from '../../store/signin-context'
-import _, { filter } from 'lodash'
+import _, { filter, first } from 'lodash'
 
 
 const EditSchedule = ({visible, closeModalHandler}) =>{
@@ -26,7 +27,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
         updateCafeTracker, 
         updateCafeTrackerAll, 
         updateShallowTrackerAll,
-        updateEditScheduleVariables
+        // updateEditScheduleVariables
     } = useContext(CafeContext)
     const {season} = useContext(SeasonContext)
     const {credentials} = useContext(SignInContext)
@@ -34,10 +35,10 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
     const [shallowSnapshot, setShallowSnapshot] = useState({})
     const [submitOption, setSubmitOption] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
-    const [filteredDealArray, setFilteredDealArray] = useState([])
-    const {hubspotDetails, updateToDealId, updateFromDealId, toDealId, fromDealId,} = useContext(HubspotContext)
+    const [filteredDatArray, setFilteredDateArray] = useState([])
+    // const {hubspotDetails, updateToDealId, updateFromDealId, toDealId, fromDealId,} = useContext(HubspotContext)
     const {cafeTracker, shallowTracker, scheduleCafes, editScheduleVariables} = cafeDetails
-    const {employeeId} = credentials
+    const {employeeId, email, firstName} = credentials
     const seasonId = season._id
 
     const{
@@ -85,7 +86,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
         
                                 if(rosterCount < classLimit){
         
-                                    setFilteredDealArray(prev => {
+                                    setFilteredDateArray(prev => {
                                         const newArray = [...prev, groupedList[i]]
                                         newArray.sort(compareDayNumber)
             
@@ -94,7 +95,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                                 }
                             } else {
                                 // console.log('the roster is undefined')
-                                setFilteredDealArray(prev => {
+                                setFilteredDateArray(prev => {
                                     const newArray = [...prev, groupedList[i]]
                                     newArray.sort(compareDayNumber)
         
@@ -155,10 +156,10 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
         setSubmitOption(false)
     }
 
-    // console.log('')
-    // console.log("EDIT SCHEDULE solid snapshot: ")
-    // console.log(solidSnapshot)
-    // console.log('')
+    console.log('')
+    console.log("EDIT SCHEDULE solid snapshot: ")
+    console.log(solidSnapshot)
+    console.log('')
 
     // console.log('')
     // console.log("EDIT SCHEDULE shallow snapshot: ")
@@ -187,15 +188,13 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
 
             const [rosterAddReply, error1] = await simplePromise(updateRoster, {employeeId: employeeId, cafeDateId: solidSnapshot.id, type:'add'})
             if(rosterAddReply){
-                console.log('subsequent roster add reply: ')
-                console.log(rosterAddReply)
+     
                 const [rosterRemoveReply, error2] = await simplePromise(updateRoster, {employeeId: employeeId, cafeDateId: shallowSnapshot.id, type:'remove'})
                 if(rosterRemoveReply){
-                    console.log('subsequent roster remove reply: ')
-                    console.log(rosterRemoveReply)
+
                     const [trackerReply, error3] = await simplePromise(updateTracker, {list: cafeTracker.list, employeeId: employeeId, seasonId: seasonId})
                         if(trackerReply){
-                            setFilteredDealArray([])
+                            setFilteredDateArray([])
                             updateShallowTrackerAll(cafeTracker)
                             setSolidSnapshot({})    
                             setShallowSnapshot({})
@@ -223,11 +222,12 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
 
             const [rosterAddReply, error1] = await simplePromise(updateRoster, {employeeId: employeeId, cafeDateId: solidSnapshot.id, type:'add'})
             if(rosterAddReply){
-                console.log('first time roster add reply: ')
-                console.log(rosterAddReply)
+
                 const [trackerReply, error2] = await simplePromise(updateTracker, {list: cafeTracker.list, employeeId: employeeId, seasonId: seasonId})
                     if(trackerReply){
-                        setFilteredDealArray([])
+
+                        // const [zoomEmailReply, error3] = await sendZoomEmail(email, firstName, targetSkill, )
+                        setFilteredDateArray([])
                         updateShallowTrackerAll(cafeTracker)
                         setSolidSnapshot({})    
                         setShallowSnapshot({})
@@ -258,7 +258,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
     }
 
     function standardClose(){
-        setFilteredDealArray([])
+        setFilteredDateArray([])
         setSolidSnapshot({})
         setShallowSnapshot({})
         closeModalHandler()
@@ -353,16 +353,17 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                             <ScrollView style={styles.scheduleBody}>
                                 <View style={styles.scheduleBodyInnerContainer}>
                                 {
-                                    filteredDealArray.length < 1? <Loader size='large' color={Colors.accentColor} /> : 
+                                    filteredDatArray.length < 1? <Loader size='large' color={Colors.accentColor} /> : 
 
-                                    filteredDealArray.map(entry =>{
-                                        const originalDate = new Date(entry.date) 
+                                    filteredDatArray.map(entry =>{
+                                        const originalDate = new Date(entry.date)
+                                        const date = new Date("2024-03-08T01:00:00.000+00:00").toLocaleString('default', {dateStyle: 'long'}) 
                                         const fullMonth = originalDate.toLocaleString('default', {month: 'long'})
                                         const numericDay = originalDate.toLocaleString('default', {day: 'numeric'})
                                         const headlineDate = `${fullMonth}, ${numericDay}`
                                         const time = entry.time
-
-
+                                        const zoomLink = entry.zoom_link
+                                        const clinicLink = entry.clinic_link
 
                                         return(
                                             <ScheduleEntry 
@@ -370,8 +371,11 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                                                 id={entry._id} 
                                                 monthNumber={currentCafeOfferedSet[0].monthNumber} 
                                                 monthName={entry.monthName} 
-                                                date={headlineDate} 
+                                                headlineDate={headlineDate}
+                                                date = {date} 
                                                 time={time}
+                                                zoomLink={zoomLink}
+                                                clinicLink={clinicLink}
                                                 cafeTracker={cafeTracker}
                                                 onPress={updateCafeTracker}
                                                 />

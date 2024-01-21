@@ -48,7 +48,7 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
     
     if(cafeTracker.list.length > 0 && currentListTarget !== undefined){
         if(currentListTarget.id !== ""){
-            rightSidePrompt = currentListTarget.date 
+            rightSidePrompt = currentListTarget.headlineDate 
         } else{
             rightSidePrompt = 'Not Scheduled'
         }
