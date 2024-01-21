@@ -70,3 +70,30 @@ export async function updateTracker(obj){
         return e
     }
 }
+
+//takes the strings 'add' or 'remove' as the type argument
+export async function updateRoster({employeeId, cafeDateId, type}){
+    try{
+        const response = await axios.put(`${url}/cafes/updatedateroster`, {
+            employeeId: employeeId, 
+            cafeDateId: cafeDateId, 
+            type: type}
+        )
+        if(response){
+            return response.data
+        }
+    }catch(e){
+        return e
+    }
+}
+
+export async function getCafeDatesGroupedBySkill(paretnId){
+    try{
+        const response = await axios.get(`${url}/cafes/groupedbyskill/${paretnId}`)
+        if(response){
+            return response.data
+        }
+    }catch(e){
+        return e
+    }
+}

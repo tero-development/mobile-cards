@@ -10,7 +10,7 @@ import ModularButton from '../ModularButton'
 import { useState, useEffect, useContext } from 'react'
 import { CafeContext } from '../../store/cafe-context'
 import { SeasonContext } from '../../store/season-context'
-import { updateTracker } from '../../httpServices/cafes'
+import { updateTracker, updateRoster, getCafeDatesGroupedBySkill} from '../../httpServices/cafes'
 import { getDealByMongoId, getDealGroup, insertContactToDeal, deleteContactFromDeal } from '../../httpServices/HBDeals'
 import { HubspotContext } from '../../store/hubspot-context'
 import ClickBox from '../ClickBox'
@@ -49,54 +49,73 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
         groupTargetId
     } = editScheduleVariables
 
-    const separatedTitle = wordSplitter(targetSkill) 
 
-    const{contactId} = hubspotDetails
-
+    // const{contactId} = hubspotDetails
 
     function compareDayNumber(a, b){
         return parseInt(new Date(a.date).toString().slice(8,10)) -parseInt(new Date(b.date).toString().slice(8,10)) 
     }
 
-    
-        useEffect(()=>{
-            async function checkHBDealCapacity(){
-        
+    useEffect(()=>{
+        async function checkCafeCapacity(groupTargetId){
+                let groupedList
                 try{
-                    const groupedDeals = await getDealGroup(groupTargetId)
-                    if(groupedDeals){
+                    const response = await getCafeDatesGroupedBySkill(groupTargetId)
+                    if(response){
+                        groupedList = response
 
-                        for(let i = 0; i < currentCafeOfferedSet.length; i++){
-                            const contactCount = groupedDeals.results[i].properties.num_associated_contacts
-
-                            if(contactCount < currentCafeOfferedSet[i].classLimit){
- 
+                        for(let i = 0; i < groupedList.length; i++){
+                            const cafeDate = groupedList[i]
+                            // console.log('current cafe date')
+                            // console.log(cafeDate)
+                            // console.log('')
+                            const classLimit = cafeDate.classLimit
+                            // console.log('class limit: ')
+                            // console.log(classLimit)
+                            // console.log('')
+                            let roster
+                            let rosterCount
+                            // console.log('cafe date roster:')
+                            // console.log(cafeDate.roster)
+                            // console.log('')
+                            if(cafeDate.roster !== undefined){
+                                // console.log('the roster is NOT undefined')
+                                roster = cafeDate.roster
+                                rosterCount = roster.length
+        
+                                if(rosterCount < classLimit){
+        
+                                    setFilteredDealArray(prev => {
+                                        const newArray = [...prev, groupedList[i]]
+                                        newArray.sort(compareDayNumber)
+            
+                                        return newArray
+                                    })
+                                }
+                            } else {
+                                // console.log('the roster is undefined')
                                 setFilteredDealArray(prev => {
-                                    const newArray = [...prev, currentCafeOfferedSet[i]]
+                                    const newArray = [...prev, groupedList[i]]
                                     newArray.sort(compareDayNumber)
-    
+        
                                     return newArray
                                 })
                             }
-        
                         }
         
-                        }
-                    } catch(e){
-                        alert(e)
                     }
-                }
+                }catch(e){
+                    alert(e)
+                } 
+            
+        }
 
-             
-                    checkHBDealCapacity(groupTargetId)
-                
-                return ()=>{}
-                
-                
-        },[currentCafeOfferedSet])
-
-
-
+        checkCafeCapacity(groupTargetId)
+        
+        return ()=>{}
+        
+        
+    },[currentCafeOfferedSet])
 
     useEffect(()=>{
 
@@ -166,95 +185,47 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
         if(shallowSnapshot !== undefined){
             setIsLoading(true)
 
-            //you might want to stagger the ifs (example: if(newDeal){const [oldDeal, error2] = await simplePromise...etc.})
-            //it works without, but maybe this format would make the HubspotConext methods and state variales work 
-            //such as updateToDealId actually updating toDealId fast enought that it can be used in the 
-            //next simplePromise etc.
-
-            const [newDeal, error1] = await simplePromise(getDealByMongoId, solidSnapshot.id)
-            if(newDeal){
-
-                const [oldDeal, error2] = await simplePromise(getDealByMongoId, shallowSnapshot.id)
-                if(oldDeal){
-
-                    const [insertReply, error3] = await simplePromise(insertContactToDeal, newDeal.results[0].id, contactId)
-                    if(insertReply.fromObjectId === undefined){
-                        alert('Unable to complete date exchange, please try again later')
-                        setIsLoading(false)
-                        return
-                    } 
-                    if(insertReply){
-
-
-                        const [deleteReply, error4] = await simplePromise(deleteContactFromDeal, oldDeal.results[0].id, contactId)
-                        if(deleteReply.status !== 204){
-                            alert('Unable to complete date exchange, please try again later')
+            const [rosterAddReply, error1] = await simplePromise(updateRoster, {employeeId: employeeId, cafeDateId: solidSnapshot.id, type:'add'})
+            if(rosterAddReply){
+                console.log('subsequent roster add reply: ')
+                console.log(rosterAddReply)
+                const [rosterRemoveReply, error2] = await simplePromise(updateRoster, {employeeId: employeeId, cafeDateId: shallowSnapshot.id, type:'remove'})
+                if(rosterRemoveReply){
+                    console.log('subsequent roster remove reply: ')
+                    console.log(rosterRemoveReply)
+                    const [trackerReply, error3] = await simplePromise(updateTracker, {list: cafeTracker.list, employeeId: employeeId, seasonId: seasonId})
+                        if(trackerReply){
+                            setFilteredDealArray([])
+                            updateShallowTrackerAll(cafeTracker)
+                            setSolidSnapshot({})    
+                            setShallowSnapshot({})
                             setIsLoading(false)
+                            closeModalHandler()
+                        } 
+                        if(error3){
+                            alert(error3)
                             return
                         }
-                        if(deleteReply){
-
-                            const [trackerReply, error5] = await simplePromise(updateTracker, {list: cafeTracker.list, employeeId: employeeId, seasonId: seasonId})
-                            if(trackerReply){
-                                setFilteredDealArray([])
-                                updateShallowTrackerAll(cafeTracker)
-                                setSolidSnapshot({})    
-                                setShallowSnapshot({})
-                                setIsLoading(false)
-                                closeModalHandler()
-                            } 
-                            if(error5){
-                                alert(error5)
-                                return
-                            }
-                        }  
-                        if(error4){
-                            alert(error4)
-                            setIsLoading(false)
-                            return
-                        }
-                    } 
-                    if(error3){
-                        alert(error3)
-                        setIsLoading(false)
+                    } if(error2){
+                        alert(error2)
                         return
                     }
-                } 
-                if(error2){
-                    alert(error2)
-                    setIsLoading(false)
+                } if(error1){
+                    alert(error1)
                     return
                 }
-            }  
             
-            if(error1){
-                alert(e)
-                setIsLoading(false)
-                return
-            }
-
+                       
             
         } 
         else{
             setIsLoading(true)
 
-            //you might want to stagger the ifs (example: if(newDeal){const [oldDeal, error2] = await simplePromise...etc.})
-            //it works without, but maybe this format would make the HubspotConext methods and state variales work 
-            //such as updateToDealId actually updating toDealId fast enought that it can be used in the 
-            //next simplePromise etc.
-
-            const [newDeal, error1] = await simplePromise(getDealByMongoId, solidSnapshot.id)
-            if(newDeal){
-   
-                const [insertReply, error2] = await simplePromise(insertContactToDeal, newDeal.results[0].id, contactId)
-                if(insertReply.fromObjectId === undefined){
-                    alert('Unable to complete date exchange, please try again later')
-                    setIsLoading(false)
-                    return
-                } 
-                if(insertReply){
-                 
-                    const [trackerReply, error3] = await simplePromise(updateTracker, {list: cafeTracker.list, employeeId: employeeId, seasonId: seasonId})
+            const [rosterAddReply, error1] = await simplePromise(updateRoster, {employeeId: employeeId, cafeDateId: solidSnapshot.id, type:'add'})
+            if(rosterAddReply){
+                console.log('first time roster add reply: ')
+                console.log(rosterAddReply)
+                const [trackerReply, error2] = await simplePromise(updateTracker, {list: cafeTracker.list, employeeId: employeeId, seasonId: seasonId})
                     if(trackerReply){
                         setFilteredDealArray([])
                         updateShallowTrackerAll(cafeTracker)
@@ -263,28 +234,14 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                         setIsLoading(false)
                         closeModalHandler()
                     } 
-                    if(error3){
-                        alert(error3)
+                    if(error2){
+                        alert(error2)
                         return
                     }
-                } 
-                if(error2){
-                    alert(error2)
-                    setIsLoading(false)
+                } if(error1){
+                    alert(error1)
                     return
-                }
-
-            }  
-            
-            if(error1){
-                alert(e)
-                setIsLoading(false)
-                return
-            }
-
-
-            
-
+                }        
 
             
         }
