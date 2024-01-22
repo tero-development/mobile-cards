@@ -12,6 +12,8 @@ export async function sendCredentials(credentials){
     }
 }
 
+
+//credentials format is {email: email, password:password, confirmPassword: confirmPassword, employee_id:employee_id, company_id:company_id}
 export async function verifyCredentials(credentials){
     try{
         const response = await axios.post(`${url}/credentials/get`, credentials)

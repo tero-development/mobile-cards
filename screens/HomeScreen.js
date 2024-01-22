@@ -41,6 +41,7 @@ const HomeScreen = ({navigation}) =>{
         updateCafeClear} = useContext(CafeContext)
     const [isScheduleIncomplete, setIsScheduleIncomplete] = useState(false)
     const {hubspotDetails, updateContactId} = useContext(HubspotContext)
+
     
     useEffect(()=>{
         let tempEmail = credentials.email
