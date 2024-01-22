@@ -45,10 +45,12 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
     const currentListTarget = cafeTracker.list.find(entry => entry.monthNumber === monthNumber)
 
     let rightSidePrompt = ''
+    let timePrompt = ''
     
     if(cafeTracker.list.length > 0 && currentListTarget !== undefined){
         if(currentListTarget.id !== ""){
-            rightSidePrompt = currentListTarget.headlineDate 
+            rightSidePrompt = currentListTarget.headlineDate
+            timePrompt = currentListTarget.time 
         } else{
             rightSidePrompt = 'Not Scheduled'
         }
@@ -56,25 +58,26 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
         rightSidePrompt = 'Not Scheduled'
     }
 
+    
 
     return(
         <View style={styles.container}>
             <Pressable onPress={expandHandler} style={[styles.nodeTop, expanded && styles.nodeTopExpanded]}>
                 <View style={styles.nodeTopInnerContainer}>
-                <View style={styles.topTitleContainer}>
-                    <Text style={styles.topTitle}>{targetSkill}</Text>
-                </View>
-                <View style={styles.topDetailContainer}>
-                    <Text style={styles.topDate}>{monthName}</Text>
-                    {/* <Text style={styles.topCafeType}>{companyCafeDesignation}</Text> */}
-                    <Text style={[styles.topCafeType, rightSidePrompt === 'Not Scheduled'&& {color: Colors.errorColor, fontWeight:'bold'}]}>
-                        {rightSidePrompt}
-                    </Text>
-                    <Ionicons name={expanded? 'chevron-up' : 'chevron-down'} size={35} color={'white'}/>
-                </View>            
+                    <View style={styles.topTitleContainer}>
+                        <Text style={styles.topTitle}>{targetSkill}</Text>
+                        <Text style={styles.topTimeText}>{timePrompt}</Text>
+                    </View>
+                    <View style={styles.topDetailContainer}>
+                        <Text style={styles.topDate}>{monthName}</Text>
+                        {/* <Text style={styles.topCafeType}>{companyCafeDesignation}</Text> */}
+                        <Text style={[styles.topCafeType, rightSidePrompt === 'Not Scheduled'&& {color: Colors.errorColor, fontWeight:'bold'}]}>
+                            {rightSidePrompt}
+                        </Text>
+                        <Ionicons name={expanded? 'chevron-up' : 'chevron-down'} size={35} color={'white'}/>
+                    </View>            
                 </View>
 
-                <Text style={{color: Colors.highlightColor}}></Text>
 
             </Pressable>
             <View style={expanded? styles.nodeBottomExpanded : styles.nodeBottom}>
@@ -164,12 +167,16 @@ const styles = StyleSheet.create({
     topTitleContainer:{
         flexShrink: 1,
         flex: 0.9,
+        justifyContent: 'space-evenly'
     },
     topTitle:{
         color: 'white',
         fontSize: DeviceFractions.deviceHeight / 45,
         fontWeight: 'bold',
         flexWrap: 'wrap'
+    },
+    topTimeText:{
+        color: Colors.highlightColor
     },
     topDetailContainer:{
         justifyContent: 'space-evenly',
