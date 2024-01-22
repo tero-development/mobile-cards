@@ -43,13 +43,23 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
     }
 
 
-    const {monthName, monthNumber, clinicMonthName, currentCafeOfferedSet} = variableGroup
+    const {monthName, monthNumber, clinicMonthName} = variableGroup
+
+    const CustomAnimation = {
+        duration: 500,
+        create: {
+          type: LayoutAnimation.Types.spring,
+          property: LayoutAnimation.Properties.scaleXY,
+          springDamping: 1
+        },
+        update: {
+          type: LayoutAnimation.Types.spring,
+          springDamping: 1
+        }
+      }
 
     const expandHandler = () =>{
-        LayoutAnimation.configureNext({
-            duration: 500,
-            update: {type: 'spring', springDamping: 1.5}
-        });
+        LayoutAnimation.configureNext(CustomAnimation);
         setExpanded(prev => !prev)
     }
 
@@ -219,6 +229,7 @@ const styles = StyleSheet.create({
     nodeBottom:{
         position: 'absolute',
         flexDirection: 'row',
+        opacity:0,
         left: 0,
         right: 0,
         top: 20
@@ -232,7 +243,8 @@ const styles = StyleSheet.create({
         position: 'absolute',
         left: 0,
         right: 0,
-        top: DeviceFractions.deviceHeight / 10 * 1.36
+        top: DeviceFractions.deviceHeight / 10 * 1.36,
+        opacity: 1
     },
     optionContainer:{
         flex: 1,

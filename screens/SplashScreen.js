@@ -98,10 +98,8 @@ const SplashScreen = ({navigation}) =>{
 
     return(
         <KeyboardAvoidingView behavior='height' style={styles.screen}>
-            <LinearGradient 
+            <View 
                 style={styles.imageTop} 
-                colors={['white', Colors.primaryColor]}
-                locations={[0.2, 0.6]}
             >
                 <ImageBackground 
                     // source={require('../assets/images/competency-cover.jpg')}
@@ -110,7 +108,7 @@ const SplashScreen = ({navigation}) =>{
                     style={styles.image}
                     imageStyle={styles.imageBackground}
                 />
-            </LinearGradient>
+            </View>
             <LinearGradient style={styles.tempGradient} colors={[Colors.highlightColor, Colors.primaryColor]}>
             <View style={styles.pageBottom}>
                 <View style={styles.titleLine}>
