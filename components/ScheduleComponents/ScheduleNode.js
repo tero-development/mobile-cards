@@ -1,11 +1,18 @@
 import { useState, useContext} from 'react'
-import {View, Text, StyleSheet, Pressable} from 'react-native'
+import {View, Text, StyleSheet, Pressable, Platform, UIManager, LayoutAnimation} from 'react-native'
 import Colors from '../../utils/colors'
 import DeviceFractions from '../../utils/dimensions'
 import {Ionicons} from '@expo/vector-icons'
 import ScheduleNodeOption from './ScheduleNodeOption'
-import { wordSplitter } from '../../utils/helperFunctions'
 import { CafeContext } from '../../store/cafe-context'
+
+if (
+    Platform.OS === 'android' &&
+    UIManager.setLayoutAnimationEnabledExperimental
+  ) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+  }
+  
 
 const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  openModalHandler, currentIndex}) =>{
     const [expanded, setExpanded] = useState(false)
@@ -15,6 +22,7 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
 
     let date = ""
     let variableGroup = {}
+
 
 
     if(scheduledDates!== undefined && scheduledDates.length > 0){
@@ -38,6 +46,10 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
     const {monthName, monthNumber, clinicMonthName, currentCafeOfferedSet} = variableGroup
 
     const expandHandler = () =>{
+        LayoutAnimation.configureNext({
+            duration: 500,
+            update: {type: 'spring', springDamping: 1}
+        });
         setExpanded(prev => !prev)
     }
 
@@ -46,11 +58,13 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
 
     let rightSidePrompt = ''
     let timePrompt = ''
+    let scheduledPrompt = ''
     
     if(cafeTracker.list.length > 0 && currentListTarget !== undefined){
         if(currentListTarget.id !== ""){
             rightSidePrompt = currentListTarget.headlineDate
-            timePrompt = currentListTarget.time 
+            timePrompt = currentListTarget.time
+            scheduledPrompt = 'Scheduled' 
         } else{
             rightSidePrompt = 'Not Scheduled'
         }
@@ -62,14 +76,14 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
 
     return(
         <View style={styles.container}>
-            <Pressable onPress={expandHandler} style={[styles.nodeTop, expanded && styles.nodeTopExpanded]}>
+            <Pressable onPress={expandHandler} style={[styles.nodeTop, expanded? styles.nodeTopExpanded : null]}>
                 <View style={styles.nodeTopInnerContainer}>
                     <View style={styles.topTitleContainer}>
                         <Text style={styles.topTitle}>{targetSkill}</Text>
                         <Text style={styles.topTimeText}>{timePrompt}</Text>
                     </View>
                     <View style={styles.topDetailContainer}>
-                        <Text style={styles.topDate}>{monthName}</Text>
+                        <Text style={styles.topScheduledText}>{scheduledPrompt}</Text>
                         {/* <Text style={styles.topCafeType}>{companyCafeDesignation}</Text> */}
                         <Text style={[styles.topCafeType, rightSidePrompt === 'Not Scheduled'&& {color: Colors.errorColor, fontWeight:'bold'}]}>
                             {rightSidePrompt}
@@ -78,9 +92,10 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
                     </View>            
                 </View>
 
-
             </Pressable>
-            <View style={expanded? styles.nodeBottomExpanded : styles.nodeBottom}>
+            {/* <View style={expanded? styles.nodeBottomExpanded : styles.nodeBottom}> */}
+            <View style={[styles.nodeBottom, expanded? styles.nodeBottomExpanded : null]}>
+
                 <ScheduleNodeOption 
                     title={'Clinic'}
                     topTitle= {clinicMonthName}
@@ -146,7 +161,9 @@ const styles = StyleSheet.create({
         paddingVertical: DeviceFractions.deviceH50,
         borderBottomRightRadius: 20,
         borderBottomLeftRadius: 20,
-        height: DeviceFractions.deviceHeight / 7
+        height: DeviceFractions.deviceHeight / 6,
+        zIndex: 1,
+        marginBottom: DeviceFractions.deviceHeight / 500
     },
     nodeTopExpanded:{
         backgroundColor: Colors.accentColor400,
@@ -157,7 +174,9 @@ const styles = StyleSheet.create({
         paddingVertical: DeviceFractions.deviceH50,
         borderBottomLeftRadius: 0, 
         borderBottomRightRadius: 0,
-        height: DeviceFractions.deviceHeight / 7
+        height: DeviceFractions.deviceHeight / 7,
+        zIndex: 1,
+        marginBottom: DeviceFractions.deviceHeight / 10 * 1.36
     },
     nodeTopInnerContainer:{
         flexDirection: 'row',
@@ -182,7 +201,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
         alignItems: 'flex-end'
     },
-    topDate:{
+    topScheduledText:{
         color: 'white',
         fontSize: 18,
         textAlign: 'right',
@@ -200,7 +219,11 @@ const styles = StyleSheet.create({
         padding: 2
     },  
     nodeBottom:{
-        height: 0
+        position: 'absolute',
+        flexDirection: 'row',
+        left: 0,
+        right: 0,
+        top: 20
     },
     nodeBottomExpanded:{
         backgroundColor: Colors.highlightColor,
@@ -208,6 +231,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         borderBottomRightRadius: 20,
         borderBottomLeftRadius: 20,
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: DeviceFractions.deviceHeight / 10 * 1.36
     },
     optionContainer:{
         flex: 1,

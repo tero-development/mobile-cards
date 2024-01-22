@@ -46,6 +46,15 @@ const ProfileScreenMotion = ({navigation}) =>{
 
     const translation = useRef(new Animated.Value(0)).current
 
+    function move(amount){
+        Animated.timing(translation, {
+            toValue: amount,
+            easing: Easing.ease,
+            duration: 500,
+            useNativeDriver: true
+        }).start()
+    }
+
     const {
         password,
         confirmPassword,
@@ -104,14 +113,6 @@ const ProfileScreenMotion = ({navigation}) =>{
         }
     }
 
-    function move(amount){
-        Animated.timing(translation, {
-            toValue: amount,
-            easing: Easing.ease,
-            duration: 500,
-            useNativeDriver: true
-        }).start()
-    }
     
     function editProfileHandler(){
         move(-DeviceFractions.deviceWidth)
