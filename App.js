@@ -46,7 +46,7 @@ export default function App() {
             <Drawer.Screen name="ProfileScreen" component={ProfileScreen} options={{title: "Profile"}}/>
             <Drawer.Screen name="LearnerSchedule" component={LearnerSchedule} options={{title: 'My Schedule'}}/>
             {/* <Drawer.Screen name="CompetencyScreen" component={AssessmentScreen}options={{title: 'Competency Cards'}}/> */}
-            <Drawer.Screen name="QuizScreen" component={QuizScreen} options={{title: 'Knowledge Check'}}/>
+            {/* <Drawer.Screen name="QuizScreen" component={QuizScreen} options={{title: 'Knowledge Check'}}/> */}
             {/* <Drawer.Screen name="QuizAdminScreen" component={QuizAdminScreen} options={{title: 'Quiz Builder'}}/> */}
             {/* <Drawer.Screen name="DateSchedulingScreen" component={DateSchedulingScreen} options={{title: 'Date Scheduling'}}/> */}
             {/* <Drawer.Screen name="LinkScreen" component={LinkScreen} options={{title: 'Links'}}/> */}

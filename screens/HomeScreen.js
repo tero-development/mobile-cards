@@ -190,10 +190,25 @@ const HomeScreen = ({navigation}) =>{
             <View style={styles.container}>
                 <ScoreGreeting points={10} rank={1} name={firstName? firstName : <Loader size='small' color={Colors.accentColor} />}/>
                 {credentials.employeeId? <View style={styles.profileContainer}>
-                <HomeSelection onPress={navigateLearnerSchedule} title='Schedule' notification={isScheduleIncomplete} iconName='calendar' iconSize={24}/>
+                <HomeSelection 
+                onPress={navigateLearnerSchedule} 
+                    title='Schedule' 
+                    iconName='calendar' iconSize={24}
+                    prompt={isScheduleIncomplete}
+                    prompText={'Incomplete'}
+                    promptColor={Colors.errorColor}  
+                />
                 {/* <HomeSelection onPress={navigateCompetency} title='Competency Cards' iconName='copy' iconSize={24}/> */}
-                <HomeSelection title='Achievements' iconName='game-controller' iconSize={24}/>
-                <HomeSelection onPress={navigateQuiz} title='Knowledge Check' iconName='clipboard' iconSize={24}/>
+                <HomeSelection
+                onPress={()=>{}} 
+                    title='Achievements' 
+                    iconName='game-controller' 
+                    iconSize={24} 
+                    prompt={true}
+                    prompText={'upcoming'}
+                    promptColor={Colors.activeColor}  
+                />
+                {/* <HomeSelection onPress={navigateQuiz} title='Knowledge Check' iconName='clipboard' iconSize={24}/> */}
                 <ModularLink 
                     onPress={signOutHandler}     
                     textColor={Colors.secondaryColor}

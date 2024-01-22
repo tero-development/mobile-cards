@@ -3,7 +3,11 @@ import IconButton from '../../UI/IconButton'
 import Colors from '../../utils/colors'
 import DeviceFractions from '../../utils/dimensions'
 
-const HomeSelection = ({title, iconName, iconSize, onPress, notification}) =>{
+const HomeSelection = ({title, iconName, iconSize, onPress, prompt, prompText, promptColor, prompSize}) =>{
+    const propStyles = {
+        fontSize: prompSize,
+        color: promptColor,
+    }
     return(
         <Pressable style={styles.profileSelection} onPress={onPress}>
         <View style={styles.profileSelection_TextIcon}>
@@ -12,8 +16,8 @@ const HomeSelection = ({title, iconName, iconSize, onPress, notification}) =>{
             />
             <View style={styles.profileTextContainer}>
                 <Text style={styles.profileSelectionTitle}>{title} </Text>
-                {(title==="Schedule" && notification) && 
-                <Text style={styles.profileSelectionWarningText}>incomplete</Text>}
+                {prompt && 
+                <Text style={[styles.defaultNotification, propStyles]}>{prompText}</Text>}
             </View>
         </View>
         <IconButton 
@@ -52,9 +56,8 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginRight: DeviceFractions.deviceW50
     },
-    profileSelectionWarningText:{
+    defaultNotification:{
         fontSize: DeviceFractions.deviceW30,
-        color: Colors.errorColor,
         fontWeight: 'bold'
     }
 })

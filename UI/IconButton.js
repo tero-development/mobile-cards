@@ -11,7 +11,7 @@ const IconButton = ({isHeader, hasEditProfile, iconName, iconSize, iconColor, on
     const navigation = useNavigation()
 
     function navigateProfile(){
-        navigation.navigate('ProfileScreenMotion')
+        navigation.navigate('ProfileScreen')
     } 
     
 
