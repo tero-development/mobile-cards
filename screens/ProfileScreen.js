@@ -1,26 +1,22 @@
-import {View, KeyboardAvoidingView, Text, Pressable, StyleSheet} from 'react-native'
-import { useState, useEffect, useContext } from 'react'
+import {View, KeyboardAvoidingView, Text, Pressable, StyleSheet, Animated} from 'react-native'
+import { useState, useEffect, useContext, useRef } from 'react'
 import {SignInContext} from '../store/signin-context'
 import { LinearGradient } from 'expo-linear-gradient'
 import Colors from '../utils/colors'
 import Title from '../UI/Title'
 import DeviceFractions from '../utils/dimensions'
-import LabeledInput from '../components/LabeledInput'
-import DropdownComponent from '../components/DropdownComponent'
 import IconButton from '../UI/IconButton'
-import LabeledPhoneInput from '../components/LabeledPhoneInput'
-import ModularButton from '../components/ModularButton'
 import ErrorOverlay from '../UI/ErrorOverlay'
-import ModularLink from '../components/ModularLink'
 // import { CompanyContext } from '../store/company-context'
 import {verifyPhoneHandler, verifyEmailHandler} from '../utils/helperFunctions'
 import { updateCredentials, clearErrorHandler, colorHandler, errorFormatHandler } from '../utils/inputErrorDetection'
-import { sendCredentials } from '../httpServices/credentials'
 import { getCompany } from '../httpServices/companies'
 import { updateEmployee } from '../httpServices/employees'
-import { getContact, postContact, updateContact } from '../httpServices/HBcontacts'
+import { getContact, updateContact } from '../httpServices/HBcontacts'
 import Loader from '../UI/Loader'
 import _ from 'lodash'
+import MidContent from '../components/ProfileComponents/MidContent'
+import { Easing } from 'react-native-reanimated'
 
 
 
@@ -48,6 +44,17 @@ const ProfileScreen = ({navigation}) =>{
     const [copyCredentials, setCopyCredentials] = useState({})
     const [isDifferent, setIsDifferent] = useState(false)
 
+    const translation = useRef(new Animated.Value(0)).current
+
+    function move(amount){
+        Animated.timing(translation, {
+            toValue: amount,
+            easing: Easing.ease,
+            duration: 500,
+            useNativeDriver: true
+        }).start()
+    }
+
     const {
         password,
         confirmPassword,
@@ -63,6 +70,8 @@ const ProfileScreen = ({navigation}) =>{
         industryYears,
         employeeTerritory,
         phoneNumber} = filteredCredentials
+
+    
 
     useEffect(()=>{
         async function retrieveCompany(id){
@@ -103,14 +112,20 @@ const ProfileScreen = ({navigation}) =>{
             setDisablePhone(prev => !prev)
         }
     }
+
     
     function editProfileHandler(){
+        move(-DeviceFractions.deviceWidth)
         setCopyCredentials({...credentials})
         setIsEditing(true)
     }
 
+
     function editCancelHandler(){
-        updateAllCredentials(copyCredentials)
+        move(0)
+        if(Object.keys(copyCredentials).length !== 0){
+            updateAllCredentials(copyCredentials)
+        }
         setIsEditing(false)
     }
 
@@ -152,9 +167,11 @@ const ProfileScreen = ({navigation}) =>{
                         try{
                             const reply = await updateContact({...credentials, contactId: contactId})
                             if(reply){
-                                setIsEditing(false)
                                 setCopyCredentials({...credentials})
+                                setIsDifferent(false)
                                 setIsLoading(false)
+                                setIsEditing(false)
+                                move(0)
                             }
                         } catch(e){
                             alert(e)
@@ -172,173 +189,74 @@ const ProfileScreen = ({navigation}) =>{
     }
 
     
-    const editLink = <ModularLink textColor={Colors.secondaryColor} textSize={20} textWeight={'600'} onPress={editProfileHandler}>
-        Edit Profile
-    </ModularLink>
-
-    const buttonGroup = <View>
-                {isDifferent && <ModularButton 
-                    buttonColor={Colors.accentColor} 
-                    textColor={'white'} 
-                    rippleColor={Colors.accentColor300}
-                    style={{width: DeviceFractions.deviceWidth / 2, marginBottom: DeviceFractions.deviceH50}}
-                    onPress={()=>{
-                        const {phoneNumber, ...credsWithOutPhone} = {...filteredCredentials}
-
-                        if(!disablePhone){
-                            errorFormatHandler(filteredCredentials, validationGroup, submitHandler, setErrorType, setErrorMessage, setIsError)
-                        } else{
-                            errorFormatHandler(credsWithOutPhone, validationGroupNoPhone, submitHandler, setErrorType, setErrorMessage, setIsError)
-                        }
-                    }}
-                >
-                    Submit Changes
-                </ModularButton>}
-                <ModularLink textColor={Colors.secondaryColor} textSize={16} textWeight={'bold'} textStyles={{textAlign: 'center'}} onPress={editCancelHandler}>
-                    Cancel
-                </ModularLink>
-            </View>
-        
-    
-
-    const midContent = <View style={styles.innerContainer}>
-    <View style={styles.inputPairContainer}>
-        <LabeledInput 
-            label={'First Name'}  
-            style={styles.inputStyle}
-            color={colorHandler(errorType, [], firstName)}
-            disable={!isEditing}
-            textInputConfig={{
-                value: firstName,
-                onChangeText:(text) => updateHandler( text, updateFirstname),
-                autoCorrect: false, 
-                autoCapitalize:'words',
-                editable: isEditing
-            }}   
-        />
-        <LabeledInput 
-            label={'Last Name'}  
-            style={styles.inputStyle}
-            color={colorHandler(errorType, [], lastName)}
-            disable={!isEditing}
-            textInputConfig={{
-                value: lastName,
-                onChangeText:(text) => updateHandler( text, updateLastName),
-                autoCorrect: false, 
-                autoCapitalize:'words',
-                editable: isEditing
-            }}   
-        />
-    </View>
-    <View style={styles.inputPairContainer}>
-        <LabeledInput 
-            label={'Email'} 
-            color={colorHandler(errorType, ['email_invalid'], email)}
-            style={styles.inputStyle} 
-            disable={!isEditing}
-            textInputConfig={{
-                value: email,
-                onChangeText:(text) => updateHandler( text, updateEmail),
-                autoCorrect: false, 
-                autoCapitalize:'none',
-                editable: isEditing
-            }}                             
-        />
-        <LabeledInput 
-            label={"Manager's email"} 
-            color={colorHandler(errorType, ['managerEmail_invalid'], managerEmail)}
-            style={styles.inputStyle}
-            disable={!isEditing} 
-            textInputConfig={{
-                value: managerEmail,
-                onChangeText:(text) => updateHandler( text, updateManagerEmail),
-                autoCorrect: false, 
-                autoCapitalize:'none',
-                editable: isEditing
-            }}                             
-        />
-    </View>
-    <View style={styles.inputPairContainer}>
-        <DropdownComponent 
-            data={companyIndustryYears} 
-            mode='modal'
-            flexWidth={0.465} 
-            prompt={industryYears} 
-            iconName='information-circle-outline'
-            viewStyle={styles.dropDown}
-            color={colorHandler(errorType, [], industryYears)}
-            value={industryYears}
-            updater={updateIndustryYears}
-            valueSetter={updateHandler}
-            disable={!isEditing}
-        />
-        <DropdownComponent
-            data={companyTerritories} 
-            mode='modal'
-            flexWidth={0.465} 
-            prompt={employeeTerritory} 
-            iconName='information-circle-outline'
-            viewStyle={styles.dropDown}
-            color={colorHandler(errorType, [], employeeTerritory)}
-            value={employeeTerritory}
-            updater={updateEmployeeTerritory}
-            valueSetter={updateHandler}
-            disable={!isEditing}
-        />
-    </View>
-    <View style={[styles.phonePairContainer, disablePhone && {justifyContent: 'center'}]}>
-        <LabeledPhoneInput 
-            label={"Phone Number"} 
-            color={colorHandler(errorType, ['phone_invalid'], phoneNumber)}
-            style={[styles.phoneInput, !isEditing && {width: '50%'}]}
-            viewStyle={{flex: 0.90}}
-            visible={disablePhone}
-            disable={!isEditing} 
-            textInputConfig={{
-                onChangeText:(text) => updateHandler( text, updatePhoneNumber),
-                value: phoneNumber,
-                textContentType:'telephoneNumber',
-                dataDetectorTypes:'phoneNumber', 
-                keyboardType:'phone-pad', 
-                maxLength:14,
-                editable: isEditing
-            }}
-        />
+        const midContentVariables = {
+            isEditing: isEditing,
+            isDifferent: isDifferent,
+            errorType: errorType,
+            setErrorType: setErrorType,
+            setErrorMessage: setErrorMessage,
+            setIsError: setIsError,
+            updateHandler: updateHandler,
+            disablePhone: disablePhone,
+            firstName: firstName,
+            updateFirstname: updateFirstname,
+            lastName: lastName,
+            updateLastName: updateLastName,
+            email: email,
+            updateEmail: updateEmail,
+            managerEmail: managerEmail,
+            updateManagerEmail: updateManagerEmail,
+            companyIndustryYears: companyIndustryYears,
+            industryYears: industryYears,
+            updateIndustryYears: updateIndustryYears,
+            companyTerritories: companyTerritories,
+            employeeTerritory: employeeTerritory,
+            updateEmployeeTerritory: updateEmployeeTerritory,
+            phoneNumber: phoneNumber,
+            updatePhoneNumber: updatePhoneNumber,
+            togglePhoneHandler: togglePhoneHandler,
+            validationGroup: validationGroup,
+            validationGroupNoPhone: validationGroupNoPhone,
+            submitHandler: submitHandler,
+            editCancelHandler: editCancelHandler,
+            editProfileHandler: editProfileHandler,
+            colorHandler: colorHandler,
+            errorFormatHandler: errorFormatHandler
+        }
 
 
-        <Pressable style={[styles.phoneToggle, !isEditing && {display: 'none'}]} onPress={togglePhoneHandler}>
-            <Text style={styles.phoneToggleText}>Opt in for texts</Text>
-            <IconButton 
-                isHeader={false} 
-                iconName={!disablePhone? 'checkmark-circle-outline' : 'close-circle-outline'} 
-                iconSize={28} 
-                iconColor={Colors.secondaryColor}
-                onPress={togglePhoneHandler} 
-            />
-        </Pressable>
-    </View>
-            {!isEditing? editLink : buttonGroup}
-    </View>
 
     if(isError){
         return <ErrorOverlay  message={errorMessage} onPress={()=>{clearErrorHandler(setIsError)}}/>
     }
 
     return(
-        <KeyboardAvoidingView behavior='height' style={styles.screen}>
+            <KeyboardAvoidingView behavior='height' style={styles.screen}>
             <LinearGradient style={styles.screen} colors={[Colors.highlightColor, Colors.primaryColor]}>
-            <IconButton isHeader={true} iconName='menu' iconSize={28} iconColor={Colors.secondaryColor} onPress={openDrawer}/>
-            <View style={styles.container}>
-                <View>
-                    <Title textSize={36} color={Colors.secondaryColor} style={{marginBottom: DeviceFractions.deviceH20, textAlign:'right', marginRight: DeviceFractions.deviceW30}}>
-                        Profile Details
-                    </Title>
-                    {isLoading? <Loader size='large' color={Colors.accentColor}/> : midContent}
+                <IconButton isHeader={true} iconName='menu' iconSize={28} iconColor={Colors.secondaryColor} onPress={openDrawer}/>
+                <Animated.View style={[styles.screen, {transform: [{translateX: translation}]}]}>
+                <View style={styles.container}>
+                    <View style={styles.screenHalf}>
+                        <Title textSize={36} color={Colors.secondaryColor} style={{marginBottom: DeviceFractions.deviceH20, textAlign:'right', marginRight: DeviceFractions.deviceW20}}>
+                            Profile Details
+                        </Title>
+                        <View style={styles.centeringContainer}>
+                            {isLoading? <Loader size='large' color={Colors.accentColor}/> : <MidContent variables={midContentVariables} type="display"/>}
+                        </View>
+                    </View>
+                    <View style={styles.screenHalf}>
+                        <Title textSize={36} color={Colors.secondaryColor} style={{marginBottom: DeviceFractions.deviceH20, textAlign:'right', marginRight: DeviceFractions.deviceW20}}>
+                            Edit Profile
+                        </Title>
+                        <View style={styles.centeringContainer}>
+                            {isLoading? <View style={styles.loadingHeightContainer}><Loader size='large' color={Colors.accentColor}/></View> : <MidContent variables={midContentVariables}/>}
+                        </View>
+                    </View>
                 </View>
-            </View>
-        </LinearGradient >
+                </Animated.View>
+            </LinearGradient >
         </KeyboardAvoidingView>
-        
+         
     )
 }
 
@@ -346,11 +264,17 @@ const styles = StyleSheet.create({
     screen:{
         flex: 1
     },
+    centeringContainer:{
+        alignItems: 'center'
+    },
     container:{
         flex: 1,
-        justifyContent: 'center',
+        flexDirection: 'row',
         alignItems: 'center',
-        width: DeviceFractions.deviceWidth,        
+        width: DeviceFractions.deviceWidth * 2
+    },
+    screenHalf:{
+        flex: 0.5,
     },
     innerContainer:{
         width: DeviceFractions.deviceWidth / 10 * 9,
@@ -404,6 +328,11 @@ const styles = StyleSheet.create({
         color: Colors.secondaryColor,
         fontWeight: 'bold',
         fontSize: 12
+    },
+    loadingHeightContainer:{
+        height: DeviceFractions.deviceHeight / 2,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })
 

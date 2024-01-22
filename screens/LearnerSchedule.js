@@ -11,7 +11,6 @@ import Colors from '../utils/colors'
 import ScheduleNode from '../components/ScheduleComponents/ScheduleNode'
 import IconButton from '../UI/IconButton'
 import DeviceFractions from '../utils/dimensions'
-import ScheduleNodeMain from '../components/ScheduleComponents/ScheduleNodeMain'
 import EditSchedule from '../components/ScheduleComponents/EditSchedule'
 import Loader from '../UI/Loader'
 import { getSelectedCafeIds, getCafeDates } from '../httpServices/cafes'
@@ -129,16 +128,6 @@ const LearnerSchedule = ({navigation, route}) =>{
                         )
                         
                     }
-                    {/* <ScheduleNodeMain 
-                        targetSkill={pseudoInfo.title}
-                        designation={'Schedule'}
-                        dateRange={pseudoInfo.dateRange}
-                        time={'08:30am - 10:00am'}
-                        modalTrigger={openModalHandler}
-                    />
-                    <ScheduleNode targetSkill={'Be Upstanding'} dateRange={'April - May'} time={'10:00am - 11:30am'} modalTrigger={openModalHandler} />
-                    <ScheduleNode targetSkill={'Meeting Effectiveness'} dateRange={'June - July'} time={'9:00am - 11:00am'} modalTrigger={openModalHandler}/>                 */}
-    
                 </View>
             </View>
             {(scheduledDates.length > 0 && modalIsVisble) && <EditSchedule visible={modalIsVisble} closeModalHandler={closeModalHandler}/> }

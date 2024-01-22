@@ -10,8 +10,8 @@ import SignIn from './screens/SignIn';
 import CreateAccount from './screens/CreateAccount';
 import HomeScreen from './screens/HomeScreen';
 import LearnerSchedule from './screens/LearnerSchedule';
-import AssessmentScreen from './screens/AssessmentScreen';
-import ProfileScreenMotion from './screens/ProfileScreenMotion';
+// import AssessmentScreen from './screens/AssessmentScreen';
+import ProfileScreen from './screens/ProfileScreen';
 import QuizScreen from './screens/QuizScreen';
 import ConfirmAccount from './screens/ConfirmAccount';
 import ContactInfoScreen from './screens/ContactInfoScreen';
@@ -43,7 +43,7 @@ export default function App() {
         }}>
             <Drawer.Screen name="HomeScreen" component={HomeScreen} options={{title: "Home"}}/>
             {/* <Drawer.Screen name="AdminScreen" component={AdminScreen} options={{title: "Home"}}/> */}
-            <Drawer.Screen name="ProfileScreenMotion" component={ProfileScreenMotion} options={{title: "Profile"}}/>
+            <Drawer.Screen name="ProfileScreen" component={ProfileScreen} options={{title: "Profile"}}/>
             <Drawer.Screen name="LearnerSchedule" component={LearnerSchedule} options={{title: 'My Schedule'}}/>
             {/* <Drawer.Screen name="CompetencyScreen" component={AssessmentScreen}options={{title: 'Competency Cards'}}/> */}
             <Drawer.Screen name="QuizScreen" component={QuizScreen} options={{title: 'Knowledge Check'}}/>

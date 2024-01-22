@@ -48,7 +48,7 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
     const expandHandler = () =>{
         LayoutAnimation.configureNext({
             duration: 500,
-            update: {type: 'spring', springDamping: 1}
+            update: {type: 'spring', springDamping: 1.5}
         });
         setExpanded(prev => !prev)
     }
@@ -109,12 +109,12 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
                     />
                 <ScheduleNodeOption
                     bgColor={Colors.secondaryColor300} 
-                    title={'ExSellerator'} 
+                    title={companyCafeDesignation} 
                     topTitle={monthName}
                     iconName={'speedometer-outline'} 
                     iconSize={36} 
-                    iconColor={Colors.primaryColor100}
-                    textColor={Colors.primaryColor100}
+                    iconColor={Colors.primaryColor300}
+                    textColor={Colors.primaryColor300}
                     link={'https://zoom.us/'}
                     />
                 <ScheduleNodeOption 
@@ -166,9 +166,7 @@ const styles = StyleSheet.create({
         marginBottom: DeviceFractions.deviceHeight / 500
     },
     nodeTopExpanded:{
-        backgroundColor: Colors.accentColor400,
-        // flexDirection: 'row',
-        // justifyContent: 'space-between',
+        backgroundColor: Colors.accentColor300,
         borderRadius: 20,
         paddingHorizontal: DeviceFractions.deviceH40,
         paddingVertical: DeviceFractions.deviceH50,

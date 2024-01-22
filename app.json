@@ -1,27 +1,29 @@
 {
   "expo": {
-    "name": "sandbox",
-    "slug": "sandbox",
+    "name": "Tero CC App",
+    "slug": "Tero CC App",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "backgroundColor": "#37a89a",
+    "backgroundColor": "#BCEBE8",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#BCEBE8"
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
+      "buildNumber" : "1.0.0",
       "supportsTablet": true
     },
     "android": {
+      "versionCode" : "1",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#BCEBE8"
       }
     },
     "web": {
