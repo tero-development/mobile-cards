@@ -20,10 +20,10 @@ const HomeSelection = ({title, iconName, iconSize, onPress, prompt, prompText, p
                 <Text style={[styles.defaultNotification, propStyles]}>{prompText}</Text>}
             </View>
         </View>
-        <IconButton 
-             isHeader={false} iconName='chevron-forward'  iconSize={24} iconColor={Colors.secondaryColor} 
-          
-        />
+        {
+            title !== 'Achievements' && 
+            <IconButton isHeader={false} iconName='chevron-forward'  iconSize={24} iconColor={Colors.secondaryColor} />
+        }
         </Pressable>
     )
 }

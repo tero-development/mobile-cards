@@ -6,7 +6,8 @@ import {
   LayoutAnimation,
   StyleSheet,
   Button,
-} from 'react-native';
+} from 'react-native'
+import { updateLeader } from '../httpServices/employees';
 
 if (
   Platform.OS === 'android' &&
@@ -28,14 +29,29 @@ const App = () => {
     setBoxPosition(boxPosition === 'left' ? 'right' : 'left');
   };
 
+
+async function update(){
+  for(let i = 0; i < arr.length ; i++){
+      let response = await updateLeader(arr[i])
+    if(response){
+      console.log(response)
+    }
+  }
+}
+
+
   return (
     <View style={styles.container}>
       <View style={styles.buttonContainer}>
-        <Button title="Toggle Layout" onPress={toggleBox} />
+        {/* <Button title="Toggle Layout" onPress={toggleBox} /> */}
+        <Button title="update leader" onPress={()=>{}}
+
+        />
+
       </View>
-      <View
+      {/* <View
         style={[styles.box, boxPosition === 'left' ? null : styles.moveRight]}
-      />
+      /> */}
     </View>
   );
 };
@@ -45,6 +61,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'flex-start',
     justifyContent: 'center',
+    backgroundColor: 'grey'
   },
   box: {
     height: 100,

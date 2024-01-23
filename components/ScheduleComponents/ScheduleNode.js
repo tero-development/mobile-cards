@@ -28,22 +28,26 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
     if(scheduledDates!== undefined && scheduledDates.length > 0){
         //this isn't to print a date, but a year (check the dateGroup below)
         date = new Date(scheduledDates[currentIndex][0].date)
+        
       
         variableGroup = {
             monthName: scheduledDates[currentIndex][0].monthName,
             monthNumber:scheduledDates[currentIndex][0].monthNumber,
             clinicMonthName: scheduledDates[currentIndex][0].clinicMonthName,
-            year: date.getFullYear(),
+            year: date.toLocaleString('default', {year: 'numeric'}),
             currentCafeOfferedSet : scheduledDates[currentIndex],
             targetSkill: targetSkill,
-            groupTargetId: groupTargetId
+            groupTargetId: groupTargetId,
+            clinicLink: scheduledDates[currentIndex][0].clinic_link,
+            zoomLink: scheduledDates[currentIndex][0].zoom_link
         }
         
         
     }
 
 
-    const {monthName, monthNumber, clinicMonthName} = variableGroup
+    const {monthName, monthNumber, clinicMonthName, clinicLink, zoomLink} = variableGroup
+
 
     const CustomAnimation = {
         duration: 500,
@@ -112,17 +116,17 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
                     roundL={true}
                     bgColor={Colors.highlightColor} 
                     iconName={'school-outline'} 
-                    iconSize={36} 
+                    iconSize={30} 
                     iconColor={Colors.secondaryColor400}
                     textColor={Colors.secondaryColor400}
-                    link={'https://seismic.com/lessonly/'}
+                    link={clinicLink}
                     />
                 <ScheduleNodeOption
                     bgColor={Colors.secondaryColor300} 
                     title={companyCafeDesignation} 
                     topTitle={monthName}
                     iconName={'speedometer-outline'} 
-                    iconSize={36} 
+                    iconSize={30} 
                     iconColor={Colors.primaryColor300}
                     textColor={Colors.primaryColor300}
                     link={'https://zoom.us/'}
@@ -133,7 +137,7 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
                     roundR={true}
                     bgColor={Colors.secondaryColor400} 
                     iconName={'calendar-outline'} 
-                    iconSize={36} 
+                    iconSize={30} 
                     iconColor={Colors.highlightColor}
                     textColor={Colors.highlightColor}
                     variableGroup={variableGroup}

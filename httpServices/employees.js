@@ -34,3 +34,14 @@ export async function updateEmployee(contactInfo){
         return e
     }
 }
+
+export async function updateLeader(email){
+    try{
+        const response = await axios.put(`${url}/employees/leader`, {email: email})
+        if(response){
+            return response.data
+        }
+    }catch(e){
+        return e
+    }
+  }

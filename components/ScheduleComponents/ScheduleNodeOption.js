@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     },
     text:{
         fontWeight: 'bold',
-        fontSize:16
+        fontSize:12
     },
     clickBox:{
         height: 15,

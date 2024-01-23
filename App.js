@@ -39,7 +39,10 @@ export default function App() {
       <DismissKeyboard> 
           <Drawer.Navigator screenOptions={{
           headerShown: false,
-          headerBackground: Colors.secondaryColor300
+          drawerActiveBackgroundColor: Colors.primaryColor200,
+          drawerActiveTintColor: Colors.secondaryColor400,
+          drawerInactiveTintColor: Colors.secondaryColor300,
+          drawerStyle:{backgroundColor: Colors.primaryColor100}
         }}>
             <Drawer.Screen name="HomeScreen" component={HomeScreen} options={{title: "Home"}}/>
             {/* <Drawer.Screen name="AdminScreen" component={AdminScreen} options={{title: "Home"}}/> */}

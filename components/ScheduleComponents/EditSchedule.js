@@ -349,6 +349,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
     </View>
     }
 
+    console.log(solidSnapshot)
     
     return(
         <Modal visible={visible} animationType='slide' style={styles.modal}>
@@ -386,15 +387,16 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                                     filteredDatArray.length < 1? <Loader size='large' color={Colors.accentColor} /> : 
 
                                     filteredDatArray.map(entry =>{
+                                        console.log(entry)
                                         const originalDate = new Date(entry.date)
-                                        const date = new Date(entry.date).toDateString() 
                                         const fullMonth = originalDate.toLocaleString('default', {month: 'long'})
-                                        const numericDay = originalDate.toLocaleString('default', {day: 'numeric'})
+                                        const numericDay = (parseInt(originalDate.toLocaleString('default', {day: 'numeric'}))+1).toString()
+                                        const year = originalDate.toLocaleString('default', {year: 'numeric'})
                                         const headlineDate = `${fullMonth}, ${numericDay}`
+                                        const date = `${fullMonth}, ${numericDay} ${year}`
                                         const time = entry.time
                                         const zoomLink = entry.zoom_link
                                         const clinicLink = entry.clinic_link
-
                                         return(
                                             <ScheduleEntry 
                                                 key={entry._id} 
