@@ -14,8 +14,10 @@ const ScheduleEntry = (props) =>{
         monthNumber, 
         id, 
         zoomLink,
+        clinicMonthName,
         clinicLink,
-        cafeTracker, 
+        cafeTracker,
+        title 
     } = props
     const {updateCafeTracker} = useContext(CafeContext)
 
@@ -46,7 +48,9 @@ const ScheduleEntry = (props) =>{
             monthNumber, 
             id, 
             zoomLink,
-            clinicLink 
+            clinicLink,
+            clinicMonthName, 
+            title
         )}>
             <View>
                 <Text style={styles.dateText}>{headlineDate}</Text>

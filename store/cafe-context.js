@@ -82,7 +82,7 @@ const CafeContextProvider = ({children}) =>{
     //this mainly updated within the ScheduleEntry component, that is hydrated by 
     //mapping through a useState array called 'filteredArray' found within the EditSchedule
     //parent component
-    function updateCafeTracker(headlineDate,date, time, monthNumber, id, zoomLink,clinicLink){
+    function updateCafeTracker(headlineDate,date, time, monthNumber, id, zoomLink,clinicLink, clinicMonthName, title){
         dispatch({type: 'update_cafeTracker', payload: {
             headlineDate: headlineDate,
             date: date, 
@@ -90,10 +90,13 @@ const CafeContextProvider = ({children}) =>{
             monthNumber: monthNumber, 
             id: id, 
             zoomLink: zoomLink,
-            clinicLink: clinicLink }})
+            clinicLink: clinicLink,
+            clinicMonthName: clinicMonthName, 
+            title:title
+        }})
     }
 
-    function updateShallowTracker(headlineDate,date, time, monthNumber, id, zoomLink,clinicLink){
+    function updateShallowTracker(headlineDate,date, time, monthNumber, id, zoomLink,clinicLink, clinicMonthName, title){
         dispatch({type: 'update_shallowTracker', payload: {
             headlineDate: headlineDate,
             date: date, 
@@ -101,7 +104,10 @@ const CafeContextProvider = ({children}) =>{
             monthNumber: monthNumber, 
             id: id, 
             zoomLink: zoomLink,
-            clinicLink: clinicLink }})
+            clinicLink: clinicLink, 
+            clinicMonthName: clinicMonthName, 
+            title:title
+         }})
     }
     
     function updateEditScheduleVariables(object){

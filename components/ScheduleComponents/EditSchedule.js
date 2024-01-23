@@ -47,7 +47,8 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
         monthNumber, 
         year, 
         currentCafeOfferedSet,
-        groupTargetId
+        groupTargetId,
+        clinicMonthName
     } = editScheduleVariables
 
 
@@ -67,20 +68,13 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
 
                         for(let i = 0; i < groupedList.length; i++){
                             const cafeDate = groupedList[i]
-                            // console.log('current cafe date')
-                            // console.log(cafeDate)
-                            // console.log('')
+      
                             const classLimit = cafeDate.classLimit
-                            // console.log('class limit: ')
-                            // console.log(classLimit)
-                            // console.log('')
+
                             let roster
                             let rosterCount
-                            // console.log('cafe date roster:')
-                            // console.log(cafeDate.roster)
-                            // console.log('')
+
                             if(cafeDate.roster !== undefined){
-                                // console.log('the roster is NOT undefined')
                                 roster = cafeDate.roster
                                 rosterCount = roster.length
         
@@ -94,7 +88,6 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                                     })
                                 }
                             } else {
-                                // console.log('the roster is undefined')
                                 setFilteredDateArray(prev => {
                                     const newArray = [...prev, groupedList[i]]
                                     newArray.sort(compareDayNumber)
@@ -203,7 +196,8 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                                 date: solidSnapshot.date,
                                 time: solidSnapshot.time,
                                 zoomLink: solidSnapshot.zoomLink,
-                                clinicLink: solidSnapshot.clinicLink
+                                clinicLink: solidSnapshot.clinicLink,
+                                clinicMonthName: clinicMonthName
                             })
                             if(emailReply){
                                 setFilteredDateArray([])
@@ -250,7 +244,9 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                             date: solidSnapshot.date,
                             time: solidSnapshot.time,
                             zoomLink: solidSnapshot.zoomLink,
-                            clinicLink: solidSnapshot.clinicLink})
+                            clinicLink: solidSnapshot.clinicLink,
+                            clinicMonthName: clinicMonthName
+                        })
                         if(zoomEmailReply){
                             setFilteredDateArray([])
                             updateShallowTrackerAll(cafeTracker)
@@ -349,7 +345,6 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
     </View>
     }
 
-    console.log(solidSnapshot)
     
     return(
         <Modal visible={visible} animationType='slide' style={styles.modal}>
@@ -387,7 +382,6 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                                     filteredDatArray.length < 1? <Loader size='large' color={Colors.accentColor} /> : 
 
                                     filteredDatArray.map(entry =>{
-                                        console.log(entry)
                                         const originalDate = new Date(entry.date)
                                         const fullMonth = originalDate.toLocaleString('default', {month: 'long'})
                                         const numericDay = (parseInt(originalDate.toLocaleString('default', {day: 'numeric'}))+1).toString()
@@ -396,20 +390,24 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                                         const date = `${fullMonth}, ${numericDay} ${year}`
                                         const time = entry.time
                                         const zoomLink = entry.zoom_link
+                                        const clinicMonthName = entry.clinicMonthName
                                         const clinicLink = entry.clinic_link
+                                        const title = entry.title
                                         return(
                                             <ScheduleEntry 
                                                 key={entry._id} 
                                                 id={entry._id} 
-                                                monthNumber={currentCafeOfferedSet[0].monthNumber} 
+                                                monthNumber={entry.monthNumber} 
                                                 monthName={entry.monthName} 
                                                 headlineDate={headlineDate}
                                                 date = {date} 
                                                 time={time}
                                                 zoomLink={zoomLink}
+                                                clinicMonthName ={clinicMonthName}
                                                 clinicLink={clinicLink}
                                                 cafeTracker={cafeTracker}
                                                 onPress={updateCafeTracker}
+                                                title={title}
                                                 />
                                         )
                                     } 

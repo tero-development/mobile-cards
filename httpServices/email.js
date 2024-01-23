@@ -24,7 +24,7 @@ export async function sendResetEmail(email, code){
 
 }
 
-export async function sendZoomEmail({email, firstName, cafeTitle, date, time, zoomLink, clinicLink}){
+export async function sendZoomEmail({email, firstName, cafeTitle, date, time, zoomLink, clinicLink, clinicMonthName}){
     try{
         const response = await axios.post(`${emailUrl}/zoom/send`, {
             email: email, 
@@ -33,7 +33,8 @@ export async function sendZoomEmail({email, firstName, cafeTitle, date, time, zo
             date: date,
             time: time,
             zoomLink: zoomLink,
-            clinicLink: clinicLink
+            clinicLink: clinicLink,
+            clinicMonthName: clinicMonthName
         })
         if(response){
             return response.data

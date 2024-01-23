@@ -45,9 +45,8 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
         
     }
 
-
     const {monthName, monthNumber, clinicMonthName, clinicLink, zoomLink} = variableGroup
-
+    
 
     const CustomAnimation = {
         duration: 500,
