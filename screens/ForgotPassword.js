@@ -30,6 +30,9 @@ const ForgotPassword = ({navigation, route}) =>{
     function generateCode(){
         return Math.floor(100000 + Math.random() * 900000)
     }
+
+    const employee = route.params
+
     
     const emailCredential = {
         email: credentials.email
@@ -39,7 +42,7 @@ const ForgotPassword = ({navigation, route}) =>{
 
 
     function navigateSignIn(){
-        navigation.navigate('SignIn')
+        navigation.navigate('SignIn', employee)
     }
 
     function navigateResetPassword(){

@@ -144,7 +144,7 @@ const ContactInfoScreen = ({navigation}) =>{
                     alert(e)
                 }
             }
-            const response = await sendCredentials({...credentials, company_id: '62d47c7a36aeee14652966cd', employee_id: employeeResponse.insertedId})
+            const response = await sendCredentials({password: password, companyId: '62d47c7a36aeee14652966cd', employeeId: employeeResponse.insertedId})
             if(response){
                 updateSignInClear()
                 setIsLoading(false)

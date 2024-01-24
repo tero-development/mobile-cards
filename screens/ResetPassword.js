@@ -1,5 +1,5 @@
 import {View, StyleSheet,Image, KeyboardAvoidingView, Text, Alert} from 'react-native'
-import { useState, useContext } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
 import Title from '../UI/Title'
 import Colors from '../utils/colors'
@@ -8,7 +8,8 @@ import ModularLink from '../components/ModularLink'
 import { SignInContext } from '../store/signin-context'
 import DeviceFractions from '../utils/dimensions'
 import { verifyPasswordHandler } from '../utils/helperFunctions'
-import { replacePasswordCredentials } from '../httpServices/credentials'
+import { sendCredentials } from '../httpServices/credentials'
+import { searchEmployee } from '../httpServices/employees'
 import PasswordRules from '../components/CreateAccountComponents/PasswordRules'
 import { updateCredentials, clearErrorHandler, colorHandler, errorFormatHandler } from '../utils/inputErrorDetection'
 import ErrorOverlay from '../UI/ErrorOverlay'
@@ -25,18 +26,44 @@ const ResetPassword = ({navigation, route}) =>{
     const [errorType, setErrorType] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
     const [isLoading, setIsLoading] = useState(false)
+    const [employeeId, setEmployeeId] = useState("")
+    const [companyId, setCompanyId] = useState("")
 
     const passwordCredentials = {
         password: credentials.password,
-        confirmPassword: credentials.confirmPassword
+        confirmPassword: credentials.confirmPassword,
+        email: credentials.email
     }
 
-    const {password, confirmPassword} = passwordCredentials
+
+    const {password, confirmPassword, email} = passwordCredentials
 
     function navigateSplashScreen(){
         navigation.navigate('SplashScreen')
     }
     
+    useEffect(()=>{
+        async function getIds(){
+            try{
+                const response = await searchEmployee(email)
+                if(response){
+                    setEmployeeId(response._id)
+                    setCompanyId(response.company_id)
+                }
+            }
+            catch(e){
+                alert(e)
+            }
+        }
+        if(email){
+            getIds()
+        }
+
+        ()=>{}
+    },[])
+
+    console.log(employeeId)
+    console.log(companyId)
 
     const validationGroup = [
         {check: password === confirmPassword, tag: 'password_mismatch', message: 'Passwords do not match'},
@@ -47,7 +74,7 @@ const ResetPassword = ({navigation, route}) =>{
     async function submitHandler(){
         setIsLoading(true)
         try{
-            const response = await replacePasswordCredentials({email: credentials.email, password: password})
+            const response = await sendCredentials({password: password, companyId: companyId, employeeId: employeeId})
             if(response){
                     updateSignInClear()
                     setIsLoading(false)

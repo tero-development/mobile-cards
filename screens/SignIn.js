@@ -11,11 +11,12 @@ import ModularButton from '../components/ModularButton'
 import DeviceFractions from '../utils/dimensions'
 import { updateCredentials, clearErrorHandler, colorHandler, errorFormatHandler } from '../utils/inputErrorDetection'
 import { verifyCredentials } from '../httpServices/credentials'
+import { searchEmployee } from '../httpServices/employees'
 import ErrorOverlay from '../UI/ErrorOverlay'
 import Loader from '../UI/Loader'
 
 
-const SignIn = ({navigation}) =>{
+const SignIn = ({navigation, route}) =>{
     const{
         credentials,
         updatePassword,
@@ -31,6 +32,7 @@ const SignIn = ({navigation}) =>{
         password: credentials.password
     }
     
+    const employee = route.params
 
     const {email, password} = {...signInCredentials}
 
@@ -46,7 +48,7 @@ const SignIn = ({navigation}) =>{
 
     const navigateForgot = () =>{
         updatePassword('')
-        navigation.navigate('ForgotPassword')
+        navigation.navigate('ForgotPassword', employee)
     }   
 
     function updateHandler(enteredText, updater){
@@ -57,22 +59,41 @@ const SignIn = ({navigation}) =>{
 
     ]
     
+   
     
     async function submitHandler(){
         setIsLoading(true)
         try{
-            const response = await verifyCredentials({email: email, password: password})
-            if(response._id){
-                setIsLoading(false)
-                navigateHome()
-            } else{
-                setIsLoading(false)
-                setErrorMessage('incorrect user or password')
-                setIsError(true)
+            const employeeResponse = await searchEmployee(email)
+            if(employeeResponse){
+                if(employeeResponse._id === employee._id){
+                    try{
+                        const response = await verifyCredentials({employeeId: employee._id, password: password})
+                        if(response._id){
+                            setIsLoading(false)
+                            navigateHome()
+                        } else{
+                            setIsLoading(false)
+                            setErrorMessage('incorrect user or pass')
+                            setIsError(true)
+                        }
+                    } catch(e){
+                        setIsLoading(false)
+                        alert(e)
+                        return
+                    }
+                } else{
+                    setIsLoading(false)
+                    setErrorMessage('incorrect user or password')
+                    setIsError(true)
+                }
             }
+
+            
         } catch(e){
             setIsLoading(false)
             alert(e)
+            return
         }
     }
 

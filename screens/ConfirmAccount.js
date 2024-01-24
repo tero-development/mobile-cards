@@ -51,7 +51,7 @@ const ConfirmAccount = ({navigation, route}) =>{
         setIsLoading(true)
         
         try{
-            const response = await sendCredentials({...credentials, company_id: '62d47c7a36aeee14652966cd', employee_id: employee._id})
+            const response = await sendCredentials({password: password, companyId: employee.company_id, employeeId: employee._id})
             if(response){
                 const update = await updateEmployee({...employee, verified: true})
                 if(update){
