@@ -7,6 +7,7 @@ import Title from '../UI/Title'
 import LabeledInput from '../components/LabeledInput'
 import DeviceFractions from '../utils/dimensions'
 import {searchEmployee} from '../httpServices/employees'
+import { searchCompanyEmail } from '../httpServices/companies'
 import {verifyEmailHandler} from '../utils/helperFunctions'
 import { updateCredentials, clearErrorHandler, colorHandler, errorFormatHandler } from '../utils/inputErrorDetection'
 import ModularLink from '../components/ModularLink'
@@ -50,19 +51,36 @@ const SplashScreen = ({navigation}) =>{
 
     async function submitNavigationHandler(){
         setIsLoading(true)
-        const employee = await searchEmployee(email)
-  
-        if(employee === 'not found'){
+        try{
+           const company = await searchCompanyEmail(email)
+           if(company._id){
+                try{
+                    const employee = await searchEmployee(email)
+    
+                    if(employee === 'not found'){
+                        setIsLoading(false)
+                        navigation.navigate("CreateAccount")
+                    } 
+                    else if(!employee.verified){
+                        setIsLoading(false)
+                        navigation.navigate('ConfirmAccount', employee)
+                    } 
+                    else{
+                        setIsLoading(false)
+                        navigation.navigate('SignIn', employee)
+                    }
+                } catch(e){
+                    alert(e)
+                    setIsLoading(false)
+                }
+           } else{
+                setErrorMessage("Invalid company domain")
+                setIsError(true)
+                setIsLoading(false)
+           }
+        }catch(e){
+            alert(e)
             setIsLoading(false)
-            navigation.navigate("CreateAccount")
-        } 
-        else if(!employee.verified){
-            setIsLoading(false)
-            navigation.navigate('ConfirmAccount', employee)
-        } 
-        else{
-            setIsLoading(false)
-            navigation.navigate('SignIn', employee)
         }
     }
 
