@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -33,24 +32,11 @@ import AppLoading from 'expo-app-loading';
 
 
 export default function App() {
-  const[dbInitialized, setDbInitialized] = useState(false)
   
   const Stack = createNativeStackNavigator()
   const Drawer = createDrawerNavigator()
 
   
-    //this starts the SQlite database on start up
-    useEffect(()=>{
-      init()
-      .then(()=>{setDbInitialized(true)})
-      .catch(err => alert(err))
-    }, [])
-
-
-    if(!dbInitialized){
-      return <AppLoading />
-    }
-
   const DrawerGroup = () =>{
 
 
