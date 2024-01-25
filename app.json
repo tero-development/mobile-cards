@@ -20,7 +20,7 @@
       "supportsTablet": true
     },
     "android": {
-      "versionCode": "1",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#BCEBE8"
@@ -39,7 +39,7 @@
       [
         "expo-notifications",
         {
-          "icon": "./local/assets/notification-icon.png",
+          "icon": "./local/assets/icon.png",
           "color": "#ffffff"
         }
       ]
