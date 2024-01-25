@@ -1,4 +1,4 @@
-import {View, StyleSheet, Image, KeyboardAvoidingView} from 'react-native'
+import {View, StyleSheet, Image, KeyboardAvoidingView, Platform} from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useState, useContext } from 'react'
 import { SignInContext } from '../store/signin-context'
@@ -150,7 +150,7 @@ const SignIn = ({navigation, route}) =>{
     }
 
     return(
-        <KeyboardAvoidingView behavior='height' style={styles.rootScreen}>
+        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : null} style={{ flex: 1 }}>
             <LinearGradient style={styles.rootScreen}  colors={[Colors.highlightColor, Colors.primaryColor]}>
                 <View style={styles.container}>
                     <IconButton isHeader={true} iconName='close' iconSize={28} iconColor={Colors.accentColor} onPress={navigateSplashScreen} viewStyle={{marginBottom: DeviceFractions.deviceH20}}/>
