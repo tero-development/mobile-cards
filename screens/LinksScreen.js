@@ -8,6 +8,7 @@ import {
   Button,
 } from 'react-native'
 import { updateLeader } from '../httpServices/employees';
+import * as Notifications from 'expo-notifications'
 
 if (
   Platform.OS === 'android' &&
@@ -39,12 +40,34 @@ async function update(){
   }
 }
 
+async function scheduleNotificationHandler() {
+
+  Notifications.iosNotificationPermissionGranted({
+    allowsIosNotificationsAsync: true
+  })
+  
+  if(iosNotificationPermissionGranted){
+   await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "You've got mail! 📬",
+        body: 'Here is the notification body',
+        data: { data: 'goes here' },
+      },
+      trigger: { seconds: 2 }
+    });
+  
+  }
+   
+}
+
+
+
 
   return (
     <View style={styles.container}>
       <View style={styles.buttonContainer}>
         {/* <Button title="Toggle Layout" onPress={toggleBox} /> */}
-        <Button title="update leader" onPress={()=>{}}
+        <Button title="schedule notification" onPress={scheduleNotificationHandler}
 
         />
 

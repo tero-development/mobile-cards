@@ -26,15 +26,29 @@ import AdminScreen from './screens/AdminScreen';
 import QuizAdminScreen from './screens/QuizAdminScreen';
 import LinkScreen from './screens/LinksScreen';
 import DateSchedulingScreen from './screens/DateSchedulingScreen';
-import { init } from './utils/database';
-import AppLoading from 'expo-app-loading';
+import * as Notifications from 'expo-notifications'
+import { requestPermissionsAsync } from 'expo-notifications';
 
 
+
+Notifications.setNotificationHandler({
+  handleNotification: async()=>{
+    return{
+      shouldPlaySound: false,
+      shouldSetBadge: false,
+      shouldShowAlert: true
+    }
+  }
+})
+
+
+requestPermissionsAsync()
 
 export default function App() {
   
   const Stack = createNativeStackNavigator()
   const Drawer = createDrawerNavigator()
+
 
   
   const DrawerGroup = () =>{
@@ -78,7 +92,7 @@ export default function App() {
               <Stack.Navigator screenOptions={{
                 headerShown: false
               }}>
-                  <Stack.Screen name="SplashScreen" component={SplashScreen} />
+                    <Stack.Screen name="SplashScreen" component={SplashScreen} />
                     <Stack.Screen name="SignIn" component={SignIn} />
                     <Stack.Screen name="CreateAccount" component={CreateAccount} />
                     <Stack.Screen name="ConfirmAccount" component={ConfirmAccount} />
