@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -26,15 +27,33 @@ import AdminScreen from './screens/AdminScreen';
 import QuizAdminScreen from './screens/QuizAdminScreen';
 import LinkScreen from './screens/LinksScreen';
 import DateSchedulingScreen from './screens/DateSchedulingScreen';
+import { init } from './utils/database';
+import AppLoading from 'expo-app-loading';
+
 
 
 export default function App() {
-
+  const[dbInitialized, setDbInitialized] = useState(false)
   
   const Stack = createNativeStackNavigator()
   const Drawer = createDrawerNavigator()
 
+  
+    //this starts the SQlite database on start up
+    useEffect(()=>{
+      init()
+      .then(()=>{setDbInitialized(true)})
+      .catch(err => alert(err))
+    }, [])
+
+
+    if(!dbInitialized){
+      return <AppLoading />
+    }
+
   const DrawerGroup = () =>{
+
+
     return(
       <DismissKeyboard> 
           <Drawer.Navigator screenOptions={{
