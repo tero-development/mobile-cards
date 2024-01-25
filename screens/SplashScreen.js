@@ -1,4 +1,4 @@
-import {StyleSheet, View, ImageBackground, Image, Text, KeyboardAvoidingView} from 'react-native'
+import {StyleSheet, View, ImageBackground, Image, Text, KeyboardAvoidingView, Platform} from 'react-native'
 import { useState, useContext} from 'react'
 import { SignInContext } from '../store/signin-context'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -115,7 +115,7 @@ const SplashScreen = ({navigation}) =>{
 
 
     return(
-        <KeyboardAvoidingView behavior='height' style={styles.screen}>
+        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : null} style={{ flex: 1 }}>
             <View 
                 style={styles.imageTop} 
             >
