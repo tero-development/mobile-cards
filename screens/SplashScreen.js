@@ -1,4 +1,13 @@
-import {StyleSheet, View, ImageBackground, Image, Text, KeyboardAvoidingView, Platform} from 'react-native'
+import {
+    StyleSheet, 
+    View, 
+    ImageBackground, 
+    Image, 
+    Text, 
+    KeyboardAvoidingView, 
+    Platform,
+    useWindowDimensions
+} from 'react-native'
 import { useState, useContext} from 'react'
 import { SignInContext } from '../store/signin-context'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -33,6 +42,8 @@ const SplashScreen = ({navigation}) =>{
     const [errorType, setErrorType] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
     const [isLoading, setIsLoading] = useState(false)
+
+    const styles = useStyles()
 
     const singleCredential = {
         email: credentials.email
@@ -100,7 +111,7 @@ const SplashScreen = ({navigation}) =>{
         />
         <ModularLink 
             textColor={Colors.secondaryColor}
-            textSize={20}
+            textSize={DeviceFractions.deviceWidth/ 25}
             onPress={()=>{errorFormatHandler(singleCredential, validationGroup, submitNavigationHandler, setErrorType, setErrorMessage, setIsError)
             }}
         >
@@ -149,8 +160,8 @@ const SplashScreen = ({navigation}) =>{
                         }
                     ]}
                 >
-                        <Text style={{color: Colors.accentColor}}>Powered by</Text>
-                        <Title textSize={20} color={Colors.secondaryColor}>Tero International Inc.</Title>  
+                        <Text style={{color: Colors.accentColor, fontSize: DeviceFractions.deviceW40}}>Powered by</Text>
+                        <Title textSize={DeviceFractions.deviceWidth / 25} color={Colors.secondaryColor}>Tero International Inc.</Title>  
                     {/* <View style={styles.iconContainer}>
                         <Image style={{width: '100%', height: '100%', borderRadius: 100}} source={require('../assets/images/tero-logo.png')} />
                     </View> */}
@@ -162,51 +173,79 @@ const SplashScreen = ({navigation}) =>{
     )
 }
 
-const styles = StyleSheet.create({
-    screen:{
-        flex: 1
-    },
-    imageTop:{
-        flex: 1
-    },
-    tempGradient:{
-        flex: 2
-    },
-    pageBottom:{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'space-evenly'
-    },
-    image:{
-        flex: 1,
-    },
-    imageBackground:{
-        opacity: 1
-    },
-    titleLine:{
-        flexDirection: 'row',
-        alignItems: 'center'
-    },
-    iconContainer:{
-  
-    },
-    buttonTray:{
-        width: DeviceFractions.deviceWidth,
-        alignItems: 'center',
-        marginTop: '0%',
-    },
-    input:{
-        fontSize: 18,
-        color: Colors.secondaryColor,
-        borderWidth: 2,
-        borderRadius: 10,
-        borderColor: Colors.secondaryColor,
-        paddingVertical: DeviceFractions.deviceHeight / 150,
-        paddingHorizontal: DeviceFractions.deviceW30,
-        width: DeviceFractions.deviceWidth / 10 * 6,
-        marginBottom: DeviceFractions.deviceH50
+
+function useStyles(){
+    const {width, height} = useWindowDimensions()
+    console.log("height: "+height)
+    console.log("width "+width)
+
+        function converter(style1, style2, style3){
+            let style
+            if(width < 400){
+                style = style1
+                return style
+            }
+            if(width < 600){
+                style = style2
+                return style
+            }
+            // if(width < 750){
+            //     style = style3
+            //     return style
+            // }
+            if(width < 900){
+                style = style3
+                return style
+            }
+            else{
+                style = style1
+                return style
+            }
+        
     }
-})
+
+    return StyleSheet.create({
+        screen:{
+            flex: 1
+        },
+        imageTop:{
+            flex: 1
+        },
+        tempGradient:{
+            flex: 2
+        },
+        pageBottom:{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'space-evenly'
+        },
+        image:{
+            flex: 1
+        },
+        imageBackground:{
+            opacity: 1
+        },
+        titleLine:{
+            flexDirection: 'row',
+            alignItems: 'center'
+        },
+        iconContainer:{
+      
+        },
+        buttonTray:{
+            width: DeviceFractions.deviceWidth,
+            alignItems: 'center',
+            marginTop: '0%',
+        },
+        input:{
+            fontSize: converter(width/30, width/25, width/30),
+            paddingVertical: converter(height/125, height/100, height/100),
+            paddingHorizontal: converter(width/30, width/30, width/30),
+            width: converter(width/10*4.5, width/10*5.5, width/10* 4),
+            marginBottom:converter(width/50, width/20)
+        }
+    })
+}
 
 export default SplashScreen
-
+    
