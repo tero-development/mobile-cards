@@ -54,7 +54,7 @@ const SplashScreen = ({navigation}) =>{
             flex: 1
         },
         tempGradient:{
-            flex: 2
+            flex: 3
         },
         pageBottom:{
             flex: 1,
@@ -178,7 +178,7 @@ const SplashScreen = ({navigation}) =>{
             >
                 <ImageBackground 
                     // source={require('../assets/images/competency-cover.jpg')}
-                    source={require('../assets/images/2024-corteva-splash-image.jpg')}
+                    source={require('../assets/images/corteva-blue.jpg')}
                     resizeMode='cover'
                     style={styles.image}
                     imageStyle={styles.imageBackground}

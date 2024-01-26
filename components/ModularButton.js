@@ -9,7 +9,7 @@ const ModularButton = ({children, onPress, style, textSize, textColor, textStyle
 
     const localStyles = {
         buttonOuterContainer:{
-            width: converter(width/2, width/1.75, width/2),
+            width: converter(width/2, width/1.6, width/2),
             height: height /20,
             borderRadius: converter(6, 8, 12),
             justifyContent: 'center',
