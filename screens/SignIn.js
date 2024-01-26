@@ -100,7 +100,7 @@ const SignIn = ({navigation, route}) =>{
                             navigateHome()
                         } else{
                             setIsLoading(false)
-                            setErrorMessage('incorrect user or pass')
+                            setErrorMessage('incorrect user or password')
                             setIsError(true)
                         }
                     } catch(e){
