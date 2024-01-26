@@ -1,4 +1,4 @@
-import {View, StyleSheet,Image, KeyboardAvoidingView, Platform} from 'react-native'
+import {View, Image, KeyboardAvoidingView, useWindowDimensions} from 'react-native'
 import { useState, useContext } from 'react'
 import { SignInContext } from '../store/signin-context'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -7,11 +7,12 @@ import Colors from '../utils/colors'
 import LabeledInput from '../components/LabeledInput'
 import ModularLink from '../components/ModularLink'
 import IconButton from '../UI/IconButton'
-import DeviceFractions from '../utils/dimensions'
+import DeviceFractions, {converterSetup, useStyles} from '../utils/dimensions'
 import ErrorOverlay from '../UI/ErrorOverlay'
 import { verifyPasswordHandler,  verifyEmailHandler } from '../utils/helperFunctions'
 import PasswordRules from '../components/CreateAccountComponents/PasswordRules'
 import { updateCredentials, colorHandler, clearErrorHandler, errorFormatHandler} from '../utils/inputErrorDetection'
+import Logo from '../UI/Logo'
 
 
 const CreateAccount = ({navigation, route}) =>{
@@ -25,6 +26,28 @@ const CreateAccount = ({navigation, route}) =>{
     const [isError, setIsError] = useState(false)
     const [errorType, setErrorType] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
+    //to help with keyboardavoiding view messing up small screens. Applied to all fields
+    //only applies extra margin bottom to the ModularLink titled "next"
+    //when the fields aren't focused the style is inactive therefore keeping consistent look
+    //with other sizes
+    const [extend, setExtend] = useState(false)
+
+    const {width, height} = useWindowDimensions()
+
+    const converter = converterSetup(width, height)
+
+    const localStyles = {
+        screen:{
+            flex: 1
+        },
+        container:{ 
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center'
+        },
+    }
+
+    const styles = useStyles(localStyles)
 
     let {
         firstName,
@@ -72,46 +95,44 @@ const CreateAccount = ({navigation, route}) =>{
     return(
     //If you experience issues with the KeyboardAvoidingView, a flex:1 ScrollView might work with
     //different behaviors
-    <KeyboardAvoidingView behavior='height' style={styles.keyboardView}>
-    <LinearGradient style={styles.gradient}  colors={['white', Colors.primaryColor]}>
+    <KeyboardAvoidingView behavior='height' style={styles.screen}>
+    <LinearGradient style={styles.screen}  colors={['white', Colors.primaryColor]}>
         <View style={styles.container}>
-        <IconButton isHeader={true} iconName='close' iconSize={28} iconColor={Colors.accentColor} onPress={navigateSplashScreen} viewStyle={{marginBottom: DeviceFractions.deviceH20}}/>
-            <View style={styles.imageWrapper}>
-                <Image style={{width:'100%', height:'100%'}} source={require('../assets/images/ExSell_logo_vertical_color.png')} />
-            </View>
-            <Title color={'#016B72'} textSize={28} style={{marginBottom: DeviceFractions.deviceH40}}>Create Your Account</Title>
+        <IconButton isHeader={false} iconName='close' iconColor={Colors.secondaryColor} onPress={navigateSplashScreen} viewStyle={{position: 'absolute', left: width/20, top: height/10, zIndex: 1}}/>
+            <Logo />
+            <Title color={Colors.secondaryColor} textSize={converter(width/16, width/14, width/16)} style={{marginBottom: height/40, textAlign: 'center'}}>Create Your Account</Title>
             <PasswordRules />
             <LabeledInput 
                 textInputConfig={{
                     value: email,
                     onChangeText: (text)=>{updateHandler(text, updateEmail)},
                     autoCorrect: false, 
-                    autoCapitalize:'none'
+                    autoCapitalize:'none',
+                    onFocus:()=>{setExtend(true)}
                 }} 
                 label={'Email'} 
                 color={colorHandler(errorType, ['email_invalid', 'email_mismatch'], email)}
-                style={{marginBottom: DeviceFractions.deviceH50}
-                }/>
+                />
             <LabeledInput textInputConfig={{
                     value: confirmEmail,
                     onChangeText:(text) => updateHandler( text, updateConfirmEmail),
                     autoCorrect: false, 
-                    autoCapitalize:'none'
+                    autoCapitalize:'none',
+                    onFocus:()=>{setExtend(true)}
                 }}
                 label={'Confirm Email'} 
                 color={colorHandler(errorType, [null, 'email_mismatch'], confirmEmail)} 
-                style={{marginBottom: DeviceFractions.deviceH50}}
             />
             <LabeledInput 
                 textInputConfig={{
                     value: password,
                     onChangeText:(text) => updateHandler( text, updatePassword),
                     autoCorrect: false, 
-                    autoCapitalize:'none'
+                    autoCapitalize:'none',
+                    onFocus:()=>{setExtend(true)}
                 }} 
                 label={'Password'} 
                 color={colorHandler(errorType, ['password_invalid', 'password_mismatch'], password)} 
-                style={{marginBottom: DeviceFractions.deviceH50}}
                 type="password"
                 />
                 <LabeledInput 
@@ -119,16 +140,16 @@ const CreateAccount = ({navigation, route}) =>{
                     value: confirmPassword,
                     onChangeText:(text) => updateHandler( text, updateConfirmPassword),
                     autoCorrect: false, 
-                    autoCapitalize:'none'
+                    autoCapitalize:'none',
+                    onFocus:()=>{setExtend(true)}
                 }} 
                 label={'Confirm Password'} 
                 color={colorHandler(errorType, [null, 'password_mismatch'], confirmPassword)}
-                style={{marginBottom: DeviceFractions.deviceH50}}
                 type="password"
                 />
             <ModularLink
+                viewStyle={extend && {marginBottom: converter(height/8, 0, 0)}}
                 textColor={Colors.secondaryColor}
-                textSize={20}
                 textWeight={'bold'}
                 onPress={()=>{errorFormatHandler(fitleredCredentials, validationGroup, navigateContactInfo, setErrorType, setErrorMessage, setIsError)}}
                 >
@@ -141,34 +162,5 @@ const CreateAccount = ({navigation, route}) =>{
     )
 }
 
-const styles = StyleSheet.create({
-    screen:{
-        flex: 1
-    },
-    keyboardView:{
-        flex:1
-    },
-    gradient:{
-        flex: 1,
-        paddingBottom: DeviceFractions.deviceH10
-    },
-    container:{ 
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    iconContainer:{
-        alignItems: 'flex-start',
-        width: DeviceFractions.deviceWidth,
-        paddingLeft: DeviceFractions.deviceW20,
-        marginBottom: DeviceFractions.deviceH20
-    },
-    
-    imageWrapper:{
-        width: 60,
-        height: 75,
-        marginBottom: DeviceFractions.deviceH50
-    }
-})
 
 export default CreateAccount

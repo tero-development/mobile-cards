@@ -110,18 +110,20 @@ const SplashScreen = ({navigation}) =>{
                 try{
                     const employee = await searchEmployee(email)
     
-                    if(employee === 'not found'){
-                        setIsLoading(false)
-                        navigation.navigate("CreateAccount")
-                    } 
-                    else if(!employee.verified){
-                        setIsLoading(false)
-                        navigation.navigate('ConfirmAccount', employee)
-                    } 
-                    else{
-                        setIsLoading(false)
-                        navigation.navigate('SignIn', employee)
-                    }
+                    // if(employee === 'not found'){
+                    //     setIsLoading(false)
+                    //     navigation.navigate("CreateAccount")
+                    // } 
+                    // else if(!employee.verified){
+                    //     setIsLoading(false)
+                    //     navigation.navigate('ConfirmAccount', employee)
+                    // } 
+                    // else{
+                    //     setIsLoading(false)
+                    //     navigation.navigate('SignIn', employee)
+                    // }
+                    navigation.navigate("CreateAccount")
+
                 } catch(e){
                     alert(e)
                     setIsLoading(false)
