@@ -21,14 +21,14 @@ const ForgotOverlay = ({directSend, closeFunction, passedEmail, navigation}) =>{
     const localStyles = {
         container:{
             flex: 1,
+            justifyContent: 'center',
             alignItems: 'center',
-            padding: 24,
             backgroundColor: Colors.primaryColor100
         },
         text:{
             textAlign: 'center',
             color: Colors.secondaryColor,
-            marginBottom: DeviceFractions.deviceH30,
+            marginBottom: height/30,
             fontSize: 16,
             width: DeviceFractions.deviceWidth / 10 * 6
         },
@@ -70,7 +70,6 @@ const ForgotOverlay = ({directSend, closeFunction, passedEmail, navigation}) =>{
             {codeError && <Text style={styles.errorText}>Check blank or code entries less than 6 digits</Text>}
             
             <LabeledInput 
-                style={{marginBottom: DeviceFractions.deviceHeight / 25}}
                 color={codeError? Colors.errorColor : Colors.secondaryColor}
                 textInputConfig={{
                     value: code,
@@ -83,8 +82,10 @@ const ForgotOverlay = ({directSend, closeFunction, passedEmail, navigation}) =>{
                     maxLength: 6
                 }}   
              />
-            <ModularButton style={{marginBottom: DeviceFractions.deviceH30}} onPress={submitHandler} buttonColor={Colors.accentColor} textColor={Colors.highlightColor} textStyles={{fontWeight: 'bold'}} rippleColor={Colors.secondaryColor} textSize={17}>Submit code</ModularButton>
+            <ModularButton onPress={submitHandler} buttonColor={Colors.accentColor400} textColor={Colors.highlightColor} rippleColor={Colors.secondaryColor400}>Submit code</ModularButton>
+            <ModularButton onPress={closeFunction} buttonColor={Colors.accentColor} textColor={Colors.highlightColor} rippleColor={Colors.secondaryColor}>close</ModularButton>
             <Text style={styles.text}>Enter the 6 digit verification code provided in the email</Text>
+            
     </>
 
     async function submitHandler(){
@@ -110,7 +111,6 @@ const ForgotOverlay = ({directSend, closeFunction, passedEmail, navigation}) =>{
 
     return (
         <View style={styles.container}>
-            <IconButton isHeader={true} iconName='close' iconSize={28} iconColor={Colors.accentColor} onPress={closeFunction} viewStyle={{marginBottom: DeviceFractions.deviceHeight / 10 * 2}}/>
             <Text style={styles.title}>Enter Code</Text>
             {directSend && <Text style={[styles.text, styles.topText]}>A confirmation email was sent to {passedEmail}</Text>}
             {isLoading? <Loader size='large' color={Colors.accentColor}/> : midContent}

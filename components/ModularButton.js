@@ -43,7 +43,7 @@ const ModularButton = ({children, onPress, style, textSize, textColor, textStyle
 
     return(
         <View style={[styles.buttonOuterContainer, style]}>
-            <Pressable style={({pressed})=>[styles.buttonInnerContainer, buttonBackground, pressed? pressedStyles : null]} onPress={onPress} android_ripple={{color: rippleColor? rippleColor : 'black'}}>
+            <Pressable style={({pressed})=>[styles.buttonInnerContainer, buttonBackground, pressed? pressedStyles : {backgroundColor: buttonColor}]} onPress={onPress} android_ripple={{color: rippleColor? rippleColor : 'black'}}>
                 <Text style={[styles.buttonText, textSize&&{fontSize: textSize}, {color: textColor}, textStyles && textStyles]}>{children}</Text>
             </Pressable>
         </View>

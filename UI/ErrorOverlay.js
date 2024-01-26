@@ -13,7 +13,6 @@ const ErrorOverlay = ({message, onPress}) =>{
             flex: 1,
             justifyContent: 'center',
             alignItems: 'center',
-            padding: 24,
             backgroundColor: Colors.primaryColor100
         },
         text:{
