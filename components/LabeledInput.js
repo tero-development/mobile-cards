@@ -4,7 +4,7 @@ import {converterSetup, useStyles} from '../utils/dimensions'
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 
 
-const LabeledInput = ({style, viewStyle, label, textSize, color, textInputConfig, disable, type}) =>{
+const LabeledInput = ({style, viewStyle, label, color, textInputConfig, disable, type}) =>{
 
        // State variable to track password visibility 
        const [showPassword, setShowPassword] = useState(false); 

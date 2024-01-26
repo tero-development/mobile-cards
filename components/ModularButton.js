@@ -1,5 +1,5 @@
-import {View, Text, Pressable, StyleSheet, Platform, useWindowDimensions} from 'react-native'
-import DeviceFractions, {converterSetup, getDimensions, useStyles} from '../utils/dimensions'
+import {View, Text, Pressable, Platform, useWindowDimensions} from 'react-native'
+import {converterSetup, useStyles} from '../utils/dimensions'
 
 const ModularButton = ({children, onPress, style, textSize, textColor, textStyles,  buttonColor, rippleColor}) =>{
 
@@ -24,7 +24,8 @@ const ModularButton = ({children, onPress, style, textSize, textColor, textStyle
         buttonText:{
             color: 'white',
             fontSize: converter(width/30, width/25, width/30),
-            textAlign: 'center'
+            textAlign: 'center',
+            fontWeight: 'bold'
         },
       
     }

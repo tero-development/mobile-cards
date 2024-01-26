@@ -1,6 +1,6 @@
-import { View, Pressable, StyleSheet, } from "react-native"
+import { View, Pressable, StyleSheet, useWindowDimensions} from "react-native"
 import {Ionicons} from '@expo/vector-icons'
-import DeviceFractions from "../utils/dimensions"
+import  {converterSetup, useStyles} from "../utils/dimensions"
 import { useNavigation } from "@react-navigation/native"
 
 
@@ -8,7 +8,28 @@ import { useNavigation } from "@react-navigation/native"
 //isHeader is a boolean, if true, it will have be placed in a View w/ alignItems: flex-start
 //false: it's just icon, no View or special placement
 const IconButton = ({isHeader, hasEditProfile, iconName, iconSize, iconColor, onPress, viewStyle}) =>{
-    const navigation = useNavigation()
+
+    const {width, height} = useWindowDimensions()
+
+    const converter = converterSetup(width, height)
+
+    const localStyles = {
+        iconContainer:{
+            width: width,
+            paddingLeft: width / 20,
+            paddingTop: height / 10,
+        },
+
+    withProfile:{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingRight: width/20,
+    }
+}
+ 
+    const styles = useStyles(localStyles)
+
+    const navigation = useNavigation(localStyles)
 
     function navigateProfile(){
         navigation.navigate('ProfileScreen')
@@ -17,7 +38,7 @@ const IconButton = ({isHeader, hasEditProfile, iconName, iconSize, iconColor, on
 
     const standard = 
     <Pressable onPress={onPress} style={viewStyle}>
-        <Ionicons  name={iconName}  size={iconSize} color={iconColor} />
+        <Ionicons  name={iconName}  size={iconSize? iconSize : converter(20, 28, 38)} color={iconColor} />
     </Pressable>
    
    const header = 
@@ -27,7 +48,7 @@ const IconButton = ({isHeader, hasEditProfile, iconName, iconSize, iconColor, on
         </Pressable>
         {hasEditProfile && 
         <Pressable onPress={navigateProfile}>
-            <Ionicons name='person' size={iconSize} color={iconColor}/>
+            <Ionicons name='person' size={24} color={iconColor}/>
         </Pressable>
         }
     </View>
@@ -37,18 +58,6 @@ const IconButton = ({isHeader, hasEditProfile, iconName, iconSize, iconColor, on
     )
 }
 
-const styles = StyleSheet.create({
-        iconContainer:{
-            width: DeviceFractions.deviceWidth,
-            paddingLeft: DeviceFractions.deviceW20,
-            paddingTop: DeviceFractions.deviceHeight / 10,
-        },
 
-    withProfile:{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingRight: DeviceFractions.deviceW20,
-    }
-})
 
 export default IconButton

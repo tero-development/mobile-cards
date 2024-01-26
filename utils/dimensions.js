@@ -18,13 +18,6 @@ const DeviceFractions = {
     deviceW50 : deviceWidth / 50,
 }
 
-export function getDimensions(){
-    const {width, height} = useWindowDimensions()
-    return({
-        width: width,
-        height: height
-    })
-}
 
 //should be fed the 2 parameters from the using component's
 //invocation of useWindowDimensions

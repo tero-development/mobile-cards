@@ -1,9 +1,37 @@
-import {View, Text, StyleSheet} from 'react-native'
+import {View, Text, useWindowDimensions} from 'react-native'
 import Colors from '../utils/colors'
 import ModularButton from '../components/ModularButton'
-import DeviceFractions from '../utils/dimensions'
+import {converterSetup, useStyles} from '../utils/dimensions'
 
 const ErrorOverlay = ({message, onPress}) =>{
+    const {width, height} = useWindowDimensions()
+
+    const converter = converterSetup(width, height)
+
+    const localStyles = {
+        container:{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: 24,
+            backgroundColor: Colors.primaryColor100
+        },
+        text:{
+            textAlign: 'center',
+            color: Colors.secondaryColor,
+            marginBottom: height/30,
+            fontSize: converter(width/35, width/27, width/35)
+        },
+        title:{
+            fontSize: converter(width/25, width/20, width/25),
+            fontWeight: 'bold',
+            marginBottom: height / 100,
+            color: Colors.secondaryColor
+        }
+    }
+
+    const styles = useStyles(localStyles)
+
     return (
         <View style={styles.container}>
             <Text style={styles.title}>An error occured!</Text>
@@ -16,24 +44,3 @@ const ErrorOverlay = ({message, onPress}) =>{
 
 export default ErrorOverlay
 
-const styles = StyleSheet.create({
-    container:{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 24,
-        backgroundColor: Colors.primaryColor100
-    },
-    text:{
-        textAlign: 'center',
-        color: Colors.secondaryColor,
-        marginBottom: DeviceFractions.deviceH30,
-        fontSize: 16
-    },
-    title:{
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: DeviceFractions.deviceHeight / 100,
-        color: Colors.secondaryColor
-    }
-})

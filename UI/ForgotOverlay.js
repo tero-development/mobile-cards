@@ -1,8 +1,8 @@
-import {View, Text, StyleSheet} from 'react-native'
+import {View, Text, useWindowDimensions} from 'react-native'
 import { useState } from 'react'
 import Colors from '../utils/colors'
 import ModularButton from '../components/ModularButton'
-import DeviceFractions from '../utils/dimensions'
+import DeviceFractions, {converterSetup,useStyles} from '../utils/dimensions'
 import IconButton from './IconButton'
 import LabeledInput from '../components/LabeledInput'
 import { verifyReset } from '../httpServices/resets'
@@ -13,6 +13,44 @@ const ForgotOverlay = ({directSend, closeFunction, passedEmail, navigation}) =>{
     const [codeError, setCodeError] = useState(false)
     const [emailError, setEmailError] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
+
+    const {width, height} = useWindowDimensions()
+
+    const converter = converterSetup(width, height)
+
+    const localStyles = {
+        container:{
+            flex: 1,
+            alignItems: 'center',
+            padding: 24,
+            backgroundColor: Colors.primaryColor100
+        },
+        text:{
+            textAlign: 'center',
+            color: Colors.secondaryColor,
+            marginBottom: DeviceFractions.deviceH30,
+            fontSize: 16,
+            width: DeviceFractions.deviceWidth / 10 * 6
+        },
+        topText:{
+            marginBottom: DeviceFractions.deviceHeight / 100,
+        },
+        errorText:{
+            textAlign: 'center',
+            color: Colors.errorColor,
+            marginVertical: DeviceFractions.deviceHeight / 200,
+            fontSize: 14,
+            width: DeviceFractions.deviceWidth / 10 * 5
+        },
+        title:{
+            fontSize: 24,
+            fontWeight: 'bold',
+            marginBottom: DeviceFractions.deviceHeight / 100,
+            color: Colors.secondaryColor
+        }
+    }
+
+    const styles = useStyles(localStyles)
 
     function setCodeErrorHandler(){
         setCodeError(true)
@@ -83,34 +121,3 @@ const ForgotOverlay = ({directSend, closeFunction, passedEmail, navigation}) =>{
 
 export default ForgotOverlay
 
-const styles = StyleSheet.create({
-    container:{
-        flex: 1,
-        alignItems: 'center',
-        padding: 24,
-        backgroundColor: Colors.primaryColor100
-    },
-    text:{
-        textAlign: 'center',
-        color: Colors.secondaryColor,
-        marginBottom: DeviceFractions.deviceH30,
-        fontSize: 16,
-        width: DeviceFractions.deviceWidth / 10 * 6
-    },
-    topText:{
-        marginBottom: DeviceFractions.deviceHeight / 100,
-    },
-    errorText:{
-        textAlign: 'center',
-        color: Colors.errorColor,
-        marginVertical: DeviceFractions.deviceHeight / 200,
-        fontSize: 14,
-        width: DeviceFractions.deviceWidth / 10 * 5
-    },
-    title:{
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: DeviceFractions.deviceHeight / 100,
-        color: Colors.secondaryColor
-    }
-})

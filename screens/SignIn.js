@@ -1,4 +1,4 @@
-import {View, StyleSheet, Image, KeyboardAvoidingView, Platform, useWindowDimensions} from 'react-native'
+import {View,  KeyboardAvoidingView, Platform, useWindowDimensions} from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useState, useContext } from 'react'
 import { SignInContext } from '../store/signin-context'
@@ -8,12 +8,13 @@ import Title from '../UI/Title'
 import LabeledInput from '../components/LabeledInput'
 import ModularLink from '../components/ModularLink'
 import ModularButton from '../components/ModularButton'
-import DeviceFractions, {converterSetup, useStyles} from '../utils/dimensions'
+import {converterSetup, useStyles} from '../utils/dimensions'
 import { updateCredentials, clearErrorHandler, colorHandler, errorFormatHandler } from '../utils/inputErrorDetection'
 import { verifyCredentials } from '../httpServices/credentials'
 import { searchEmployee } from '../httpServices/employees'
 import ErrorOverlay from '../UI/ErrorOverlay'
 import Loader from '../UI/Loader'
+import Logo from '../UI/Logo'
 
 
 const SignIn = ({navigation, route}) =>{
@@ -39,12 +40,7 @@ const SignIn = ({navigation, route}) =>{
             flex: 1,
             alignItems: 'center',
             justifyContent: 'center',    
-            paddingBottom: DeviceFractions.deviceHeight/10*2    
-        },
-        imageWrapper:{
-            width: 60,
-            height: 75,
-            marginBottom: DeviceFractions.deviceH50
+            paddingVertical: height/10*2    
         },
         signInContainer:{
             alignItems: 'center'
@@ -127,7 +123,6 @@ const SignIn = ({navigation, route}) =>{
     <View style={styles.signInContainer}>
         <LabeledInput 
             label={'Email'} 
-            // style={{marginBottom: DeviceFractions.deviceH50}}
             color={colorHandler(errorType, [], email)}
             textInputConfig={{
                 value: email,
@@ -138,7 +133,6 @@ const SignIn = ({navigation, route}) =>{
         />
         <LabeledInput 
             label={'Password'} 
-            // style={{marginBottom: DeviceFractions.deviceH50}}
             color={colorHandler(errorType, [], password)}
             type='password'
             textInputConfig={{
@@ -162,7 +156,7 @@ const SignIn = ({navigation, route}) =>{
         </ModularButton>
         <ModularLink 
             textColor={Colors.secondaryColor} 
-            viewStyle={{marginBottom: DeviceFractions.deviceH30}}
+            viewStyle={{marginBottom: width/30}}
             onPress={navigateForgot}
         >
             Forgot Password
@@ -177,12 +171,11 @@ const SignIn = ({navigation, route}) =>{
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : null} style={{ flex: 1 }}>
             <LinearGradient style={styles.rootScreen}  colors={[Colors.highlightColor, Colors.primaryColor]}>
                 <View style={styles.container}>
-                    <IconButton isHeader={true} iconName='close' iconSize={28} iconColor={Colors.accentColor} onPress={navigateSplashScreen} viewStyle={{marginBottom: DeviceFractions.deviceH20}}/>
-                    <View style={styles.imageWrapper}>
-                        <Image style={{width:'100%', height:'100%'}} source={require('../assets/images/ExSell_logo_vertical_color.png')} />
-                    </View>
+                <IconButton isHeader={false} iconName='close' iconColor={Colors.secondaryColor} onPress={navigateSplashScreen} viewStyle={{position: 'absolute', left: width/20, top: height/10, zIndex: 1}}/>
+                 <Logo />
+           
                     <View >
-                        <Title color={Colors.secondaryColor} textSize={28} style={{marginBottom: DeviceFractions.deviceH20, textAlign: 'center'}}>Sign In</Title>
+                        <Title color={Colors.secondaryColor} textSize={converter(width/16, width/14, width/16)} style={{marginBottom: height/20, textAlign: 'center'}}>Sign In</Title>
                         {isLoading? <Loader size='large' color={Colors.accentColor}/> : midContent}
                     </View>
                 </View>

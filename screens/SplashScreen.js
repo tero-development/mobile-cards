@@ -1,7 +1,6 @@
 import {
     View, 
     ImageBackground, 
-    Image, 
     Text, 
     KeyboardAvoidingView, 
     Platform,
@@ -13,7 +12,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import Colors from '../utils/colors'
 import Title from '../UI/Title'
 import LabeledInput from '../components/LabeledInput'
-import DeviceFractions, {converterSetup, useStyles} from '../utils/dimensions'
+import  {converterSetup, useStyles} from '../utils/dimensions'
 import {searchEmployee} from '../httpServices/employees'
 import { searchCompanyEmail } from '../httpServices/companies'
 import {verifyEmailHandler} from '../utils/helperFunctions'
@@ -21,6 +20,7 @@ import { updateCredentials, clearErrorHandler, colorHandler, errorFormatHandler 
 import ModularLink from '../components/ModularLink'
 import ErrorOverlay from '../UI/ErrorOverlay'
 import Loader from '../UI/Loader'
+import Logo from '../UI/Logo'
 
 //** IMPORTANT!
 //The submitNavigationHandler function should make a call also
@@ -73,13 +73,8 @@ const SplashScreen = ({navigation}) =>{
         logoContainer:{
             alignItems: 'center'
         },
-        logo: {
-            width: height/10, 
-            height: height/10, 
-            marginBottom: converter(height/50, height/40, height/40)
-        },
         buttonTray:{
-            width: DeviceFractions.deviceWidth,
+            width: width,
             alignItems: 'center',
             marginTop: '0%',
         },
@@ -188,7 +183,7 @@ const SplashScreen = ({navigation}) =>{
             <View style={styles.pageBottom}>
                 <View style={styles.titleLine}>
                     <View style={styles.logoContainer}>
-                        <Image style={styles.logo} source={require('../assets/images/ExSell_logo_vertical_color.png')} />
+                        <Logo />
                         {
                             isLoading? <Loader size='large' color={Colors.accentColor}/> : midContent
                         }
