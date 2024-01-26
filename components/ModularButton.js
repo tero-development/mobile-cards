@@ -37,8 +37,7 @@ const ModularButton = ({children, onPress, style, textSize, textColor, textStyle
     }
 
     const pressedStyles = {
-        backgroundColor: Platform.OS === 'ios'? 'black' : buttonColor,
-        opacity: Platform.OS === 'ios'? 0.1 : 1
+        backgroundColor: Platform.OS === 'ios'? rippleColor : buttonColor
     }
 
     return(
