@@ -1,4 +1,4 @@
-import {View, StyleSheet,Image, KeyboardAvoidingView, Text, Alert} from 'react-native'
+import {View, KeyboardAvoidingView, useWindowDimensions} from 'react-native'
 import { useState, useEffect, useContext } from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
 import Title from '../UI/Title'
@@ -6,7 +6,7 @@ import Colors from '../utils/colors'
 import LabeledInput from '../components/LabeledInput'
 import ModularLink from '../components/ModularLink'
 import { SignInContext } from '../store/signin-context'
-import DeviceFractions from '../utils/dimensions'
+import {converterSetup, useStyles} from '../utils/dimensions'
 import { verifyPasswordHandler } from '../utils/helperFunctions'
 import { sendCredentials } from '../httpServices/credentials'
 import { searchEmployee } from '../httpServices/employees'
@@ -14,8 +14,9 @@ import PasswordRules from '../components/CreateAccountComponents/PasswordRules'
 import { updateCredentials, clearErrorHandler, colorHandler, errorFormatHandler } from '../utils/inputErrorDetection'
 import ErrorOverlay from '../UI/ErrorOverlay'
 import Loader from '../UI/Loader'
+import Logo from '../UI/Logo'
 
-const ResetPassword = ({navigation, route}) =>{
+const ResetPassword = ({navigation}) =>{
     const {
         credentials,
         updatePassword,
@@ -28,6 +29,26 @@ const ResetPassword = ({navigation, route}) =>{
     const [isLoading, setIsLoading] = useState(false)
     const [employeeId, setEmployeeId] = useState("")
     const [companyId, setCompanyId] = useState("")
+
+    const {width, height} = useWindowDimensions()
+
+    const converter = converterSetup(width, height)
+
+    const localStyles = {
+        screen:{
+            flex: 1
+        },
+        container:{ 
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center'
+        },
+        innerContainer:{
+            alignItems: 'center'
+        }
+    }
+
+    const styles = useStyles(localStyles)
 
     const passwordCredentials = {
         password: credentials.password,
@@ -62,8 +83,6 @@ const ResetPassword = ({navigation, route}) =>{
         ()=>{}
     },[])
 
-    console.log(employeeId)
-    console.log(companyId)
 
     const validationGroup = [
         {check: password === confirmPassword, tag: 'password_mismatch', message: 'Passwords do not match'},
@@ -103,7 +122,7 @@ const ResetPassword = ({navigation, route}) =>{
                 type="password" 
                 label={'Password'} 
                 color={colorHandler(errorType, ['password_invalid', 'password_mismatch'], password)} 
-                style={{marginBottom: DeviceFractions.deviceH50}
+                style={{marginBottom: height/50}
                 }/>
                 <LabeledInput 
                 textInputConfig={{
@@ -115,13 +134,10 @@ const ResetPassword = ({navigation, route}) =>{
                 type="password" 
                 label={'Confirm Password'} 
                 color={colorHandler(errorType, [null, 'password_mismatch'], confirmPassword)}
-                style={{marginBottom: DeviceFractions.deviceH50}
+                style={{marginBottom: height/50}
                 }/>
-                {/* <Text style={styles.returnText}>Email recognized! Create a password to finalize your account and retrieve your previous data</Text> */}
-
             <ModularLink
                 textColor={Colors.secondaryColor}
-                textSize={20}
                 textWeight={'bold'}
                 onPress={()=>{errorFormatHandler(passwordCredentials, validationGroup, submitHandler, setErrorType, setErrorMessage, setIsError)}}
                 >
@@ -137,13 +153,11 @@ const ResetPassword = ({navigation, route}) =>{
     return(
     //If you experience issues with the KeyboardAvoidingView, a flex:1 ScrollView might work with
     //different behaviors
-    <KeyboardAvoidingView behavior='height' style={styles.keyboardView}>
-    <LinearGradient style={styles.gradient}  colors={['white', Colors.primaryColor]}>
+    <KeyboardAvoidingView behavior='height' style={styles.screen}>
+    <LinearGradient style={styles.screen}  colors={['white', Colors.primaryColor]}>
         <View style={styles.container}>
-            <View style={styles.imageWrapper}>
-                <Image style={{width:'100%', height:'100%'}} source={require('../assets/images/corteva-logo.png')} />
-            </View>
-            <Title color={'#016B72'} textSize={28} style={{marginBottom: DeviceFractions.deviceH50}}>Reset Your Password</Title>
+            <Logo />
+            <Title color={Colors.secondaryColor} textSize={converter(width/16, width/14, width/16)} style={{marginBottom: height/40, textAlign: 'center'}}>Reset Password</Title>
             {isLoading? <Loader size='large' color={Colors.accentColor}/> : midContent}
         </View>
     </LinearGradient>
@@ -152,44 +166,5 @@ const ResetPassword = ({navigation, route}) =>{
     )
 }
 
-const styles = StyleSheet.create({
-    screen:{
-        flex: 1
-    },
-    keyboardView:{
-        flex:1
-    },
-    gradient:{
-        flex: 1,
-        paddingBottom: DeviceFractions.deviceH10
-    },
-    container:{ 
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    iconContainer:{
-        alignItems: 'flex-start',
-        width: DeviceFractions.deviceWidth,
-        paddingLeft: DeviceFractions.deviceW20,
-        marginBottom: DeviceFractions.deviceH20
-    },
-    innerContainer:{
-        alignItems: 'center'
-    },
-    imageWrapper:{
-        width: 60,
-        height: 75,
-        marginBottom: DeviceFractions.deviceH50
-    },
-
-    returnText:{
-        width: DeviceFractions.deviceWidth / 10 * 7,
-        marginBottom: DeviceFractions.deviceH50,
-        color: Colors.accentColor,
-        fontSize: 16,
-        textAlign: 'center'
-    }
-})
 
 export default ResetPassword

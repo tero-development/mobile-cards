@@ -1,8 +1,25 @@
-import {View, Text, StyleSheet} from 'react-native'
-import DeviceFractions from '../../utils/dimensions'
+import {View, Text, useWindowDimensions} from 'react-native'
+import  {converterSetup, useStyles} from '../../utils/dimensions'
 import Colors from '../../utils/colors'
 
 const PasswordRules = () =>{
+    const {width, height} = useWindowDimensions()
+
+    const converter = converterSetup(width, height)
+
+    const localStyles = {
+        container:{
+            marginBottom: height/40,
+        },
+        passwordRules:{
+            fontSize: converter(width/35, width/30, width/35),
+            color: Colors.accentColor,
+            fontWeight: 'bold'
+        }
+    
+    }
+
+    const styles = useStyles(localStyles)
     return(
         <View style={styles.container}>
             <Text style={styles.passwordRules}>Passwords requirements:</Text>
@@ -17,14 +34,3 @@ const PasswordRules = () =>{
 
 export default PasswordRules
 
-const styles = StyleSheet.create({
-    container:{
-        marginBottom: DeviceFractions.deviceH40
-    },
-    passwordRules:{
-        fontSize: 12,
-        color: Colors.accentColor,
-        fontWeight: 'bold'
-    }
-
-})

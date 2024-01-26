@@ -1,9 +1,8 @@
-import {View, Text, useWindowDimensions} from 'react-native'
+import {KeyboardAvoidingView,View, Text, useWindowDimensions} from 'react-native'
 import { useState } from 'react'
 import Colors from '../utils/colors'
 import ModularButton from '../components/ModularButton'
-import DeviceFractions, {converterSetup,useStyles} from '../utils/dimensions'
-import IconButton from './IconButton'
+import  {converterSetup,useStyles} from '../utils/dimensions'
 import LabeledInput from '../components/LabeledInput'
 import { verifyReset } from '../httpServices/resets'
 import Loader from './Loader'
@@ -19,6 +18,9 @@ const ForgotOverlay = ({directSend, closeFunction, passedEmail, navigation}) =>{
     const converter = converterSetup(width, height)
 
     const localStyles = {
+        screen:{
+            flex:1
+        },
         container:{
             flex: 1,
             justifyContent: 'center',
@@ -33,19 +35,19 @@ const ForgotOverlay = ({directSend, closeFunction, passedEmail, navigation}) =>{
             width: converter(width/2, width/1.5, width/1.9)
         },
         topText:{
-            marginBottom: DeviceFractions.deviceHeight / 100,
+            marginBottom: height / 100,
         },
         errorText:{
             textAlign: 'center',
             color: Colors.errorColor,
-            marginVertical: DeviceFractions.deviceHeight / 200,
+            marginVertical: height / 200,
             fontSize: 14,
-            width: DeviceFractions.deviceWidth / 10 * 5
+            width: width / 10 * 5
         },
         title:{
             fontSize: converter(width/16, width/14, width/16),
             fontWeight: 'bold',
-            marginBottom: DeviceFractions.deviceHeight / 100,
+            marginBottom: height / 100,
             color: Colors.secondaryColor
         }
     }
@@ -82,7 +84,7 @@ const ForgotOverlay = ({directSend, closeFunction, passedEmail, navigation}) =>{
                     maxLength: 6
                 }}   
              />
-            <ModularButton onPress={submitHandler} buttonColor={Colors.accentColor400} textColor={Colors.highlightColor} rippleColor={Colors.secondaryColor400}>Submit code</ModularButton>
+            <ModularButton onPress={navigation} buttonColor={Colors.accentColor400} textColor={Colors.highlightColor} rippleColor={Colors.secondaryColor400}>Submit code</ModularButton>
             <ModularButton onPress={closeFunction} buttonColor={Colors.accentColor} textColor={Colors.highlightColor} rippleColor={Colors.secondaryColor}>close</ModularButton>
             <Text style={styles.text}>Enter the 6 digit verification code provided in the email</Text>
             
@@ -110,11 +112,14 @@ const ForgotOverlay = ({directSend, closeFunction, passedEmail, navigation}) =>{
     }
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Enter Code</Text>
-            {directSend && <Text style={[styles.text, styles.topText]}>A confirmation email was sent to {passedEmail}</Text>}
-            {isLoading? <Loader size='large' color={Colors.accentColor}/> : midContent}
-        </View>
+        <KeyboardAvoidingView behavior='height' style={styles.screen}>
+            <View style={styles.container}>
+                <Text style={styles.title}>Enter Code</Text>
+                {directSend && <Text style={[styles.text, styles.topText]}>A confirmation email was sent to {passedEmail}</Text>}
+                {isLoading? <Loader size='large' color={Colors.accentColor}/> : midContent}
+            </View>
+        </KeyboardAvoidingView>
+
     )
     
 }
