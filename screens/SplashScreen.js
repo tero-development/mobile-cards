@@ -62,7 +62,7 @@ const SplashScreen = ({navigation}) =>{
             justifyContent: 'space-around'
         },
         image:{
-            flex: 1
+            flex: 1,
         },
         imageBackground:{
             opacity: 1
@@ -70,8 +70,13 @@ const SplashScreen = ({navigation}) =>{
         titleLine:{
             alignItems: 'center'
         },
-        iconContainer:{
+        logoContainer:{
             alignItems: 'center'
+        },
+        logo: {
+            width: height/10, 
+            height: height/10, 
+            marginBottom: converter(height/50, height/40, height/40)
         },
         buttonTray:{
             width: DeviceFractions.deviceWidth,
@@ -182,8 +187,8 @@ const SplashScreen = ({navigation}) =>{
             <LinearGradient style={styles.tempGradient} colors={[Colors.highlightColor, Colors.primaryColor]}>
             <View style={styles.pageBottom}>
                 <View style={styles.titleLine}>
-                    <View style={styles.iconContainer}>
-                        <Image style={{width: DeviceFractions.deviceH10, height: DeviceFractions.deviceH10}} source={require('../assets/images/ExSell_logo_vertical_color.png')} />
+                    <View style={styles.logoContainer}>
+                        <Image style={styles.logo} source={require('../assets/images/ExSell_logo_vertical_color.png')} />
                         {
                             isLoading? <Loader size='large' color={Colors.accentColor}/> : midContent
                         }
@@ -201,7 +206,7 @@ const SplashScreen = ({navigation}) =>{
                 >
                         <Text style={{color: Colors.accentColor, fontSize: converter(width/45, width/40, width/45)}}>Powered by</Text>
                         <Title color={Colors.secondaryColor} textSize={converter(width/35, width/30, width/35)}>Tero International Inc.</Title>  
-                    {/* <View style={styles.iconContainer}>
+                    {/* <View style={styles.logoContainer}>
                         <Image style={{width: '100%', height: '100%', borderRadius: 100}} source={require('../assets/images/tero-logo.png')} />
                     </View> */}
                 </View>
