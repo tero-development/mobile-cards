@@ -27,22 +27,22 @@ import QuizAdminScreen from './screens/QuizAdminScreen';
 import LinkScreen from './screens/LinksScreen';
 import DateSchedulingScreen from './screens/DateSchedulingScreen';
 import * as Notifications from 'expo-notifications'
-import { requestPermissionsAsync } from 'expo-notifications';
+// import { requestPermissionsAsync } from 'expo-notifications';
 
 
 
-Notifications.setNotificationHandler({
-  handleNotification: async()=>{
-    return{
-      shouldPlaySound: false,
-      shouldSetBadge: false,
-      shouldShowAlert: true
-    }
-  }
-})
+// Notifications.setNotificationHandler({
+//   handleNotification: async()=>{
+//     return{
+//       shouldPlaySound: false,
+//       shouldSetBadge: false,
+//       shouldShowAlert: true
+//     }
+//   }
+// })
 
 
-requestPermissionsAsync()
+// requestPermissionsAsync()
 
 export default function App() {
   
