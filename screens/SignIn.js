@@ -144,8 +144,7 @@ const SignIn = ({navigation, route}) =>{
         
         <ModularButton
                     style={{
-                        backgroundColor: Colors.secondaryColor,
-                        marginTop: converter(height/50, height/50, height/50)
+                        marginTop: converter(height/60, height/60, height/60)
                     }}
                     textColor={'white'}
                     buttonColor={Colors.accentColor}

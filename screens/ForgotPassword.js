@@ -117,10 +117,7 @@ const ForgotPassword = ({navigation, route}) =>{
     />
     
     <ModularButton
-                style={{
-                    backgroundColor: Colors.secondaryColor,
-                    marginTop: converter(height/50, height/50, height/50)
-                }}
+           
                 textColor={'white'}
                 buttonColor={Colors.accentColor}
                 rippleColor={Colors.secondaryColor}
