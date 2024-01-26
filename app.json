@@ -4,7 +4,7 @@
     "slug": "Tero-Learning",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon2.png",
+    "icon": "./assets/icon.png",
     "backgroundColor": "#BCEBE8",
     "userInterfaceStyle": "light",
     "splash": {
@@ -30,16 +30,11 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "extra": {
-      "eas": {
-        "projectId": "02063917-111d-4f3d-8264-bccf2a86485b"
-      }
-    },
     "plugins": [
       [
         "expo-notifications",
         {
-          "icon": "./assets/icon2.png",
+          "icon": "./assets/icon.png",
           "color": "#ffffff"
         }
       ]
