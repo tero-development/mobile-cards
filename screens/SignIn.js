@@ -101,7 +101,7 @@ const SignIn = ({navigation, route}) =>{
     <View style={styles.signInContainer}>
         <LabeledInput 
             label={'Email'} 
-            style={{marginBottom: DeviceFractions.deviceH50}}
+            // style={{marginBottom: DeviceFractions.deviceH50}}
             color={colorHandler(errorType, [], email)}
             textInputConfig={{
                 value: email,
@@ -112,7 +112,7 @@ const SignIn = ({navigation, route}) =>{
         />
         <LabeledInput 
             label={'Password'} 
-            style={{marginBottom: DeviceFractions.deviceH50}}
+            // style={{marginBottom: DeviceFractions.deviceH50}}
             color={colorHandler(errorType, [], password)}
             type='password'
             textInputConfig={{

@@ -1,4 +1,4 @@
-import {Dimensions} from 'react-native'
+import {Dimensions, StyleSheet, useWindowDimensions} from 'react-native'
 
 const deviceWidth = Dimensions.get('screen').width
 const deviceHeight = Dimensions.get('screen').height
@@ -16,6 +16,54 @@ const DeviceFractions = {
     deviceW30 : deviceWidth / 30,
     deviceW40 : deviceWidth / 40,
     deviceW50 : deviceWidth / 50,
+}
+
+export function getDimensions(){
+    const {width, height} = useWindowDimensions()
+    return({
+        width: width,
+        height: height
+    })
+}
+
+//should be fed the 2 parameters from the using component's
+//invocation of useWindowDimensions
+export function converterSetup(width, height){
+    const targetDimensions = {width: width, height: height}
+
+    function converter(style1, style2, style3){
+        const {width, height} = targetDimensions
+    
+        let style
+        if(width < 400){
+            style = style1
+            return style
+        }
+        if(width < 600){
+            style = style2
+            return style
+        }
+        // if(width < 750){
+        //     style = style3
+        //     return style
+        // }
+        if(width < 900){
+            style = style3
+            return style
+        }
+        else{
+            style = style1
+            return style
+        }
+    
+    }
+
+    return converter
+}
+
+export function useStyles(styleObject){
+
+    return StyleSheet.create(styleObject)
 }
 
 export default DeviceFractions

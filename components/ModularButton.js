@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
         height: 50,
         width: DeviceFractions.deviceWidth / 3 * 2,
         justifyContent: 'center',
-        overflow: Platform.OS === 'android'? 'hidden' : 'visible',
+        overflow: Platform.OS === 'android'? 'visible' : 'hidden',
         borderRadius: 10
     },
     buttonInnerContainer:{

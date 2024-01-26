@@ -1,5 +1,4 @@
 import {
-    StyleSheet, 
     View, 
     ImageBackground, 
     Image, 
@@ -14,7 +13,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import Colors from '../utils/colors'
 import Title from '../UI/Title'
 import LabeledInput from '../components/LabeledInput'
-import DeviceFractions from '../utils/dimensions'
+import DeviceFractions, {converterSetup, useStyles} from '../utils/dimensions'
 import {searchEmployee} from '../httpServices/employees'
 import { searchCompanyEmail } from '../httpServices/companies'
 import {verifyEmailHandler} from '../utils/helperFunctions'
@@ -43,7 +42,51 @@ const SplashScreen = ({navigation}) =>{
     const [errorMessage, setErrorMessage] = useState('')
     const [isLoading, setIsLoading] = useState(false)
 
-    const styles = useStyles()
+    const {width, height} = useWindowDimensions()
+
+    const converter = converterSetup(width, height)
+
+    const localStyles = {
+        screen:{
+            flex: 1
+        },
+        imageTop:{
+            flex: 1
+        },
+        tempGradient:{
+            flex: 2
+        },
+        pageBottom:{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'space-evenly'
+        },
+        image:{
+            flex: 1
+        },
+        imageBackground:{
+            opacity: 1
+        },
+        titleLine:{
+            flexDirection: 'row',
+            alignItems: 'center'
+        },
+        iconContainer:{
+      
+        },
+        buttonTray:{
+            width: DeviceFractions.deviceWidth,
+            alignItems: 'center',
+            marginTop: '0%',
+        },
+        // input:{
+            
+        // }
+    }
+ 
+    const styles = useStyles(localStyles)
+
+
 
     const singleCredential = {
         email: credentials.email
@@ -100,7 +143,7 @@ const SplashScreen = ({navigation}) =>{
         <LabeledInput 
                 label={''} 
                 color={colorHandler(errorType, ['email_invalid'], email)}
-                style={styles.input} 
+                // style={styles.input} 
                 textInputConfig={{
                     value: email,
                     onChangeText:(text) => updateHandler( text, updateEmail),
@@ -174,78 +217,7 @@ const SplashScreen = ({navigation}) =>{
 }
 
 
-function useStyles(){
-    const {width, height} = useWindowDimensions()
-    console.log("height: "+height)
-    console.log("width "+width)
 
-        function converter(style1, style2, style3){
-            let style
-            if(width < 400){
-                style = style1
-                return style
-            }
-            if(width < 600){
-                style = style2
-                return style
-            }
-            // if(width < 750){
-            //     style = style3
-            //     return style
-            // }
-            if(width < 900){
-                style = style3
-                return style
-            }
-            else{
-                style = style1
-                return style
-            }
-        
-    }
-
-    return StyleSheet.create({
-        screen:{
-            flex: 1
-        },
-        imageTop:{
-            flex: 1
-        },
-        tempGradient:{
-            flex: 2
-        },
-        pageBottom:{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'space-evenly'
-        },
-        image:{
-            flex: 1
-        },
-        imageBackground:{
-            opacity: 1
-        },
-        titleLine:{
-            flexDirection: 'row',
-            alignItems: 'center'
-        },
-        iconContainer:{
-      
-        },
-        buttonTray:{
-            width: DeviceFractions.deviceWidth,
-            alignItems: 'center',
-            marginTop: '0%',
-        },
-        input:{
-            fontSize: converter(width/30, width/25, width/30),
-            paddingVertical: converter(height/125, height/100, height/100),
-            paddingHorizontal: converter(width/30, width/30, width/30),
-            width: converter(width/10*4.5, width/10*5.5, width/10* 4),
-            marginBottom:converter(width/50, width/20)
-        }
-    })
-}
 
 export default SplashScreen
     

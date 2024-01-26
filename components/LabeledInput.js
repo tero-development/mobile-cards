@@ -1,6 +1,6 @@
 import React, { useState } from 'react'; 
-import {TextInput, View, Text, StyleSheet} from 'react-native'
-import DeviceFractions from '../utils/dimensions'
+import {TextInput, View, Text, StyleSheet, useWindowDimensions} from 'react-native'
+import DeviceFractions, {converterSetup, useStyles} from '../utils/dimensions'
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 
 
@@ -13,7 +13,54 @@ const LabeledInput = ({style, viewStyle, label, textSize, color, textInputConfig
        const toggleShowPassword = () => { 
            setShowPassword(!showPassword); 
        }
-       
+
+       const {width, height} = useWindowDimensions()
+
+       const converter = converterSetup(width, height)
+
+       const localStyles = {
+        passwordViewStyle:{
+            height: height /20,
+            width: converter(width/2.5, width/2, width/2.5),
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            borderWidth: converter(1.5, 2, 3),
+            borderRadius: converter(6, 8, 12),
+            marginBottom:converter(height/50, height/40, height/50)
+        },
+        icon: { 
+            width: '15%',
+            borderWidth: 1,
+            borderColor: 'red'
+        }, 
+        labelStyle:{
+            fontWeight: 'bold'
+        },
+        inputStyle:{
+            width: converter(width/2.5, width/2, width/2.5),
+            height: height /20,
+            borderWidth: converter(1.5, 2, 3),
+            borderRadius: converter(6, 8, 12),
+            paddingHorizontal: converter(width/40, width/30, width/40),
+            fontSize: converter(width/30, width/25, width/30),
+            marginBottom:converter(height/50, height/40, height/50)
+        },
+        passwordInputStyle:{
+            paddingVertical: 2,
+            paddingHorizontal: 10,
+            flex: 1,
+            borderWidth: 1
+        },
+        deactivated:{
+            borderRadius: 0,
+            borderWidth: 0,
+            borderBottomWidth: 2
+        }
+    }
+    
+       const styles = useStyles(localStyles)
+
     if(type==='password'){
         return(
             <View style={viewStyle}>
@@ -51,40 +98,6 @@ const LabeledInput = ({style, viewStyle, label, textSize, color, textInputConfig
 }
 
 
-const styles = StyleSheet.create({
-    passwordViewStyle:{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        borderWidth: 2,
-        borderRadius: 10,
-        width: DeviceFractions.deviceWidth / 3 * 2,
-        height: DeviceFractions.deviceHeight / 20
-    },
-    icon: { 
-        width: '15%'
-    }, 
-    labelStyle:{
-        fontWeight: 'bold'
-    },
-    inputStyle:{
-        borderWidth: 2,
-        borderRadius: 10,
-        paddingVertical: 2,
-        paddingHorizontal: 10,
-        width: DeviceFractions.deviceWidth / 3 * 2,
-        height: DeviceFractions.deviceHeight / 20,
-    },
-    passwordInputStyle:{
-        paddingVertical: 2,
-        paddingHorizontal: 10,
-        flex: 1
-    },
-    deactivated:{
-        borderRadius: 0,
-        borderWidth: 0,
-        borderBottomWidth: 2
-    }
-})
+
 
 export default LabeledInput
