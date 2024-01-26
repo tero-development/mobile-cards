@@ -12,6 +12,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#BCEBE8"
     },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -24,11 +27,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#BCEBE8"
-      }
+      },
+      "package": "com.terodev.teroLearning"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "3dd4f5c3-4b29-45aa-ae82-895b43e64251"
+      }
     }
   }
 }
-
