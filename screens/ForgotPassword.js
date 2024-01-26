@@ -146,8 +146,9 @@ const styles = StyleSheet.create({
     },
     container:{ 
         flex: 1,
-        alignItems: 'center',    
-        paddingTop: DeviceFractions.deviceH20
+        alignItems: 'center',
+        justifyContent: 'center',    
+        paddingBottom: DeviceFractions.deviceHeight/10*2  
     },
     imageWrapper:{
         width: 60,

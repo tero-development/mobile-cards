@@ -59,7 +59,7 @@ const SplashScreen = ({navigation}) =>{
         pageBottom:{
             flex: 1,
             alignItems: 'center',
-            justifyContent: 'space-evenly'
+            justifyContent: 'space-around'
         },
         image:{
             flex: 1
@@ -68,11 +68,10 @@ const SplashScreen = ({navigation}) =>{
             opacity: 1
         },
         titleLine:{
-            flexDirection: 'row',
             alignItems: 'center'
         },
         iconContainer:{
-      
+            alignItems: 'center'
         },
         buttonTray:{
             width: DeviceFractions.deviceWidth,
@@ -154,7 +153,6 @@ const SplashScreen = ({navigation}) =>{
         />
         <ModularLink 
             textColor={Colors.secondaryColor}
-            textSize={DeviceFractions.deviceWidth/ 25}
             onPress={()=>{errorFormatHandler(singleCredential, validationGroup, submitNavigationHandler, setErrorType, setErrorMessage, setIsError)
             }}
         >
@@ -184,16 +182,14 @@ const SplashScreen = ({navigation}) =>{
             <LinearGradient style={styles.tempGradient} colors={[Colors.highlightColor, Colors.primaryColor]}>
             <View style={styles.pageBottom}>
                 <View style={styles.titleLine}>
-                    {/* <Title textSize={28} color={Colors.secondaryColor}>ExSell</Title> */}
                     <View style={styles.iconContainer}>
-                        {/* <Image style={{width: '100%', height: '100%'}} source={require('../assets/images/corteva-logo.png')} /> */}
                         <Image style={{width: DeviceFractions.deviceH10, height: DeviceFractions.deviceH10}} source={require('../assets/images/ExSell_logo_vertical_color.png')} />
-
+                        {
+                            isLoading? <Loader size='large' color={Colors.accentColor}/> : midContent
+                        }
                     </View>
                 </View>
-                    {
-                        isLoading? <Loader size='large' color={Colors.accentColor}/> : midContent
-                    }
+                    
                 <View style={
                     [
                         styles.titleLine, 
@@ -203,8 +199,8 @@ const SplashScreen = ({navigation}) =>{
                         }
                     ]}
                 >
-                        <Text style={{color: Colors.accentColor, fontSize: DeviceFractions.deviceW40}}>Powered by</Text>
-                        <Title textSize={DeviceFractions.deviceWidth / 25} color={Colors.secondaryColor}>Tero International Inc.</Title>  
+                        <Text style={{color: Colors.accentColor, fontSize: converter(width/45, width/40, width/45)}}>Powered by</Text>
+                        <Title color={Colors.secondaryColor} textSize={converter(width/35, width/30, width/35)}>Tero International Inc.</Title>  
                     {/* <View style={styles.iconContainer}>
                         <Image style={{width: '100%', height: '100%', borderRadius: 100}} source={require('../assets/images/tero-logo.png')} />
                     </View> */}

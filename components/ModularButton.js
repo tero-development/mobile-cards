@@ -1,8 +1,35 @@
-import {View, Text, Pressable, StyleSheet, Platform} from 'react-native'
-import DeviceFractions from '../utils/dimensions'
+import {View, Text, Pressable, StyleSheet, Platform, useWindowDimensions} from 'react-native'
+import DeviceFractions, {converterSetup, getDimensions, useStyles} from '../utils/dimensions'
 
 const ModularButton = ({children, onPress, style, textSize, textColor, textStyles,  buttonColor, rippleColor}) =>{
 
+    const {width, height} = useWindowDimensions()
+
+    const converter = converterSetup(width, height)
+
+    const localStyles = {
+        buttonOuterContainer:{
+            width: converter(width/2, width/1.75, width/2),
+            height: height /20,
+            borderRadius: converter(6, 8, 12),
+            justifyContent: 'center',
+            overflow: 'hidden',
+            marginBottom:converter(height/50, height/40, height/50)
+        },
+        buttonInnerContainer:{
+          height: '100%',
+          justifyContent: 'center',
+          
+        },
+        buttonText:{
+            color: 'white',
+            fontSize: converter(width/30, width/25, width/30),
+            textAlign: 'center'
+        },
+      
+    }
+
+    const styles = useStyles(localStyles)
 
     buttonBackground = {
         backgroundColor: buttonColor,
@@ -16,32 +43,11 @@ const ModularButton = ({children, onPress, style, textSize, textColor, textStyle
     return(
         <View style={[styles.buttonOuterContainer, style]}>
             <Pressable style={({pressed})=>[styles.buttonInnerContainer, buttonBackground, pressed? pressedStyles : null]} onPress={onPress} android_ripple={{color: rippleColor? rippleColor : 'black'}}>
-                <Text style={[styles.buttonText, {fontSize: textSize, color: textColor}, textStyles]}>{children}</Text>
+                <Text style={[styles.buttonText, textSize&&{fontSize: textSize}, {color: textColor}, textStyles && textStyles]}>{children}</Text>
             </Pressable>
         </View>
     )
 }
 
-const styles = StyleSheet.create({
-    buttonOuterContainer:{
-        borderRadius: 10,
-        height: 50,
-        width: DeviceFractions.deviceWidth / 3 * 2,
-        justifyContent: 'center',
-        overflow: Platform.OS === 'android'? 'visible' : 'hidden',
-        borderRadius: 10
-    },
-    buttonInnerContainer:{
-      height: '100%',
-      justifyContent: 'center',
-      
-    },
-    buttonText:{
-        color: 'white',
-        fontSize: 12,
-        textAlign: 'center'
-    },
-  
-})
 
 export default ModularButton

@@ -1,4 +1,4 @@
-import {View, StyleSheet, Image, KeyboardAvoidingView, Platform} from 'react-native'
+import {View, StyleSheet, Image, KeyboardAvoidingView, Platform, useWindowDimensions} from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useState, useContext } from 'react'
 import { SignInContext } from '../store/signin-context'
@@ -8,7 +8,7 @@ import Title from '../UI/Title'
 import LabeledInput from '../components/LabeledInput'
 import ModularLink from '../components/ModularLink'
 import ModularButton from '../components/ModularButton'
-import DeviceFractions from '../utils/dimensions'
+import DeviceFractions, {converterSetup, useStyles} from '../utils/dimensions'
 import { updateCredentials, clearErrorHandler, colorHandler, errorFormatHandler } from '../utils/inputErrorDetection'
 import { verifyCredentials } from '../httpServices/credentials'
 import { searchEmployee } from '../httpServices/employees'
@@ -26,6 +26,32 @@ const SignIn = ({navigation, route}) =>{
     const [errorType, setErrorType] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
     const [isLoading, setIsLoading] = useState(false)
+
+    const {width, height} = useWindowDimensions()
+
+    const converter = converterSetup(width, height)
+
+    const localStyles = {
+        rootScreen:{
+            flex: 1,
+        },
+        container:{ 
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',    
+            paddingBottom: DeviceFractions.deviceHeight/10*2    
+        },
+        imageWrapper:{
+            width: 60,
+            height: 75,
+            marginBottom: DeviceFractions.deviceH50
+        },
+        signInContainer:{
+            alignItems: 'center'
+        }
+    }
+
+    const styles = useStyles(localStyles)
 
     const signInCredentials = {
         email: credentials.email, 
@@ -121,21 +147,12 @@ const SignIn = ({navigation, route}) =>{
                 autoCorrect: false
             }}   
         />
-        <ModularLink 
-            textColor={Colors.secondaryColor} 
-            textSize={18} 
-            viewStyle={{marginBottom: DeviceFractions.deviceH30}}
-            onPress={navigateForgot}
-        >
-            Forgot Password
-        </ModularLink>
+        
         <ModularButton
                     style={{
-                        width: DeviceFractions.deviceWidth/3 * 2,
-                        height: 50,
-                        backgroundColor: Colors.secondaryColor
+                        backgroundColor: Colors.secondaryColor,
+                        marginTop: converter(height/50, height/50, height/50)
                     }}
-                    textSize={20}
                     textColor={'white'}
                     buttonColor={Colors.accentColor}
                     rippleColor={Colors.secondaryColor}
@@ -143,6 +160,13 @@ const SignIn = ({navigation, route}) =>{
                 >   
                     Sign In
         </ModularButton>
+        <ModularLink 
+            textColor={Colors.secondaryColor} 
+            viewStyle={{marginBottom: DeviceFractions.deviceH30}}
+            onPress={navigateForgot}
+        >
+            Forgot Password
+        </ModularLink>
     </View>
 
     if(isError){
@@ -167,24 +191,5 @@ const SignIn = ({navigation, route}) =>{
         
     )
 }
-
-const styles = StyleSheet.create({
-    rootScreen:{
-        flex: 1
-    },
-    container:{ 
-        flex: 1,
-        alignItems: 'center',        
-        paddingTop: DeviceFractions.deviceH20
-    },
-    imageWrapper:{
-        width: 60,
-        height: 75,
-        marginBottom: DeviceFractions.deviceH50
-    },
-    signInContainer:{
-        alignItems: 'center'
-    }
-})
 
 export default SignIn
