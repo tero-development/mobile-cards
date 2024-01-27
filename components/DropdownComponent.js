@@ -1,13 +1,85 @@
 import React, { useState } from 'react';
-  import { StyleSheet, Text, View } from 'react-native';
+  import { View, useWindowDimensions } from 'react-native';
   import { Dropdown } from 'react-native-element-dropdown';
   import Ionicons from '@expo/vector-icons/Ionicons';
-  import DeviceFractions from '../utils/dimensions';
+  import DeviceFractions, {converterSetup, useStyles} from '../utils/dimensions';
   import Colors from '../utils/colors';
 
 
-  const DropdownComponent = ({data, mode, value, valueSetter, updater, flexWidth,  viewStyle, search, prompt, iconName, color, disable, deactivated}) => {
+  const DropdownComponent = ({data, mode, value, valueSetter, updater, dropStyle, viewStyle, search, prompt, iconName, color, disable, deactivated}) => {
     const [isFocus, setIsFocus] = useState(false);
+
+    const {width, height} = useWindowDimensions()
+
+    const converter = converterSetup(width, height)
+
+    const localStyles = {
+    
+      dropdown: {
+        width: converter(width/2, width/1.6, width/2),
+        height: height /20,
+        borderWidth: converter(1.5, 2, 3),
+        borderRadius: converter(6, 8, 12),
+        paddingHorizontal: converter(width/40, width/30, width/40),
+        fontSize: 16,
+        marginBottom:converter(height/50, height/40, height/50)
+      },
+      icon: {
+        marginRight: 5,
+      },
+      label: {
+        position: 'absolute',
+        color: Colors.secondaryColor,
+        left: DeviceFractions.deviceW30,
+        top: -DeviceFractions.deviceHeight / 150,
+        zIndex: 999,
+        paddingHorizontal: 8,
+        fontSize: converter(width/35, width/25, width/35)
+      },
+      textStyle: {
+        fontSize: converter(width/35, width/30, width/35),
+        color: 'Colors.secondaryColor',
+        fontWeight: 'bold'
+      },
+      iconStyle: {
+        width: 20,
+        height: 20
+      },
+      inputSearchStyle: {
+        height: 40,
+        fontSize: converter(width/35, width/25, width/35)
+      },
+      listContainer:{
+        backgroundColor: Colors.primaryColor100,
+        borderWidth: 0,
+        borderRadius: converter(10, 15, 20),
+        justifyContent: 'center',
+        paddingVertical: '3%',
+        paddingHorizontal: '3%'
+      },
+      itemText:{
+        color: Colors.secondaryColor,
+        fontSize: converter(width/35, width/25, width/35)
+
+      },
+      itemContainer:{
+        borderRadius: converter(6, 8, 12),
+        backgroundColor: 'white',
+        marginBottom: '2%',
+        elevation: 2,
+          shadowColor: 'black',
+          shadowOpacity: 0.1,
+          shadowOffset: {width: 0, height: 1},
+          shadowRadius: 8,
+      },
+      deactivated:{
+        borderRadius: 0,
+        borderWidth: 0,
+        borderBottomWidth: 2
+    }
+    }
+ 
+    const styles = useStyles(localStyles)
 
     const formattedData = data.map(entry =>{
       return {label: entry, value: entry}
@@ -17,19 +89,19 @@ import React, { useState } from 'react';
         <Dropdown
           disable={disable}
           mode={mode}
-          style={[styles.dropdown, isFocus && { borderColor: Colors.activeColor, borderWidth: 3 }, disable   && styles.deactivated, {borderColor: color}]}
+          style={[styles.dropdown, dropStyle, isFocus && { borderColor: Colors.activeColor, borderWidth: 3 }, disable   && styles.deactivated, {borderColor: color}]}
           placeholderStyle={[styles.textStyle, {color: color}]}
           selectedTextStyle={[styles.textStyle, {color: color}]}
           inputSearchStyle={[styles.inputSearchStyle, {borderColor: color}]}
           iconStyle={[styles.iconStyle, disable && {display: 'none'}]}
           data={formattedData}
-          containerStyle={[styles.listContainer]}
+          containerStyle={styles.listContainer}
           labelField="label"
           valueField="value"
           placeholder={!isFocus ? prompt : '...'}
           searchPlaceholder="Search..."
           itemTextStyle={styles.itemText}
-          itemContainerStyle={styles.itemContainer}
+          itemContainerStyle={[styles.itemContainer]}
           value={value}
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
@@ -42,7 +114,7 @@ import React, { useState } from 'react';
               name={iconName}
               style={[styles.icon, color]}
               color={color}
-              size={20}
+              size={converter(16, 20, 30)}
             />
           )}
         />
@@ -50,7 +122,7 @@ import React, { useState } from 'react';
         const Search = 
         <Dropdown
           mode={mode}
-          style={[styles.dropdown, isFocus && { borderColor: Colors.activeColor, borderWidth: 3 }, {borderColor: color}]}
+          style={[styles.dropdown,dropStyle, isFocus && { borderColor: Colors.activeColor, borderWidth: 3 }, {borderColor: color}]}
           placeholderStyle={[styles.textStyle, {color: color}]}
           selectedTextStyle={[styles.textStyle, {color: color}]}
           inputSearchStyle={[styles.inputSearchStyle, {borderColor: color}]}
@@ -76,13 +148,13 @@ import React, { useState } from 'react';
               name={iconName}
               style={[styles.icon, color]}
               color={color}
-              size={20}
+              size={converter(16, 20, 30)}
             />
           )}
         />
 
     return (
-      <View style={[styles.container, {flex: flexWidth}, viewStyle]}>
+      <View style={[styles.container, viewStyle]}>
         {/* {renderLabel()} */}
         {search? Search : Standard}
       </View>
@@ -91,67 +163,3 @@ import React, { useState } from 'react';
 
   export default DropdownComponent;
 
-  const styles = StyleSheet.create({
-    container: {
-      padding: 0
-    },
-    dropdown: {
-      height: DeviceFractions.deviceH20,
-      borderColor: Colors.secondaryColor,
-      borderWidth: 2,
-      borderRadius: 8,
-      paddingHorizontal: 8,
-    },
-    icon: {
-      marginRight: 5,
-    },
-    label: {
-      position: 'absolute',
-      color: Colors.secondaryColor,
-      left: DeviceFractions.deviceW30,
-      top: -DeviceFractions.deviceHeight / 150,
-      zIndex: 999,
-      paddingHorizontal: 8,
-      fontSize: 14,
-    },
-    textStyle: {
-      fontSize: 12,
-      color: Colors.secondaryColor,
-      fontWeight: 'bold'
-    },
-    iconStyle: {
-      width: 20,
-      height: 20
-    },
-    inputSearchStyle: {
-      height: 40,
-      fontSize: 16,
-    },
-    listContainer:{
-      backgroundColor: Colors.primaryColor100,
-      borderWidth: 0,
-      borderRadius: 20,
-      width: DeviceFractions.deviceWidth / 10 * 9,
-      justifyContent: 'center',
-      paddingVertical: '3%',
-      paddingHorizontal: '3%'
-    },
-    itemText:{
-      color: Colors.secondaryColor
-    },
-    itemContainer:{
-      borderRadius: 10,
-      backgroundColor: 'white',
-      marginBottom: '2%',
-      elevation: 2,
-        shadowColor: 'black',
-        shadowOpacity: 0.1,
-        shadowOffset: {width: 0, height: 1},
-        shadowRadius: 8,
-    },
-    deactivated:{
-      borderRadius: 0,
-      borderWidth: 0,
-      borderBottomWidth: 2
-  }
-  });

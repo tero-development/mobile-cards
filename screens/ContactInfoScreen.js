@@ -1,10 +1,10 @@
-import {View, KeyboardAvoidingView, Text, Pressable, StyleSheet} from 'react-native'
+import {View, KeyboardAvoidingView, Text, Pressable, useWindowDimensions} from 'react-native'
 import { useState, useEffect, useContext } from 'react'
 import {SignInContext} from '../store/signin-context'
 import { LinearGradient } from 'expo-linear-gradient'
 import Colors from '../utils/colors'
 import Title from '../UI/Title'
-import DeviceFractions from '../utils/dimensions'
+import {converterSetup, useStyles} from '../utils/dimensions'
 import LabeledInput from '../components/LabeledInput'
 import DropdownComponent from '../components/DropdownComponent'
 import IconButton from '../UI/IconButton'
@@ -60,6 +60,67 @@ const ContactInfoScreen = ({navigation}) =>{
         industryYears,
         employeeTerritory,
         phoneNumber} = filteredCredentials
+
+        const {width, height} = useWindowDimensions()
+
+        const converter = converterSetup(width, height)
+    
+        const localStyles = {
+            screen:{
+                flex: 1
+            },
+            container:{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+            },
+            innerContainer:{
+                width: width,
+                justifyContent: 'center',
+                alignItems: 'center'
+            },
+            inputPairContainer:{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                width: '95%'
+            },
+            inputStyle:{
+                width: width/2.25,
+            },
+              dropStyle:{
+                width: width/2.25,
+                marginTop:converter(height/50, height/40, height/50)
+              },
+              dropViewStyle:{
+              },
+              phonePairContainer:{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'flex-end',
+                marginBottom: height/20,
+                width: "95%"
+            },
+            phoneToggle:{
+                borderWidth: 2, 
+                borderColor: Colors.secondaryColor, 
+                borderRadius: 10,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-evenly',
+                paddingVertical: height / 150,
+                paddingHorizontal: width / 1000
+            },
+            phoneToggleText:{
+                maxWidth: '45%',
+                color: Colors.secondaryColor,
+                fontWeight: 'bold',
+                fontSize: 12
+            }
+        }
+    
+        const styles = useStyles(localStyles)
+    
 
 
     useEffect(()=>{
@@ -207,14 +268,14 @@ const ContactInfoScreen = ({navigation}) =>{
             }}                             
         />
     </View>
-    <View style={styles.inputPairContainer}>
+    <View style={[styles.inputPairContainer]}>
         <DropdownComponent 
             data={companyIndustryYears} 
             mode='modal'
-            flexWidth={0.465} 
+            dropStyle={styles.dropStyle}
             prompt='Years in Industry' 
             iconName='information-circle-outline'
-            viewStyle={styles.dropDown}
+            viewStyle={styles.dropViewStyle}
             color={colorHandler(errorType, [], industryYears)}
             value={industryYears}
             updater={updateIndustryYears}
@@ -223,22 +284,22 @@ const ContactInfoScreen = ({navigation}) =>{
         <DropdownComponent
             data={companyTerritories} 
             mode='modal'
-            flexWidth={0.465} 
+            dropStyle={styles.dropStyle} 
             prompt='Commercial Unit' 
             iconName='information-circle-outline'
-            viewStyle={styles.dropDown}
+            viewStyle={styles.dropViewStyle}
             color={colorHandler(errorType, [], employeeTerritory)}
             value={employeeTerritory}
             updater={updateEmployeeTerritory}
             valueSetter={updateHandler}
         />
     </View>
-    <View style={[styles.phonePairContainer, disablePhone && {justifyContent: 'center'}]}>
+    <View style={[styles.phonePairContainer,  disablePhone && {justifyContent: 'center'}]}>
         <LabeledPhoneInput 
             label={"Phone Number"} 
             color={colorHandler(errorType, ['phone_invalid'], phoneNumber)}
-            style={styles.phoneInput}
-            viewStyle={{flex: 0.90}}
+            // style={styles.phoneInput}
+            viewStyle={{flex: 0.80}}
             visible={disablePhone}
             textInputConfig={{
                 onChangeText:(text) => updateHandler( text, updatePhoneNumber),
@@ -263,10 +324,7 @@ const ContactInfoScreen = ({navigation}) =>{
         </Pressable>
     </View>
     <ModularButton 
-        buttonColor={Colors.accentColor} 
-        textColor={'white'} 
-        rippleColor={Colors.accentColor300}
-        style={{width: DeviceFractions.deviceWidth / 2}}
+         buttonColor={Colors.accentColor400} textColor={Colors.highlightColor} rippleColor={Colors.secondaryColor400}
         onPress={()=>{
             const {phoneNumber, ...credsWithOutPhone} = {...filteredCredentials}
 
@@ -279,6 +337,7 @@ const ContactInfoScreen = ({navigation}) =>{
     >
         Submit & Log In
     </ModularButton>
+    <ModularButton onPress={navigateSplashScreen} buttonColor={Colors.accentColor} textColor={Colors.highlightColor} rippleColor={Colors.secondaryColor}>cancel</ModularButton>
     </View>
 
     if(isError){
@@ -288,10 +347,9 @@ const ContactInfoScreen = ({navigation}) =>{
     return(
         <KeyboardAvoidingView behavior='height' style={styles.screen}>
             <LinearGradient style={styles.screen} colors={['white', Colors.primaryColor]}>
-            <IconButton isHeader={true} iconName='close' iconSize={28} iconColor={Colors.accentColor} onPress={navigateSplashScreen} />
             <View style={styles.container}>
                 <View>
-                    <Title textSize={15} color={Colors.secondaryColor} style={{marginBottom: DeviceFractions.deviceH20, textAlign: 'center'}}>
+                <Title color={Colors.secondaryColor} textSize={converter(width/28, width/24, width/26)} style={{marginBottom: height/20, textAlign: 'center'}}>
                         Fill out all fields to create your ExSell profile
                     </Title>
                     {isLoading? <Loader size='large' color={Colors.accentColor}/> : midContent}
@@ -303,69 +361,5 @@ const ContactInfoScreen = ({navigation}) =>{
     )
 }
 
-const styles = StyleSheet.create({
-    screen:{
-        flex: 1
-    },
-    container:{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: DeviceFractions.deviceWidth,        
-    },
-    innerContainer:{
-        width: DeviceFractions.deviceWidth / 10 * 9,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    inputPairContainer:{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: '95%'
-    },
-    inputStyle:{
-        width: DeviceFractions.deviceWidth / 10 * 4,
-        height: DeviceFractions.deviceWidth / 10,
-        marginBottom: DeviceFractions.deviceH40
-    },
-    inputSearchStyle: {
-        height: 40,
-        fontSize: 16,
-      },
-      dropDown:{
-        marginTop: DeviceFractions.deviceH50,
-        marginBottom: DeviceFractions.deviceHeight / 35
-      },
-      phonePairContainer:{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'flex-end',
-        width: '95%',
-        marginBottom: DeviceFractions.deviceH20
-    },
-    phoneInput:{
-        borderColor: Colors.secondaryColor,
-        borderWidth: 2,
-        borderRadius: 10,
-        paddingHorizontal: DeviceFractions.deviceH50,
-        width: "100%"
-    },
-    phoneToggle:{
-        borderWidth: 2, 
-        borderColor: Colors.secondaryColor, 
-        borderRadius: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-evenly',
-        paddingVertical: DeviceFractions.deviceHeight / 150,
-        paddingHorizontal: DeviceFractions.deviceWidth / 1000
-    },
-    phoneToggleText:{
-        maxWidth: '45%',
-        color: Colors.secondaryColor,
-        fontWeight: 'bold',
-        fontSize: 12
-    }
-})
 
 export default ContactInfoScreen

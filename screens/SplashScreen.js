@@ -109,7 +109,7 @@ const SplashScreen = ({navigation}) =>{
            if(company._id){
                 try{
                     const employee = await searchEmployee(email)
-    
+                    navigation.navigate('ContactInfo')
                     // if(employee === 'not found'){
                     //     setIsLoading(false)
                     //     navigation.navigate("CreateAccount")
@@ -122,8 +122,6 @@ const SplashScreen = ({navigation}) =>{
                     //     setIsLoading(false)
                     //     navigation.navigate('SignIn', employee)
                     // }
-                    navigation.navigate("CreateAccount")
-
                 } catch(e){
                     alert(e)
                     setIsLoading(false)
@@ -155,8 +153,7 @@ const SplashScreen = ({navigation}) =>{
         />
         <ModularLink 
             textColor={Colors.secondaryColor}
-            onPress={()=>{errorFormatHandler(singleCredential, validationGroup, submitNavigationHandler, setErrorType, setErrorMessage, setIsError)
-            }}
+            onPress={()=>{errorFormatHandler(singleCredential, validationGroup, submitNavigationHandler, setErrorType, setErrorMessage, setIsError)}}
         >
             start
         </ModularLink>
