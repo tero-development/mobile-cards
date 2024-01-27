@@ -2,7 +2,7 @@ import React, { useState } from 'react';
   import { View, useWindowDimensions } from 'react-native';
   import { Dropdown } from 'react-native-element-dropdown';
   import Ionicons from '@expo/vector-icons/Ionicons';
-  import DeviceFractions, {converterSetup, useStyles} from '../utils/dimensions';
+  import {converterSetup, useStyles} from '../utils/dimensions';
   import Colors from '../utils/colors';
 
 
@@ -30,8 +30,8 @@ import React, { useState } from 'react';
       label: {
         position: 'absolute',
         color: Colors.secondaryColor,
-        left: DeviceFractions.deviceW30,
-        top: -DeviceFractions.deviceHeight / 150,
+        left: width/30,
+        top: -height / 150,
         zIndex: 999,
         paddingHorizontal: 8,
         fontSize: converter(width/35, width/25, width/35)

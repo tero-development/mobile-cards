@@ -92,8 +92,6 @@ const ContactInfoScreen = ({navigation}) =>{
                 width: width/2.25,
                 marginTop:converter(height/50, height/40, height/50)
               },
-              dropViewStyle:{
-              },
               phonePairContainer:{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
@@ -101,21 +99,26 @@ const ContactInfoScreen = ({navigation}) =>{
                 marginBottom: height/20,
                 width: "95%"
             },
+            phoneInput:{
+                marginBottom:0
+            },
             phoneToggle:{
-                borderWidth: 2, 
+                borderWidth: converter(1.5, 2, 3), 
                 borderColor: Colors.secondaryColor, 
-                borderRadius: 10,
+                borderRadius: converter(6, 8, 12),
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'space-evenly',
+                height: height /20,
+                width: converter(width/2.5, width/3.75, width/2.5),
                 paddingVertical: height / 150,
-                paddingHorizontal: width / 1000
+                paddingHorizontal: width / 1000,
             },
             phoneToggleText:{
                 maxWidth: '45%',
                 color: Colors.secondaryColor,
                 fontWeight: 'bold',
-                fontSize: 12
+                fontSize: converter(width/45, width/40, width/40)
             }
         }
     
@@ -275,7 +278,6 @@ const ContactInfoScreen = ({navigation}) =>{
             dropStyle={styles.dropStyle}
             prompt='Years in Industry' 
             iconName='information-circle-outline'
-            viewStyle={styles.dropViewStyle}
             color={colorHandler(errorType, [], industryYears)}
             value={industryYears}
             updater={updateIndustryYears}
@@ -287,7 +289,6 @@ const ContactInfoScreen = ({navigation}) =>{
             dropStyle={styles.dropStyle} 
             prompt='Commercial Unit' 
             iconName='information-circle-outline'
-            viewStyle={styles.dropViewStyle}
             color={colorHandler(errorType, [], employeeTerritory)}
             value={employeeTerritory}
             updater={updateEmployeeTerritory}
@@ -298,8 +299,7 @@ const ContactInfoScreen = ({navigation}) =>{
         <LabeledPhoneInput 
             label={"Phone Number"} 
             color={colorHandler(errorType, ['phone_invalid'], phoneNumber)}
-            // style={styles.phoneInput}
-            viewStyle={{flex: 0.80}}
+            style={styles.phoneInput}
             visible={disablePhone}
             textInputConfig={{
                 onChangeText:(text) => updateHandler( text, updatePhoneNumber),
@@ -317,7 +317,7 @@ const ContactInfoScreen = ({navigation}) =>{
             <IconButton 
                 isHeader={false} 
                 iconName={!disablePhone? 'checkmark-circle-outline' : 'close-circle-outline'} 
-                iconSize={28} 
+                iconSize={converter(16, 20, 30)} 
                 iconColor={Colors.secondaryColor}
                 onPress={togglePhoneHandler} 
             />
