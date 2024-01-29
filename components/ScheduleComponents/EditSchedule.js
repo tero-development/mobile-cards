@@ -66,8 +66,8 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
             backgroundColor: Colors.secondaryColor,
             paddingHorizontal: width/20,
             paddingVertical: height / 85,
-            borderTopLeftRadius: 14,
-            borderTopRightRadius: 14,
+            borderTopLeftRadius: converter(14, 18, 25),
+            borderTopRightRadius: converter(14, 18, 25),
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center'
@@ -78,7 +78,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
         },
         topTitle:{
             color: Colors.highlightColor,
-            fontSize: height / 45,
+            fontSize: converter(height / 45, height / 45, height / 35),
             fontWeight: 'bold',
             flexWrap: 'wrap'
         },
@@ -103,13 +103,14 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
         scheduleBodyInnerContainer:{
             flex: 1,
             justifyContent: 'center',
+            alignItems: 'center',
             marginBottom: height/30
         },
         scheduleFooter:{
             height: '28%',
             backgroundColor: Colors.accentColor400,
-            borderBottomLeftRadius: 14,
-            borderBottomRightRadius: 14,
+            borderBottomLeftRadius: converter(14, 18, 25),
+            borderBottomRightRadius: converter(14, 18, 25),
             justifyContent: 'center',
             alignItems: 'center'
         },
@@ -121,27 +122,22 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
         },
         submitContainer:{
             backgroundColor: Colors.highlightColor,
-            borderRadius: 10,
+            borderRadius: converter(6, 10, 12),
             flex: 0.6,
             justifyContent: 'center',
             alignItems: 'center',
-            paddingVertical: height / 100
+            paddingTop: height/75
         },
         submitOption:{
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
-            width: '50%',
-            marginBottom: height / 200
+            width: converter('40%', '40%', '40%'),
+            marginBottom: height / 100
         },
         submitText:{
-            color: Colors.secondaryColor
-        },
-        clickBox:{
-            backgroundColor: Colors.unselectedColor,
-            height: 15,
-            width: 15,
-            borderRadius: 3
+            color: Colors.secondaryColor,
+            fontSize: converter(width/40, width/ 40, width/35)
         },
         modal:{
             flex:1
@@ -422,17 +418,17 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
         <View style={styles.submitContainer}>
             <Pressable onPress={toggleYesHandler} style={styles.submitOption}>
                 <Text style={styles.submitText}>Yes</Text>
-                <ClickBox height={15} width={15} borderRadius={3} toggle={submitOption} toggleColor={Colors.secondaryColor300} />
+                <ClickBox height={converter(width/30, width/30, width/30)} width={converter(width/30, width/30, width/30)} borderRadius={converter(3, 4, 6)} toggle={submitOption} toggleColor={Colors.secondaryColor300} />
             </Pressable>
             <Pressable onPress={toggleNoHandler} style={styles.submitOption}>
                 <Text style={styles.submitText}>No</Text>
-                <ClickBox height={15} width={15} borderRadius={3} toggle={!submitOption} toggleColor={Colors.secondaryColor300} />
+                <ClickBox height={converter(width/30, width/30, width/30)} width={converter(width/30, width/30, width/30)} borderRadius={converter(3, 4, 6)} toggle={!submitOption} toggleColor={Colors.secondaryColor300} />
             </Pressable>
             <ModularButton 
                 style={{
-                    width: '75%', 
-                    height: height/40,
-                    borderRadius: 4,
+                    width: '75%',
+                    height: converter(height/40, height/50, height/35), 
+                    borderRadius: converter(3, 4, 8),
                     shadowColor: 'black',
                     shadowOpacity: 0.25,
                     shadowOffset: {width: 0, height: 2},
@@ -440,7 +436,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                     elevation: 4
                  }} 
                 buttonColor={Colors.secondaryColor300} 
-                textSize={width/30} 
+                textSize={converter(width/35, width/35, width/30)} 
                 textStyles={{fontWeight: 'bold'}} 
                 textColor={Colors.highlightColor}
                 onPress={submitHandler}
