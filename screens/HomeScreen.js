@@ -223,7 +223,7 @@ const HomeScreen = ({navigation}) =>{
                     prompText={'Incomplete'}
                     promptColor={Colors.errorColor}  
                 />
-                <HomeSelection onPress={navigateCompetency} title='Competency Cards' iconName='copy' />
+                {/* <HomeSelection onPress={navigateCompetency} title='Competency Cards' iconName='copy' /> */}
                 <HomeSelection
                 onPress={()=>{}} 
                     title='Achievements' 
@@ -233,7 +233,7 @@ const HomeScreen = ({navigation}) =>{
                     prompText={'upcoming'}
                     promptColor={Colors.activeColor}  
                 />
-                <HomeSelection onPress={navigateQuiz} title='Knowledge Check' iconName='clipboard' />
+                {/* <HomeSelection onPress={navigateQuiz} title='Knowledge Check' iconName='clipboard' /> */}
                 <ModularLink 
                     onPress={signOutHandler}     
                     textColor={Colors.secondaryColor}
