@@ -168,23 +168,6 @@ const HomeScreen = ({navigation}) =>{
         navigation.toggleDrawer()
     }
 
-    // console.log("HOME SCREEN, hToDeal:")
-    // console.log(hubspotDetails.toDealId)
-
-    // console.log('HomeScreen ln 149 cafe tracker: ')
-    // console.log(cafeTracker)
-
-    // console.log('from HOMESCREEN, shallow tracker: ')
-    // console.log(shallowTracker.list)
-
-    // console.log('from HOMESCREEN, scheduled Dates: ')
-    // console.log(cafeDetails.scheduledDates)
-    // console.log('')
-    // console.log('')
-    // console.log('')
-    // console.log('')
-    // console.log('from HOMESCREEN, selected Cafes: ')
-    // console.log(cafeDetails.selectedCafes)
 
     function signOutHandler(){
         updateSignInClear()

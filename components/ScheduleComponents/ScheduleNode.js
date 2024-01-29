@@ -176,12 +176,14 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
     let rightSidePrompt = ''
     let timePrompt = ''
     let scheduledPrompt = ''
-    
+    let linksActive = false
+
     if(cafeTracker.list.length > 0 && currentListTarget !== undefined){
         if(currentListTarget.id !== ""){
             rightSidePrompt = currentListTarget.headlineDate
             timePrompt = currentListTarget.time
             scheduledPrompt = 'Scheduled' 
+            linksActive = true
         } else{
             rightSidePrompt = 'Not Scheduled'
         }
@@ -189,7 +191,6 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
         rightSidePrompt = 'Not Scheduled'
     }
 
-    
 
     return(
         <View style={styles.container}>
@@ -213,7 +214,8 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
             {/* <View style={expanded? styles.nodeBottomExpanded : styles.nodeBottom}> */}
             <View style={[styles.nodeBottom, expanded? styles.nodeBottomExpanded : null]}>
 
-                <ScheduleNodeOption 
+                <ScheduleNodeOption
+                    active={linksActive} 
                     title={'Clinic'}
                     topTitle= {clinicMonthName}
                     roundL={true}
@@ -222,9 +224,10 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
                     iconSize={converter(24, 30, 60)} 
                     iconColor={Colors.secondaryColor400}
                     textColor={Colors.secondaryColor400}
-                    link={clinicLink}
+                    link={currentListTarget !== undefined && currentListTarget.clinicLink}
                     />
                 <ScheduleNodeOption
+                    active={linksActive}
                     bgColor={Colors.secondaryColor300} 
                     title={companyCafeDesignation} 
                     topTitle={monthName}
@@ -232,7 +235,7 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
                     iconSize={converter(24, 30, 60)} 
                     iconColor={Colors.primaryColor300}
                     textColor={Colors.primaryColor300}
-                    link={'https://zoom.us/'}
+                    link={currentListTarget !== undefined && currentListTarget.zoomLink}
                     />
                 <ScheduleNodeOption 
                     title={'Schedule'}

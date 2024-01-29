@@ -3,7 +3,7 @@ import {Ionicons} from '@expo/vector-icons'
 import {converterSetup, useStyles} from '../../utils/dimensions'
 import {openBrowserAsync} from 'expo-web-browser'
 
-const ScheduleNodeOption  = ({title, topTitle, iconName, iconSize, iconColor, roundL, roundR, bgColor, textColor, openModalHandler, variableGroup, link}) =>{
+const ScheduleNodeOption  = ({title, topTitle, iconName, iconSize, iconColor, roundL, roundR, bgColor, textColor, openModalHandler, variableGroup, link, active}) =>{
     
     const {width, height} = useWindowDimensions()
 
@@ -29,8 +29,20 @@ const ScheduleNodeOption  = ({title, topTitle, iconName, iconSize, iconColor, ro
  
     const styles = useStyles(localStyles)
 
-    return(
-        <Pressable style={[
+    let content =  <Pressable style={[
+        styles.container, 
+        roundL && styles.roundedLeft, 
+        roundR && styles.roundedRight, 
+        {backgroundColor: '#5c5c5c',}]}
+        onPress={()=> {}}
+        >
+        <Text style={[styles.text, {color: '#9e9e9e'}]}>{topTitle}</Text>
+        <Ionicons name={iconName} size={iconSize} color={'#9e9e9e'} style={{marginHorizontal: width /100 * 4}}/>
+        <Text style={[styles.text, {color: '#9e9e9e'}]}>{title}</Text>
+    </Pressable>
+
+    if(active || openModalHandler){
+        content = <Pressable style={[
             styles.container, 
             roundL && styles.roundedLeft, 
             roundR && styles.roundedRight, 
@@ -41,6 +53,10 @@ const ScheduleNodeOption  = ({title, topTitle, iconName, iconSize, iconColor, ro
             <Ionicons name={iconName} size={iconSize} color={iconColor} style={{marginHorizontal: width /100 * 4}}/>
             <Text style={[styles.text, {color: textColor}]}>{title}</Text>
         </Pressable>
+    }
+
+    return(
+        content
     )
 }
 
