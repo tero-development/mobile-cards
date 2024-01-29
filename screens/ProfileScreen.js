@@ -233,7 +233,7 @@ const ProfileScreen = ({navigation}) =>{
     return(
             <KeyboardAvoidingView behavior='height' style={styles.screen}>
             <LinearGradient style={styles.screen} colors={[Colors.highlightColor, Colors.primaryColor]}>
-                <IconButton isHeader={true} iconName='menu' iconSize={28} iconColor={Colors.secondaryColor} onPress={openDrawer}/>
+                <IconButton isHeader={true} iconName='menu'  iconColor={Colors.secondaryColor} onPress={openDrawer}/>
                 <Animated.View style={[styles.screen, {transform: [{translateX: translation}]}]}>
                 <View style={styles.container}>
                     <View style={styles.screenHalf}>

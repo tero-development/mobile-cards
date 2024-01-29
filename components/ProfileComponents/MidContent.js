@@ -1,6 +1,6 @@
-import {View,  Text, Pressable, StyleSheet} from 'react-native'
+import {View,  Text, Pressable, useWindowDimensions} from 'react-native'
 import Colors from '../../utils/colors'
-import DeviceFractions from '../../utils/dimensions'
+import DeviceFractions, {converterSetup, useStyles} from '../../utils/dimensions'
 import LabeledInput from '../LabeledInput'
 import LabeledPhoneInput from '../LabeledPhoneInput'
 import DropdownComponent from '../DropdownComponent'
@@ -46,6 +46,83 @@ const MidContent=({variables, type})=>{
         colorHandler,
         errorFormatHandler
     } = variables
+
+    const {width, height} = useWindowDimensions()
+
+    const converter = converterSetup(width, height)
+
+    const localStyles = {
+        screen:{
+            flex: 1
+        },
+        centeringContainer:{
+            alignItems: 'center'
+        },
+        container:{
+            flex: 1,
+            flexDirection: 'row',
+            alignItems: 'center',
+            width: DeviceFractions.deviceWidth * 2
+        },
+        screenHalf:{
+            flex: 0.5,
+        },
+        innerContainer:{
+            width: DeviceFractions.deviceWidth / 10 * 9,
+            justifyContent: 'center',
+            alignItems: 'center'
+        },
+        inputPairContainer:{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            width: '95%'
+        },
+        inputStyle:{
+            width: DeviceFractions.deviceWidth / 10 * 4,
+            height: DeviceFractions.deviceWidth / 10,
+            marginBottom: DeviceFractions.deviceH40
+        },
+        inputSearchStyle: {
+            height: 40,
+            fontSize: 16,
+          },
+          dropDown:{
+            marginTop: DeviceFractions.deviceH50,
+            marginBottom: DeviceFractions.deviceHeight / 35
+          },
+          phonePairContainer:{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'flex-end',
+            width: '95%',
+            marginBottom: DeviceFractions.deviceH20
+        },
+        phoneInput:{
+            borderColor: Colors.secondaryColor,
+            borderWidth: 2,
+            borderRadius: 10,
+            paddingHorizontal: DeviceFractions.deviceH50,
+            width: "100%"
+        },
+        phoneToggle:{
+            borderWidth: 2, 
+            borderColor: Colors.secondaryColor, 
+            borderRadius: 10,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-evenly',
+            paddingVertical: DeviceFractions.deviceHeight / 150,
+            paddingHorizontal: DeviceFractions.deviceWidth / 1000
+        },
+        phoneToggleText:{
+            maxWidth: '45%',
+            color: Colors.secondaryColor,
+            fontWeight: 'bold',
+            fontSize: 12
+        }
+    }
+ 
+    const styles = useStyles(localStyles)
 
     const editLink = <ModularLink textColor={Colors.secondaryColor} textSize={20} textWeight={'600'} onPress={editProfileHandler}>
     Edit 
@@ -314,73 +391,3 @@ const MidContent=({variables, type})=>{
 
 export default MidContent
 
-const styles = StyleSheet.create({
-    screen:{
-        flex: 1
-    },
-    centeringContainer:{
-        alignItems: 'center'
-    },
-    container:{
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        width: DeviceFractions.deviceWidth * 2
-    },
-    screenHalf:{
-        flex: 0.5,
-    },
-    innerContainer:{
-        width: DeviceFractions.deviceWidth / 10 * 9,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    inputPairContainer:{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: '95%'
-    },
-    inputStyle:{
-        width: DeviceFractions.deviceWidth / 10 * 4,
-        height: DeviceFractions.deviceWidth / 10,
-        marginBottom: DeviceFractions.deviceH40
-    },
-    inputSearchStyle: {
-        height: 40,
-        fontSize: 16,
-      },
-      dropDown:{
-        marginTop: DeviceFractions.deviceH50,
-        marginBottom: DeviceFractions.deviceHeight / 35
-      },
-      phonePairContainer:{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'flex-end',
-        width: '95%',
-        marginBottom: DeviceFractions.deviceH20
-    },
-    phoneInput:{
-        borderColor: Colors.secondaryColor,
-        borderWidth: 2,
-        borderRadius: 10,
-        paddingHorizontal: DeviceFractions.deviceH50,
-        width: "100%"
-    },
-    phoneToggle:{
-        borderWidth: 2, 
-        borderColor: Colors.secondaryColor, 
-        borderRadius: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-evenly',
-        paddingVertical: DeviceFractions.deviceHeight / 150,
-        paddingHorizontal: DeviceFractions.deviceWidth / 1000
-    },
-    phoneToggleText:{
-        maxWidth: '45%',
-        color: Colors.secondaryColor,
-        fontWeight: 'bold',
-        fontSize: 12
-    }
-})

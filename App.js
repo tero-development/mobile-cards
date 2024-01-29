@@ -2,7 +2,9 @@ import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { useWindowDimensions } from 'react-native';
 import Colors from './utils/colors';
+import { converterSetup, useStyles } from './utils/dimensions';
 import DismissKeyboard from './UI/DismissKeyboard';
 import SignInContextProvider from './store/signin-context';
 import SplashScreen from './screens/SplashScreen';
@@ -49,9 +51,15 @@ export default function App() {
   const Stack = createNativeStackNavigator()
   const Drawer = createDrawerNavigator()
 
+      
+
 
   
   const DrawerGroup = () =>{
+
+    const {width, height} = useWindowDimensions()
+
+    const converter = converterSetup(width, height)
 
 
     return(
@@ -61,7 +69,8 @@ export default function App() {
           drawerActiveBackgroundColor: Colors.primaryColor200,
           drawerActiveTintColor: Colors.secondaryColor400,
           drawerInactiveTintColor: Colors.secondaryColor300,
-          drawerStyle:{backgroundColor: Colors.primaryColor100}
+          drawerStyle:{backgroundColor: Colors.primaryColor100},
+          drawerLabelStyle:{fontSize: converter(width/30, width/25, width/35)}
         }}>
             <Drawer.Screen name="HomeScreen" component={HomeScreen} options={{title: "Home"}}/>
             {/* <Drawer.Screen name="AdminScreen" component={AdminScreen} options={{title: "Home"}}/> */}
