@@ -23,7 +23,7 @@ const IconButton = ({isHeader, hasEditProfile, iconName, iconSize, iconColor, on
     withProfile:{
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingRight: width/20,
+        paddingRight: width/15,
     }
 }
  
@@ -44,11 +44,11 @@ const IconButton = ({isHeader, hasEditProfile, iconName, iconSize, iconColor, on
    const header = 
    <View style={[styles.iconContainer, hasEditProfile && styles.withProfile, viewStyle]}>
         <Pressable onPress={onPress} style={{width: iconSize}}> 
-            <Ionicons  name={iconName} size={iconSize} color={iconColor} />
+            <Ionicons  name={iconName} size={iconSize? iconSize : converter(20, 28, 38)}  color={iconColor} />
         </Pressable>
         {hasEditProfile && 
         <Pressable onPress={navigateProfile}>
-            <Ionicons name='person' size={24} color={iconColor}/>
+            <Ionicons name='person' size={iconSize? iconSize : converter(20, 28, 38)} color={iconColor}/>
         </Pressable>
         }
     </View>

@@ -110,7 +110,7 @@ const ContactInfoScreen = ({navigation}) =>{
                 alignItems: 'center',
                 justifyContent: 'space-evenly',
                 height: height /20,
-                width: converter(width/2.5, width/3.75, width/2.5),
+                width: width/2.5,
                 paddingVertical: height / 150,
                 paddingHorizontal: width / 1000,
             },

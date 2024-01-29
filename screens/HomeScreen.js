@@ -1,5 +1,6 @@
-import {View, StyleSheet} from 'react-native'
+import {View,useWindowDimensions} from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
+import { converterSetup, useStyles } from '../utils/dimensions'
 import { useContext, useState, useEffect } from 'react'
 import { SignInContext } from '../store/signin-context'
 import {SeasonContext} from '../store/season-context'
@@ -41,6 +42,29 @@ const HomeScreen = ({navigation}) =>{
         updateCafeClear} = useContext(CafeContext)
     const [isScheduleIncomplete, setIsScheduleIncomplete] = useState(false)
     const {hubspotDetails, updateContactId} = useContext(HubspotContext)
+
+    const {width, height} = useWindowDimensions()
+
+    const converter = converterSetup(width, height)
+
+    const localStyles = {
+        screen:{
+            flex: 1,
+        },
+        container:{ 
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',    
+        }
+    }
+
+
+    const styles = useStyles(localStyles)
+
+    const signInCredentials = {
+        email: credentials.email, 
+        password: credentials.password
+    }
 
     
     useEffect(()=>{
@@ -185,8 +209,8 @@ const HomeScreen = ({navigation}) =>{
 
     return(
         <SeasonContextProvider>
-            <LinearGradient style={styles.rootScreen} colors={[Colors.highlightColor, Colors.primaryColor]}>
-            <IconButton isHeader={true} hasEditProfile={true} iconName='menu' iconSize={28} iconColor={Colors.secondaryColor} onPress={openDrawer}/>
+            <LinearGradient style={styles.screen} colors={[Colors.highlightColor, Colors.primaryColor]}>
+            <IconButton isHeader={true} hasEditProfile={true} iconName='menu' iconColor={Colors.secondaryColor} onPress={openDrawer}/>
             <View style={styles.container}>
                 <ScoreGreeting points={10} rank={1} name={firstName? firstName : <Loader size='small' color={Colors.accentColor} />}/>
                 {credentials.employeeId? <View style={styles.profileContainer}>
@@ -198,7 +222,7 @@ const HomeScreen = ({navigation}) =>{
                     prompText={'Incomplete'}
                     promptColor={Colors.errorColor}  
                 />
-                {/* <HomeSelection onPress={navigateCompetency} title='Competency Cards' iconName='copy' iconSize={24}/> */}
+                <HomeSelection onPress={navigateCompetency} title='Competency Cards' iconName='copy' iconSize={24}/>
                 <HomeSelection
                 onPress={()=>{}} 
                     title='Achievements' 
@@ -208,7 +232,7 @@ const HomeScreen = ({navigation}) =>{
                     prompText={'upcoming'}
                     promptColor={Colors.activeColor}  
                 />
-                {/* <HomeSelection onPress={navigateQuiz} title='Knowledge Check' iconName='clipboard' iconSize={24}/> */}
+                <HomeSelection onPress={navigateQuiz} title='Knowledge Check' iconName='clipboard' iconSize={24}/>
                 <ModularLink 
                     onPress={signOutHandler}     
                     textColor={Colors.secondaryColor}
@@ -225,17 +249,6 @@ const HomeScreen = ({navigation}) =>{
         
     )
 }
-
-const styles = StyleSheet.create({
-    rootScreen:{
-        flex: 1
-    }, 
-    container:{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    }
-})
 
 export default HomeScreen
 

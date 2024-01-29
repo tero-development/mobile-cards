@@ -12,7 +12,7 @@ const LabeledPhoneInput = ({style, viewStyle, label, textSize, color, textInputC
             fontSize: converter(width/30, width/30, width/35)
         },
         inputStyle:{
-            width: converter(width/2, width/1.6, width/2),
+            width: width/2,
                 height: height /20,
                 borderWidth: converter(1.5, 2, 3),
                 borderRadius: converter(6, 8, 12),
