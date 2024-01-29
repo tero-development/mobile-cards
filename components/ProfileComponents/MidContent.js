@@ -79,7 +79,7 @@ const MidContent=({variables, type})=>{
         },
         inputStyle:{
             width: width / 10 * 4,
-            height: width / 10,
+            height: height / 20,
             marginBottom: height/40
         },
         inputSearchStyle: {
@@ -90,35 +90,37 @@ const MidContent=({variables, type})=>{
             marginTop: height/50,
             marginBottom: height / 35
           },
+          dropStyle:{
+            width: width/2.5,
+            marginTop:converter(height/50, height/40, height/50)
+          },
           phonePairContainer:{
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'flex-end',
-            width: '95%',
-            marginBottom: height/20
+            marginBottom: height/20,
+            width: "95%"
         },
         phoneInput:{
-            borderColor: Colors.secondaryColor,
-            borderWidth: 2,
-            borderRadius: 10,
-            paddingHorizontal: height/50,
-            width: "100%"
+            marginBottom: 0,
+            width: width/2.25
         },
         phoneToggle:{
-            borderWidth: 2, 
+            borderWidth: converter(1.5, 2, 3), 
             borderColor: Colors.secondaryColor, 
-            borderRadius: 10,
+            borderRadius: converter(6, 8, 12),
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-evenly',
-            paddingVertical: height / 150,
-            paddingHorizontal: width / 1000
+            height: height /20,
+            width: width/2.75,
+            paddingHorizontal: width / 1000,
         },
         phoneToggleText:{
             maxWidth: '45%',
             color: Colors.secondaryColor,
             fontWeight: 'bold',
-            fontSize: 12
+            fontSize: converter(width/40, width/40, width/40)
         }
     }
  
@@ -216,10 +218,9 @@ const MidContent=({variables, type})=>{
             <DropdownComponent 
                 data={companyIndustryYears? companyIndustryYears : [{label: "1", value: "1"}, {label: "2", value: "2"}]} 
                 mode='modal'
-                flexWidth={0.465} 
                 prompt={industryYears} 
                 iconName='information-circle-outline'
-                viewStyle={styles.dropDown}
+                dropStyle={styles.dropStyle}
                 color={colorHandler(errorType, [], industryYears)}
                 value={industryYears}
                 updater={updateIndustryYears}
@@ -229,10 +230,9 @@ const MidContent=({variables, type})=>{
             <DropdownComponent
                 data={companyTerritories? companyTerritories : [{label: "1", value: "1"}, {label: "2", value: "2"}]} 
                 mode='modal'
-                flexWidth={0.465} 
                 prompt={employeeTerritory} 
                 iconName='information-circle-outline'
-                viewStyle={styles.dropDown}
+                dropStyle={styles.dropStyle}
                 color={colorHandler(errorType, [], employeeTerritory)}
                 value={employeeTerritory}
                 updater={updateEmployeeTerritory}
@@ -331,7 +331,7 @@ const MidContent=({variables, type})=>{
                 flexWidth={0.465} 
                 prompt={industryYears} 
                 iconName='information-circle-outline'
-                viewStyle={styles.dropDown}
+                dropStyle={styles.dropStyle}
                 color={colorHandler(errorType, [], industryYears)}
                 value={industryYears}
                 updater={updateIndustryYears}
@@ -344,7 +344,7 @@ const MidContent=({variables, type})=>{
                 flexWidth={0.465} 
                 prompt={employeeTerritory} 
                 iconName='information-circle-outline'
-                viewStyle={styles.dropDown}
+                dropStyle={styles.dropStyle}
                 color={colorHandler(errorType, [], employeeTerritory)}
                 value={employeeTerritory}
                 updater={updateEmployeeTerritory}
@@ -357,7 +357,6 @@ const MidContent=({variables, type})=>{
                 label={"Phone Number"} 
                 color={colorHandler(errorType, ['phone_invalid'], phoneNumber)}
                 style={[styles.phoneInput, false && {width: '50%'}]}
-                viewStyle={{flex: 0.90}}
                 visible={disablePhone}
                 disable={false} 
                 textInputConfig={{
@@ -372,12 +371,12 @@ const MidContent=({variables, type})=>{
             />
     
     
-            <Pressable style={[styles.phoneToggle, false && {display: 'none'}]} onPress={togglePhoneHandler}>
-                <Text style={styles.phoneToggleText}>Opt in for texts</Text>
+            <Pressable style={[styles.phoneToggle, disablePhone && {marginTop: height/40}, false && {display: 'none'}]} onPress={togglePhoneHandler}>
+                <Text style={styles.phoneToggleText}>{`Opt ${disablePhone? "in" : "out"} for texts`}</Text>
                 <IconButton 
                     isHeader={false} 
-                    iconName={!disablePhone? 'checkmark-circle-outline' : 'close-circle-outline'} 
-                    iconSize={28} 
+                    iconName={!disablePhone? 'close-circle-outline' : 'checkmark-circle-outline'} 
+                    iconSize={converter(18, 20, 30)} 
                     iconColor={Colors.secondaryColor}
                     onPress={togglePhoneHandler} 
                 />

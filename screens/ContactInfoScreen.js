@@ -313,7 +313,7 @@ const ContactInfoScreen = ({navigation}) =>{
 
 
         <Pressable style={styles.phoneToggle} onPress={togglePhoneHandler}>
-            <Text style={styles.phoneToggleText}>Opt in for texts</Text>
+            <Text style={styles.phoneToggleText}>{`Opt ${disablePhone? "in" : "out"} for texts`}</Text>
             <IconButton 
                 isHeader={false} 
                 iconName={!disablePhone? 'checkmark-circle-outline' : 'close-circle-outline'} 
