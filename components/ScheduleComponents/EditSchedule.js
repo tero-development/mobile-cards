@@ -1,7 +1,7 @@
-import {Modal, View, Text, StyleSheet, Pressable, ScrollView} from 'react-native'
+import {Modal, View, Text, useWindowDimensions, Pressable, ScrollView} from 'react-native'
 import Colors from '../../utils/colors'
 import Title from '../../UI/Title'
-import DeviceFractions from '../../utils/dimensions'
+import {converterSetup, useStyles} from '../../utils/dimensions'
 import { wordSplitter } from '../../utils/helperFunctions'
 import ScheduleEntry from './ScheduleEntry'
 import Loader from '../../UI/Loader'
@@ -50,6 +50,112 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
         groupTargetId,
         clinicMonthName
     } = editScheduleVariables
+
+    const {width, height} = useWindowDimensions()
+
+    const converter = converterSetup(width, height)
+
+    const localStyles = {
+        scheduleContainer:{
+            height: height / 1.8,
+            width: width / 10 * 8.5,
+        },
+        scheduleHeader:{
+            // height: '20%',
+            height: '18%',
+            backgroundColor: Colors.secondaryColor,
+            paddingHorizontal: width/20,
+            paddingVertical: height / 85,
+            borderTopLeftRadius: 14,
+            borderTopRightRadius: 14,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+        },
+        topTitleContainer:{
+            flexShrink: 1,
+            flex: 0.9,
+        },
+        topTitle:{
+            color: Colors.highlightColor,
+            fontSize: height / 45,
+            fontWeight: 'bold',
+            flexWrap: 'wrap'
+        },
+        topDate:{
+            fontSize: height / 50,
+            color: Colors.highlightColor,
+            textAlign: 'right'
+        },
+        selectADate:{
+            marginBottom: height/50,
+            width: width,
+            padding: width / 15,
+            alignItems: 'flex-end'
+    
+        },
+        scheduleBody:{
+            // height: '60%',
+            height: '65%',
+            backgroundColor: Colors.highlightColor,
+            padding: width/20,
+        },
+        scheduleBodyInnerContainer:{
+            flex: 1,
+            justifyContent: 'center',
+            marginBottom: height/30
+        },
+        scheduleFooter:{
+            height: '28%',
+            backgroundColor: Colors.accentColor400,
+            borderBottomLeftRadius: 14,
+            borderBottomRightRadius: 14,
+            justifyContent: 'center',
+            alignItems: 'center'
+        },
+        footerSaveOptions:{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'baseline',
+            width: '75%'
+        },
+        submitContainer:{
+            backgroundColor: Colors.highlightColor,
+            borderRadius: 10,
+            flex: 0.6,
+            justifyContent: 'center',
+            alignItems: 'center',
+            paddingVertical: height / 100
+        },
+        submitOption:{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            width: '50%',
+            marginBottom: height / 200
+        },
+        submitText:{
+            color: Colors.secondaryColor
+        },
+        clickBox:{
+            backgroundColor: Colors.unselectedColor,
+            height: 15,
+            width: 15,
+            borderRadius: 3
+        },
+        modal:{
+            flex:1
+        },
+        modalInnerContainer:{
+            flex: 1,
+            alignItems: 'center',
+            backgroundColor: Colors.primaryColor100,
+            paddingTop: height/20,
+        }
+        
+    }
+ 
+    const styles = useStyles(localStyles)
 
 
     // const{contactId} = hubspotDetails
@@ -297,7 +403,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
     let footerContent = 
     <ModularLink 
         textColor={Colors.highlightColor} 
-        textSize={DeviceFractions.deviceH50} 
+        textSize={height/50} 
         textStyles={{textAlign: 'center'}}
         onPress={standardClose}
     >
@@ -309,7 +415,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
         <View>
             {
                 separatedSaveTitle.map(word =>{
-                    return <Title key={separatedSaveTitle[separatedSaveTitle.indexOf(word)]}  textSize={DeviceFractions.deviceHeight / 35} color={Colors.highlightColor}>{word}</Title>
+                    return <Title key={separatedSaveTitle[separatedSaveTitle.indexOf(word)]}  textSize={height / 35} color={Colors.highlightColor}>{word}</Title>
                 })
             }
         </View>
@@ -325,7 +431,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
             <ModularButton 
                 style={{
                     width: '75%', 
-                    height: DeviceFractions.deviceH40,
+                    height: height/40,
                     borderRadius: 4,
                     shadowColor: 'black',
                     shadowOpacity: 0.25,
@@ -334,7 +440,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                     elevation: 4
                  }} 
                 buttonColor={Colors.secondaryColor300} 
-                textSize={DeviceFractions.deviceW30} 
+                textSize={width/30} 
                 textStyles={{fontWeight: 'bold'}} 
                 textColor={Colors.highlightColor}
                 onPress={submitHandler}
@@ -350,28 +456,14 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
         <Modal visible={visible} animationType='slide' style={styles.modal}>
         <View style={styles.modalInnerContainer}>
         <View style={styles.selectADate}>
-            <Title color={Colors.secondaryColor} textSize={27} style={{marginRight: DeviceFractions.deviceW50}} >Select A Date</Title>
+            <Title color={Colors.secondaryColor} large={true} style={{marginRight: width/50}} >Select Date</Title>
         </View>
                         <View style={styles.scheduleContainer}>
                             <View style={styles.scheduleHeader}>
                                 <View style={styles.topTitleContainer}>
-                                    <Text style={styles.topTitle}>{targetSkill}</Text>
-                                    {/* {
-                                        separatedTitle.map(title =>{
-                                            return(
-                                                <Text style={styles.topTitle} key={separatedTitle[separatedTitle.indexOf(title)]}>{title}</Text>
-                                            )
-                                        })
-                                    }    */}
+                                    <Text style={styles.topTitle}>{targetSkill}</Text>    
                                 </View>
                                 <View>
-                                    {/* {
-                                        separatedDate.map(datePair =>{
-                                            return(
-                                                <Text style={styles.topDate} key={separatedDate[separatedDate.indexOf(datePair)]}>{datePair}</Text>
-                                            )
-                                        })
-                                    }    */}
                                     <Text style={styles.topDate}>{monthName}</Text>
                                     <Text style={styles.topDate}>{year}</Text>
                                 </View>    
@@ -436,105 +528,5 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
     )
 }
 
-
-const styles = StyleSheet.create({
-    scheduleContainer:{
-        height: DeviceFractions.deviceHeight / 1.8,
-        width: DeviceFractions.deviceWidth / 10 * 8.5,
-    },
-    scheduleHeader:{
-        // height: '20%',
-        height: '18%',
-        backgroundColor: Colors.secondaryColor,
-        paddingHorizontal: DeviceFractions.deviceW20,
-        paddingVertical: DeviceFractions.deviceHeight / 85,
-        borderTopLeftRadius: 14,
-        borderTopRightRadius: 14,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center'
-    },
-    topTitleContainer:{
-        flexShrink: 1,
-        flex: 0.9,
-    },
-    topTitle:{
-        color: 'white',
-        fontSize: DeviceFractions.deviceHeight / 45,
-        fontWeight: 'bold',
-        flexWrap: 'wrap'
-    },
-    topDate:{
-        fontSize: DeviceFractions.deviceHeight / 50,
-        color: 'white',
-        textAlign: 'right'
-    },
-    selectADate:{
-        marginBottom: DeviceFractions.deviceH50,
-        width: DeviceFractions.deviceWidth,
-        padding: DeviceFractions.deviceWidth / 15,
-        alignItems: 'flex-end'
-
-    },
-    scheduleBody:{
-        // height: '60%',
-        height: '65%',
-        backgroundColor: Colors.highlightColor,
-        padding: DeviceFractions.deviceW20,
-    },
-    scheduleBodyInnerContainer:{
-        flex: 1,
-        justifyContent: 'center',
-        marginBottom: DeviceFractions.deviceH30
-    },
-    scheduleFooter:{
-        height: '28%',
-        backgroundColor: Colors.accentColor400,
-        borderBottomLeftRadius: 14,
-        borderBottomRightRadius: 14,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    footerSaveOptions:{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'baseline',
-        width: '75%'
-    },
-    submitContainer:{
-        backgroundColor: Colors.highlightColor,
-        borderRadius: 10,
-        flex: 0.6,
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingVertical: DeviceFractions.deviceHeight / 100
-    },
-    submitOption:{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        width: '50%',
-        marginBottom: DeviceFractions.deviceHeight / 200
-    },
-    submitText:{
-        color: Colors.secondaryColor
-    },
-    clickBox:{
-        backgroundColor: Colors.unselectedColor,
-        height: 15,
-        width: 15,
-        borderRadius: 3
-    },
-    modal:{
-        flex:1
-    },
-    modalInnerContainer:{
-        flex: 1,
-        alignItems: 'center',
-        backgroundColor: Colors.primaryColor100,
-        paddingTop: DeviceFractions.deviceH20,
-    }
-    
-})
 
 export default EditSchedule
