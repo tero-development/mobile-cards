@@ -1,4 +1,4 @@
-import {View, StyleSheet, ScrollView} from 'react-native'
+import {View, useWindowDimensions, ScrollView} from 'react-native'
 import { useState, useContext, useEffect } from 'react'
 import Title from '../UI/Title'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -10,7 +10,7 @@ import { getAssessment } from '../httpServices/assessments'
 import Colors from '../utils/colors'
 import ScheduleNode from '../components/ScheduleComponents/ScheduleNode'
 import IconButton from '../UI/IconButton'
-import DeviceFractions from '../utils/dimensions'
+import {converterSetup, useStyles} from '../utils/dimensions'
 import EditSchedule from '../components/ScheduleComponents/EditSchedule'
 import Loader from '../UI/Loader'
 import { getSelectedCafeIds, getCafeDates } from '../httpServices/cafes'
@@ -27,6 +27,39 @@ const LearnerSchedule = ({navigation, route}) =>{
         updateEditScheduleVariablesClear
         } = useContext(CafeContext)
     const [modalIsVisble, setModalIsVisble] = useState(false)
+
+    const {width, height} = useWindowDimensions()
+
+    const converter = converterSetup(width, height)
+
+    const localStyles = {
+        rootScreen:{
+            flex: 1
+        },
+        scrollContainer:{
+            paddingTop: height / 8
+        },
+        container:{
+            flex: 1,
+            paddingTop: height/40,
+            alignItems: 'center',
+        },
+        nodeContainer:{
+            marginBottom:  height / 7
+        },
+        modal:{
+            flex:1
+        },
+        modalInnerContainer:{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'turquoise'
+        }
+    }
+ 
+    const styles = useStyles(localStyles)
+
 
     
     useEffect(()=>{
@@ -95,17 +128,17 @@ const LearnerSchedule = ({navigation, route}) =>{
 
     return(
         <LinearGradient style={styles.rootScreen} colors={[Colors.highlightColor, Colors.primaryColor]}>
-            <IconButton isHeader={false} iconName='menu' iconSize={28} iconColor={Colors.secondaryColor} onPress={openDrawer} viewStyle={{position: 'absolute', left: DeviceFractions.deviceW20, top: DeviceFractions.deviceH10, zIndex: 1}}/>
+            <IconButton isHeader={false} iconName='menu'  iconColor={Colors.secondaryColor} onPress={openDrawer} viewStyle={{position: 'absolute', left: width/20, top: height/10, zIndex: 1}}/>
             <ScrollView style={styles.scrollContainer}>
-            <View style={{alignItems: 'center', marginBottom: DeviceFractions.deviceH40}}>
+            <View style={{alignItems: 'center', marginBottom: height/40}}>
                 <Title 
                     color={Colors.secondaryColor} 
-                    textSize={36} 
+                    large={true} 
                     style={{
-                        marginTop: DeviceFractions.deviceH30,  
-                        width:DeviceFractions.deviceWidth / 10 * 8, 
+                        marginTop: height/30,  
+                        width: width / 10 * 8, 
                         textAlign:'right'}}
-                    >
+                >
                         My Schedule
                     </Title>
             </View>
@@ -136,31 +169,7 @@ const LearnerSchedule = ({navigation, route}) =>{
     )
 }
 
-const styles = StyleSheet.create({
-    rootScreen:{
-        flex: 1
-    },
-    scrollContainer:{
-        paddingTop: DeviceFractions.deviceHeight / 8
-    },
-    container:{
-        flex: 1,
-        paddingTop: DeviceFractions.deviceH40,
-        alignItems: 'center',
-    },
-    nodeContainer:{
-        marginBottom:  DeviceFractions.deviceHeight / 7
-    },
-    modal:{
-        flex:1
-    },
-    modalInnerContainer:{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'turquoise'
-    }
-})
+
 
 
 export default LearnerSchedule

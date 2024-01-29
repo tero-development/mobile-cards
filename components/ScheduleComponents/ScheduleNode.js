@@ -1,7 +1,7 @@
 import { useState, useContext} from 'react'
-import {View, Text, StyleSheet, Pressable, Platform, UIManager, LayoutAnimation} from 'react-native'
+import {View, Text, useWindowDimensions, Pressable, Platform, UIManager, LayoutAnimation} from 'react-native'
 import Colors from '../../utils/colors'
-import DeviceFractions from '../../utils/dimensions'
+import {converterSetup, useStyles} from '../../utils/dimensions'
 import {Ionicons} from '@expo/vector-icons'
 import ScheduleNodeOption from './ScheduleNodeOption'
 import { CafeContext } from '../../store/cafe-context'
@@ -23,6 +23,110 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
     let date = ""
     let variableGroup = {}
 
+
+    const {width, height} = useWindowDimensions()
+
+    const converter = converterSetup(width, height)
+
+    const localStyles = {
+        container:{
+            width: converter(width/10 * 6.5, width/10 * 7.5, width/10 * 7.5),
+            marginBottom: height/40,
+            
+        },
+        nodeTop:{
+            backgroundColor: Colors.accentColor400,
+            borderRadius: converter(15, 20, 35),
+            paddingHorizontal: height/40,
+            paddingVertical: height/50,
+            borderBottomRightRadius: converter(15, 20, 35),
+            borderBottomLeftRadius: converter(15, 20, 35),
+            height: height / 6,
+            zIndex: 1,
+            marginBottom: height / 500
+        },
+        nodeTopExpanded:{
+            backgroundColor: Colors.accentColor300,
+            borderRadius: converter(15, 20, 35),
+            paddingHorizontal: height/40,
+            paddingVertical: height/50,
+            borderBottomLeftRadius: 0, 
+            borderBottomRightRadius: 0,
+            height: height / 7,
+            zIndex: 1,
+            marginBottom: height / 10 * 1.36
+        },
+        nodeTopInnerContainer:{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            flex:1
+        },
+        topTitleContainer:{
+            flexShrink: 1,
+            flex: 0.9,
+            justifyContent: 'space-evenly'
+        },
+        topTitle:{
+            color: Colors.highlightColor,
+            fontSize: converter(width/24, width / 20, width/20),
+            fontWeight: 'bold',
+            flexWrap: 'wrap'
+        },
+        topTimeText:{
+            color: Colors.highlightColor,
+            fontSize: converter(width/35, width/30, width/30)
+        },
+        topDetailContainer:{
+            justifyContent: 'space-evenly',
+            alignItems: 'flex-end'
+        },
+        topScheduledText:{
+            color: Colors.highlightColor,
+            fontSize: width/25,
+            textAlign: 'right',
+            fontWeight: 'bold'
+        },
+        topCafeType:{
+            color: Colors.highlightColor,
+            fontSize: width/30,
+            textAlign: 'right'
+        },
+        nodeBottom:{
+            position: 'absolute',
+            flexDirection: 'row',
+            opacity:0,
+            left: 0,
+            right: 0,
+            top: 20
+        },
+        nodeBottomExpanded:{
+            backgroundColor: 'red',
+            height: height / 7,
+            flexDirection: 'row',
+            borderBottomRightRadius: converter(15, 20, 35),
+            borderBottomLeftRadius: converter(15, 20, 35),
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            top: height / 10 * 1.36,
+            opacity: 1
+        },
+        optionContainer:{
+            flex: 1,
+            flexDirection: 'row'
+        },
+        // bottomTitle:{
+        //     fontWeight: 'bold',
+        //     color:Colors.accentColor300,
+        //     fontSize: 22
+        // },
+        // bottomText:{
+        //     color:Colors.accentColor300,
+        //     fontSize: 17
+        // }
+    }
+ 
+    const styles = useStyles(localStyles)
 
 
     if(scheduledDates!== undefined && scheduledDates.length > 0){
@@ -101,7 +205,7 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
                         <Text style={[styles.topCafeType, rightSidePrompt === 'Not Scheduled'&& {color: Colors.errorColor, fontWeight:'bold'}]}>
                             {rightSidePrompt}
                         </Text>
-                        <Ionicons name={expanded? 'chevron-up' : 'chevron-down'} size={35} color={'white'}/>
+                        <Ionicons name={expanded? 'chevron-up' : 'chevron-down'} size={35} color={Colors.highlightColor}/>
                     </View>            
                 </View>
 
@@ -162,106 +266,5 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
 }
 
 
-const styles = StyleSheet.create({
-    container:{
-        width: DeviceFractions.deviceWidth / 10 * 7.5,
-        marginBottom: DeviceFractions.deviceH40,
-    },
-    nodeTop:{
-        backgroundColor: Colors.accentColor400,
-        borderRadius: 20,
-        paddingHorizontal: DeviceFractions.deviceH40,
-        paddingVertical: DeviceFractions.deviceH50,
-        borderBottomRightRadius: 20,
-        borderBottomLeftRadius: 20,
-        height: DeviceFractions.deviceHeight / 6,
-        zIndex: 1,
-        marginBottom: DeviceFractions.deviceHeight / 500
-    },
-    nodeTopExpanded:{
-        backgroundColor: Colors.accentColor300,
-        borderRadius: 20,
-        paddingHorizontal: DeviceFractions.deviceH40,
-        paddingVertical: DeviceFractions.deviceH50,
-        borderBottomLeftRadius: 0, 
-        borderBottomRightRadius: 0,
-        height: DeviceFractions.deviceHeight / 7,
-        zIndex: 1,
-        marginBottom: DeviceFractions.deviceHeight / 10 * 1.36
-    },
-    nodeTopInnerContainer:{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        flex:1
-    },
-    topTitleContainer:{
-        flexShrink: 1,
-        flex: 0.9,
-        justifyContent: 'space-evenly'
-    },
-    topTitle:{
-        color: 'white',
-        fontSize: DeviceFractions.deviceHeight / 45,
-        fontWeight: 'bold',
-        flexWrap: 'wrap'
-    },
-    topTimeText:{
-        color: Colors.highlightColor
-    },
-    topDetailContainer:{
-        justifyContent: 'space-evenly',
-        alignItems: 'flex-end'
-    },
-    topScheduledText:{
-        color: 'white',
-        fontSize: 18,
-        textAlign: 'right',
-        fontWeight: 'bold'
-    },
-    topCafeType:{
-        color: 'white',
-        fontSize: 15,
-        textAlign: 'right'
-    },
-    iconContainer:{
-        borderWidth: 2,
-        borderColor: 'white',
-        borderRadius: 5,
-        padding: 2
-    },  
-    nodeBottom:{
-        position: 'absolute',
-        flexDirection: 'row',
-        opacity:0,
-        left: 0,
-        right: 0,
-        top: 20
-    },
-    nodeBottomExpanded:{
-        backgroundColor: Colors.highlightColor,
-        height: DeviceFractions.deviceHeight / 7,
-        flexDirection: 'row',
-        borderBottomRightRadius: 20,
-        borderBottomLeftRadius: 20,
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        top: DeviceFractions.deviceHeight / 10 * 1.36,
-        opacity: 1
-    },
-    optionContainer:{
-        flex: 1,
-        flexDirection: 'row'
-    },
-    bottomTitle:{
-        fontWeight: 'bold',
-        color:Colors.accentColor300,
-        fontSize: 22
-    },
-    bottomText:{
-        color:Colors.accentColor300,
-        fontSize: 17
-    }
-})
 
 export default ScheduleNode
