@@ -53,8 +53,8 @@ const ScoreGreeting = ({points, rank, name}) =>{
                 <Text style={styles.scoreText}>{points}</Text>
             </View>
         </View>
-        <Title color={Colors.secondaryColor} textSize={converter(16, 20, 35)}>{name}</Title>
-        <Title color={Colors.secondaryColor} textSize={converter(14, 16, 30)}>Leaderboard Rank: {rank}</Title>
+        <Title color={Colors.secondaryColor} textSize={converter(16, 20, 34)}>{name}</Title>
+        <Title color={Colors.secondaryColor} textSize={converter(12, 16, 28)}>Leaderboard Rank: {rank}</Title>
     </View>
     )
 }

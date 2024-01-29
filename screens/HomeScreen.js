@@ -54,7 +54,7 @@ const HomeScreen = ({navigation}) =>{
         container:{ 
             flex: 1,
             alignItems: 'center',
-            justifyContent: 'center',    
+            justifyContent: 'center' 
         }
     }
 
@@ -217,26 +217,27 @@ const HomeScreen = ({navigation}) =>{
                 <HomeSelection 
                 onPress={navigateLearnerSchedule} 
                     title='Schedule' 
-                    iconName='calendar' iconSize={24}
+                    iconName='calendar' 
+                    
                     prompt={isScheduleIncomplete}
                     prompText={'Incomplete'}
                     promptColor={Colors.errorColor}  
                 />
-                <HomeSelection onPress={navigateCompetency} title='Competency Cards' iconName='copy' iconSize={24}/>
+                <HomeSelection onPress={navigateCompetency} title='Competency Cards' iconName='copy' />
                 <HomeSelection
                 onPress={()=>{}} 
                     title='Achievements' 
                     iconName='game-controller' 
-                    iconSize={24} 
+                     
                     prompt={true}
                     prompText={'upcoming'}
                     promptColor={Colors.activeColor}  
                 />
-                <HomeSelection onPress={navigateQuiz} title='Knowledge Check' iconName='clipboard' iconSize={24}/>
+                <HomeSelection onPress={navigateQuiz} title='Knowledge Check' iconName='clipboard' />
                 <ModularLink 
                     onPress={signOutHandler}     
                     textColor={Colors.secondaryColor}
-                    textSize={18}
+                    textSize={converter(14, 18, 28)}
                     textWeight={'bold'}
                     textStyles={{
                         textAlign: 'center'
