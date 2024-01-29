@@ -23,12 +23,7 @@ const ScheduleNodeOption  = ({title, topTitle, iconName, iconSize, iconColor, ro
         },
         text:{
             fontWeight: 'bold',
-            fontSize:12
-        },
-        clickBox:{
-            height: 15,
-            width: 15,
-            borderRadius: 3
+            fontSize: converter(width/30, width/30, width/30)
         }
     }
  

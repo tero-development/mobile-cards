@@ -30,7 +30,7 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
 
     const localStyles = {
         container:{
-            width: converter(width/10 * 6.5, width/10 * 7.5, width/10 * 7.5),
+            width: converter(width/10 * 6.75, width/10 * 7.5, width/10 * 7),
             marginBottom: height/40,
             
         },
@@ -52,9 +52,9 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
             paddingVertical: height/50,
             borderBottomLeftRadius: 0, 
             borderBottomRightRadius: 0,
-            height: height / 7,
+            height: height / 5.5,
             zIndex: 1,
-            marginBottom: height / 10 * 1.36
+            marginBottom: height / 10 * 1.7
         },
         nodeTopInnerContainer:{
             flexDirection: 'row',
@@ -68,13 +68,13 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
         },
         topTitle:{
             color: Colors.highlightColor,
-            fontSize: converter(width/24, width / 20, width/20),
+            fontSize: converter(width/24, width / 20, width/22),
             fontWeight: 'bold',
             flexWrap: 'wrap'
         },
         topTimeText:{
             color: Colors.highlightColor,
-            fontSize: converter(width/35, width/30, width/30)
+            fontSize: converter(width/35, width/30, width/35)
         },
         topDetailContainer:{
             justifyContent: 'space-evenly',
@@ -101,14 +101,14 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
         },
         nodeBottomExpanded:{
             backgroundColor: 'red',
-            height: height / 7,
+            height: height / 5.5,
             flexDirection: 'row',
             borderBottomRightRadius: converter(15, 20, 35),
             borderBottomLeftRadius: converter(15, 20, 35),
             position: 'absolute',
             left: 0,
             right: 0,
-            top: height / 10 * 1.36,
+            top: height / 10 * 1.7,
             opacity: 1
         },
         optionContainer:{
@@ -219,7 +219,7 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
                     roundL={true}
                     bgColor={Colors.highlightColor} 
                     iconName={'school-outline'} 
-                    iconSize={30} 
+                    iconSize={converter(24, 30, 60)} 
                     iconColor={Colors.secondaryColor400}
                     textColor={Colors.secondaryColor400}
                     link={clinicLink}
@@ -229,7 +229,7 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
                     title={companyCafeDesignation} 
                     topTitle={monthName}
                     iconName={'speedometer-outline'} 
-                    iconSize={30} 
+                    iconSize={converter(24, 30, 60)} 
                     iconColor={Colors.primaryColor300}
                     textColor={Colors.primaryColor300}
                     link={'https://zoom.us/'}
@@ -240,7 +240,7 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
                     roundR={true}
                     bgColor={Colors.secondaryColor400} 
                     iconName={'calendar-outline'} 
-                    iconSize={30} 
+                    iconSize={converter(24, 30, 60)} 
                     iconColor={Colors.highlightColor}
                     textColor={Colors.highlightColor}
                     variableGroup={variableGroup}
