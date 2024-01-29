@@ -1,6 +1,6 @@
 import {View,  Text, Pressable, useWindowDimensions} from 'react-native'
 import Colors from '../../utils/colors'
-import DeviceFractions, {converterSetup, useStyles} from '../../utils/dimensions'
+import {converterSetup, useStyles} from '../../utils/dimensions'
 import LabeledInput from '../LabeledInput'
 import LabeledPhoneInput from '../LabeledPhoneInput'
 import DropdownComponent from '../DropdownComponent'
@@ -62,13 +62,13 @@ const MidContent=({variables, type})=>{
             flex: 1,
             flexDirection: 'row',
             alignItems: 'center',
-            width: DeviceFractions.deviceWidth * 2
+            width: width * 2
         },
         screenHalf:{
             flex: 0.5,
         },
         innerContainer:{
-            width: DeviceFractions.deviceWidth / 10 * 9,
+            width: width / 10 * 9,
             justifyContent: 'center',
             alignItems: 'center'
         },
@@ -78,30 +78,30 @@ const MidContent=({variables, type})=>{
             width: '95%'
         },
         inputStyle:{
-            width: DeviceFractions.deviceWidth / 10 * 4,
-            height: DeviceFractions.deviceWidth / 10,
-            marginBottom: DeviceFractions.deviceH40
+            width: width / 10 * 4,
+            height: width / 10,
+            marginBottom: height/40
         },
         inputSearchStyle: {
             height: 40,
             fontSize: 16,
           },
           dropDown:{
-            marginTop: DeviceFractions.deviceH50,
-            marginBottom: DeviceFractions.deviceHeight / 35
+            marginTop: height/50,
+            marginBottom: height / 35
           },
           phonePairContainer:{
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'flex-end',
             width: '95%',
-            marginBottom: DeviceFractions.deviceH20
+            marginBottom: height/20
         },
         phoneInput:{
             borderColor: Colors.secondaryColor,
             borderWidth: 2,
             borderRadius: 10,
-            paddingHorizontal: DeviceFractions.deviceH50,
+            paddingHorizontal: height/50,
             width: "100%"
         },
         phoneToggle:{
@@ -111,8 +111,8 @@ const MidContent=({variables, type})=>{
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-evenly',
-            paddingVertical: DeviceFractions.deviceHeight / 150,
-            paddingHorizontal: DeviceFractions.deviceWidth / 1000
+            paddingVertical: height / 150,
+            paddingHorizontal: width / 1000
         },
         phoneToggleText:{
             maxWidth: '45%',
@@ -124,7 +124,7 @@ const MidContent=({variables, type})=>{
  
     const styles = useStyles(localStyles)
 
-    const editLink = <ModularLink textColor={Colors.secondaryColor} textSize={20} textWeight={'600'} onPress={editProfileHandler}>
+    const editLink = <ModularLink textColor={Colors.secondaryColor}  textWeight={'600'} onPress={editProfileHandler}>
     Edit 
 </ModularLink>
 
@@ -133,7 +133,7 @@ const MidContent=({variables, type})=>{
                 buttonColor={Colors.accentColor} 
                 textColor={'white'} 
                 rippleColor={Colors.accentColor300}
-                style={{width: DeviceFractions.deviceWidth / 2, marginBottom: DeviceFractions.deviceH50}}
+                style={{width: width / 2, marginBottom: height/50}}
                 onPress={()=>{
                     const {phoneNumber, ...credsWithOutPhone} = {...filteredCredentials}
 
@@ -146,7 +146,7 @@ const MidContent=({variables, type})=>{
             >
                 Submit Changes
             </ModularButton>}
-            <ModularLink textColor={Colors.secondaryColor} textSize={16} textWeight={'bold'} textStyles={{textAlign: 'center'}} onPress={editCancelHandler}>
+            <ModularLink textColor={Colors.secondaryColor} textWeight={'bold'} textStyles={{textAlign: 'center'}} onPress={editCancelHandler}>
                 Cancel
             </ModularLink>
         </View>

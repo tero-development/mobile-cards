@@ -1,18 +1,31 @@
-import {View, Text, StyleSheet} from 'react-native'
+import {View, Text, useWindowDimensions} from 'react-native'
+import { converterSetup, useStyles } from '../utils/dimensions'
 
-const Title = ({children, textSize, color, style, textStyle}) =>{
+const Title = ({children, textSize, color, style, textStyle, large}) =>{
+    const {width, height} = useWindowDimensions()
+
+    const converter = converterSetup(width, height)
+
+    const localStyles = {
+        presets:{
+            fontSize: 24,
+            fontWeight: 'bold',
+        }, 
+        largeText:{
+            fontSize: width/9
+        }
+    }
+ 
+    const styles = useStyles(localStyles)
+
+
     return(
         <View>
-            <Text style={[styles.presets, {fontSize: textSize, color: color}, style, textStyle]}>{children}</Text>
+            <Text style={[styles.presets, large && styles.largeText, textSize&&{fontSize: textSize}, {color: color}, style, textStyle]}>{children}</Text>
         </View>
     )
 }
 
-const styles = StyleSheet.create({
-    presets:{
-        fontSize: 24,
-        fontWeight: 'bold',
-    }
-})
+
 
 export default Title

@@ -237,7 +237,6 @@ const HomeScreen = ({navigation}) =>{
                 <ModularLink 
                     onPress={signOutHandler}     
                     textColor={Colors.secondaryColor}
-                    textSize={converter(14, 18, 28)}
                     textWeight={'bold'}
                     textStyles={{
                         textAlign: 'center'
