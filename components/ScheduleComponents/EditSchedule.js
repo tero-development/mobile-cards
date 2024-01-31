@@ -35,7 +35,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
     const [shallowSnapshot, setShallowSnapshot] = useState({})
     const [submitOption, setSubmitOption] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
-    const [filteredDatArray, setFilteredDateArray] = useState([])
+    const [filteredDateArray, setFilteredDateArray] = useState([])
     // const {hubspotDetails, updateToDealId, updateFromDealId, toDealId, fromDealId,} = useContext(HubspotContext)
     const {cafeTracker, shallowTracker, scheduleCafes, editScheduleVariables} = cafeDetails
     const {employeeId, email, firstName} = credentials
@@ -467,9 +467,9 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                             <ScrollView style={styles.scheduleBody}>
                                 <View style={styles.scheduleBodyInnerContainer}>
                                 {
-                                    filteredDatArray.length < 1? <Loader size='large' color={Colors.accentColor} /> : 
+                                    filteredDateArray.length < 1? <Loader size='large' color={Colors.accentColor} /> : 
 
-                                    filteredDatArray.map(entry =>{
+                                    filteredDateArray.map(entry =>{
                                         const originalDate = new Date(entry.date)
                                         const fullMonth = originalDate.toLocaleString('default', {month: 'long'})
                                         const numericDay = (parseInt(originalDate.toLocaleString('default', {day: 'numeric'}))+1).toString()
