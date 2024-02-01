@@ -38,10 +38,10 @@ const ScoreGreeting = ({points, rank, name}) =>{
     }
 
 
-    // useEffect(()=>{
-    //     spinPositive()
-    //     return ()=>{}
-    // },[])
+    useEffect(()=>{
+        spinPositive()
+        return ()=>{}
+    },[])
 
     const localStyles = {
         scoreContainer:{
@@ -54,7 +54,7 @@ const ScoreGreeting = ({points, rank, name}) =>{
             width: width/2
         },
         scoreCircle:{
-            borderWidth: converter(7, 10, 18),
+            borderWidth: converter(7, 10, 20),
             borderColor: converter(Colors.secondaryColor, Colors.secondaryColor, Colors.primaryColor400),
             borderRadius: converter(100, 100, 150),
             padding: converter(45,65, 60),
@@ -66,9 +66,11 @@ const ScoreGreeting = ({points, rank, name}) =>{
             zIndex: converter(1, 1, 1)
         },
         scoreCircleLine:{
-            borderWidth: converter(0, 0, 18),
-            borderLeftWidth: converter(6, 10, 8),
-            borderBottomWidth: converter(6, 10,8),
+            borderWidth: converter(0, 0, 0),
+            borderLeftWidth: converter(6, 10, 6),
+            borderRightWidth: converter(0, 0, 20),
+            borderBottomWidth: converter(6, 10, 8),
+            borderTopWidth: converter(0, 0, 15),
             borderColor: converter(Colors.primaryColor400, Colors.primaryColor400, Colors.secondaryColor),
             borderRadius: converter(100, 100, 150),
             // borderRadius: converter(100, 10, 150),
