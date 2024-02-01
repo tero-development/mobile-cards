@@ -87,7 +87,7 @@ const LearnerSchedule = ({navigation, route}) =>{
                                 if(cafeDates){
                                     // console.log('')
                                     // console.log('LearnerSchedule ln 51 cafeDates:')
-                                    console.log(cafeDates)
+                                    // console.log(cafeDates)
                                     updateScheduledDates(cafeDates)
                                 }
                             }catch(e){

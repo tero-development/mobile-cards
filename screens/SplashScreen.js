@@ -109,6 +109,7 @@ const SplashScreen = ({navigation}) =>{
         try{
            const company = await searchCompanyEmail(email)
            if(company._id){
+                updateCompany(company)
                 try{
                     const employee = await searchEmployee(email)
                     if(employee === 'not found'){
