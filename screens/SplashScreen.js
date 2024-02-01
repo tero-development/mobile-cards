@@ -16,6 +16,7 @@ import  {converterSetup, useStyles} from '../utils/dimensions'
 import {searchEmployee} from '../httpServices/employees'
 import { searchCompanyEmail } from '../httpServices/companies'
 import {verifyEmailHandler} from '../utils/helperFunctions'
+import { CompanyContext } from '../store/company-context'
 import { updateCredentials, clearErrorHandler, colorHandler, errorFormatHandler } from '../utils/inputErrorDetection'
 import ModularLink from '../components/ModularLink'
 import ErrorOverlay from '../UI/ErrorOverlay'
@@ -41,6 +42,7 @@ const SplashScreen = ({navigation}) =>{
     const [errorType, setErrorType] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
     const [isLoading, setIsLoading] = useState(false)
+    const {company, updateCompany} = useContext(CompanyContext)
 
     const {width, height} = useWindowDimensions()
 
