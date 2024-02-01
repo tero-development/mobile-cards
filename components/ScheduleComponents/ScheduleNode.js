@@ -179,6 +179,7 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
     let linksActive = false
 
     if(cafeTracker.list.length > 0 && currentListTarget !== undefined){
+
         if(currentListTarget.id !== ""){
             rightSidePrompt = currentListTarget.headlineDate
             timePrompt = currentListTarget.time

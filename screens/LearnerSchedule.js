@@ -77,12 +77,15 @@ const LearnerSchedule = ({navigation, route}) =>{
                         const selectedIds = await getSelectedCafeIds(assessment.currentSkillsChallenges.map(entry => entry._id))
                        
                         if(selectedIds){
+                            // console.log('')
                             // console.log('LearnerSchedule ln 49 selectedIds:')
                             // console.log(selectedIds)
+                            updateScheduledDates(selectedIds)
                             try{
                                 //these are the offered dates, from the 'cafes' table
                                 const cafeDates = await getCafeDates(selectedIds)
                                 if(cafeDates){
+                                    console.log('')
                                     console.log('LearnerSchedule ln 51 cafeDates:')
                                     console.log(cafeDates)
                                     updateScheduledDates(cafeDates)
