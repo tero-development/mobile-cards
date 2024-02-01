@@ -85,8 +85,8 @@ const LearnerSchedule = ({navigation, route}) =>{
                                 //these are the offered dates, from the 'cafes' table
                                 const cafeDates = await getCafeDates(selectedIds)
                                 if(cafeDates){
-                                    console.log('')
-                                    console.log('LearnerSchedule ln 51 cafeDates:')
+                                    // console.log('')
+                                    // console.log('LearnerSchedule ln 51 cafeDates:')
                                     console.log(cafeDates)
                                     updateScheduledDates(cafeDates)
                                 }
