@@ -54,8 +54,8 @@ const ScoreGreeting = ({points, rank, name}) =>{
             width: width/2
         },
         scoreCircle:{
-            borderWidth: converter(7, 10, 20),
-            borderColor: converter(Colors.secondaryColor, Colors.secondaryColor, Colors.primaryColor400),
+            borderWidth: converter(7, 10, 17),
+            borderColor: converter(Colors.secondaryColor, Colors.secondaryColor, Colors.secondaryColor),
             borderRadius: converter(100, 100, 150),
             padding: converter(45,65, 60),
             height: converter(height/10 * 0.5,height/10 * 1.4, height/10 * 1.8),
@@ -67,11 +67,11 @@ const ScoreGreeting = ({points, rank, name}) =>{
         },
         scoreCircleLine:{
             borderWidth: converter(0, 0, 0),
-            borderLeftWidth: converter(6, 10, 6),
-            borderRightWidth: converter(0, 0, 20),
-            borderBottomWidth: converter(6, 10, 8),
-            borderTopWidth: converter(0, 0, 15),
-            borderColor: converter(Colors.primaryColor400, Colors.primaryColor400, Colors.secondaryColor),
+            borderLeftWidth: converter(6, 10, 18),
+            borderRightWidth: converter(0, 0, 0),
+            borderBottomWidth: converter(6, 10, 18),
+            borderTopWidth: converter(0, 0, 0),
+            borderColor: converter(Colors.primaryColor400, Colors.primaryColor400, Colors.primaryColor400),
             borderRadius: converter(100, 100, 150),
             // borderRadius: converter(100, 10, 150),
             padding: converter(45,65, 60),
