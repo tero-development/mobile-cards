@@ -472,7 +472,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                                     filteredDateArray.map(entry =>{
                                         const originalDate = new Date(entry.date)
                                         const fullMonth = originalDate.toLocaleString('default', {month: 'long'})
-                                        const numericDay = (parseInt(originalDate.toLocaleString('default', {day: 'numeric'}))+1).toString()
+                                        const numericDay = (parseInt(originalDate.toLocaleString('default', {day: 'numeric'}))).toString()
                                         const year = originalDate.toLocaleString('default', {year: 'numeric'})
                                         const headlineDate = `${fullMonth}, ${numericDay}`
                                         const date = `${fullMonth}, ${numericDay} ${year}`
