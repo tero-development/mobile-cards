@@ -9,6 +9,7 @@ import {searchEmployee} from '../httpServices/employees'
 import { getActiveSeason } from '../httpServices/seasons'
 import { getCafeTracker } from '../httpServices/cafes'
 import { getContact } from '../httpServices/HBcontacts'
+import { getCompany } from '../httpServices/companies'
 import IconButton from '../UI/IconButton'
 import Colors from '../utils/colors'
 import ModularLink from '../components/ModularLink'
@@ -195,7 +196,10 @@ const HomeScreen = ({navigation}) =>{
             <LinearGradient style={styles.screen} colors={[Colors.highlightColor, Colors.primaryColor]}>
             <IconButton isHeader={true} hasEditProfile={true} iconName='menu' iconColor={Colors.secondaryColor} onPress={openDrawer}/>
             <View style={styles.container}>
-                <ScoreGreeting points={10} rank={1} name={firstName? firstName : <Loader size='small' color={Colors.accentColor} />}/>
+                {
+                    (credentials.employeeId && firstName)?  <ScoreGreeting points={10} rank={1} name={firstName}/>
+                    : <Loader size='large' color={Colors.accentColor}/> 
+                }
                 {credentials.employeeId? <View style={styles.profileContainer}>
                 <HomeSelection 
                 onPress={navigateLearnerSchedule} 
