@@ -17,6 +17,7 @@ import { HubspotContext } from '../../store/hubspot-context'
 import ClickBox from '../ClickBox'
 import { SignInContext } from '../../store/signin-context'
 import _, { filter, first } from 'lodash'
+import {Ionicons} from '@expo/vector-icons'
 
 
 const EditSchedule = ({visible, closeModalHandler}) =>{
@@ -56,13 +57,17 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
     const converter = converterSetup(width, height)
 
     const localStyles = {
+        modalInnerContainer:{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: Colors.primaryColor100
+        },
         scheduleContainer:{
-            height: height / 1.8,
-            width: width / 10 * 8.5,
+            width: width / 10 * 8.5
         },
         scheduleHeader:{
-            // height: '20%',
-            height: '18%',
+            height: converter(height/8, height/8, height/8),
             backgroundColor: Colors.secondaryColor,
             paddingHorizontal: width/20,
             paddingVertical: height / 85,
@@ -88,17 +93,15 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
             textAlign: 'right'
         },
         selectADate:{
-            marginBottom: height/50,
             width: width,
             padding: width / 15,
             alignItems: 'flex-end'
     
         },
         scheduleBody:{
-            // height: '60%',
-            height: '65%',
+            height: converter(height /2.5, height /3,height /3),
             backgroundColor: Colors.highlightColor,
-            padding: width/20,
+            padding: width/20
         },
         scheduleBodyInnerContainer:{
             flex: 1,
@@ -107,7 +110,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
             marginBottom: height/30
         },
         scheduleFooter:{
-            height: '28%',
+            height: converter(height/6, height/6, height/6),
             backgroundColor: Colors.accentColor400,
             borderBottomLeftRadius: converter(14, 18, 25),
             borderBottomRightRadius: converter(14, 18, 25),
@@ -117,36 +120,40 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
         footerSaveOptions:{
             flexDirection: 'row',
             justifyContent: 'space-between',
-            alignItems: 'baseline',
-            width: '75%'
+            alignItems: 'center',
+            width: '75%',
         },
         submitContainer:{
             backgroundColor: Colors.highlightColor,
-            borderRadius: converter(6, 10, 12),
+            borderRadius: converter(10, 15, 20),
             flex: 0.6,
             justifyContent: 'center',
             alignItems: 'center',
             paddingTop: height/75
         },
-        submitOption:{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            width: converter('40%', '40%', '40%'),
-            marginBottom: height / 100
+        submitButton:{
+            width: '75%',
+            height: converter(height/35, height/40, height/35), 
+            borderRadius: converter(5, 5, 10),
+            shadowColor: 'black',
+            shadowOpacity: 0.25,
+            shadowOffset: {width: 0, height: 2},
+            shadowRadius: 8,
+            elevation: 4
         },
+        // submitOption:{
+        //     flexDirection: 'row',
+        //     justifyContent: 'space-between',
+        //     alignItems: 'center',
+        //     width: converter('40%', '40%', '40%'),
+        //     marginBottom: height / 100
+        // },
         submitText:{
             color: Colors.secondaryColor,
             fontSize: converter(width/40, width/ 40, width/35)
         },
         modal:{
             flex:1
-        },
-        modalInnerContainer:{
-            flex: 1,
-            alignItems: 'center',
-            backgroundColor: Colors.primaryColor100,
-            paddingTop: height/20,
         }
         
     }
@@ -392,9 +399,9 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
         closeModalHandler()
     }
 
-    function submitHandler(){
-        submitOption? submitYesHandler() : submitNoHandler()
-    }
+    // function submitHandler(){
+    //     submitOption? submitYesHandler() : submitNoHandler()
+    // }
     
     let footerContent = 
     <ModularLink 
@@ -416,32 +423,33 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
             }
         </View>
         <View style={styles.submitContainer}>
-            <Pressable onPress={toggleYesHandler} style={styles.submitOption}>
+            {/* <Pressable onPress={toggleYesHandler} style={styles.submitOption}>
                 <Text style={styles.submitText}>Yes</Text>
                 <ClickBox height={converter(width/30, width/30, width/30)} width={converter(width/30, width/30, width/30)} borderRadius={converter(3, 4, 6)} toggle={submitOption} toggleColor={Colors.secondaryColor300} />
             </Pressable>
             <Pressable onPress={toggleNoHandler} style={styles.submitOption}>
                 <Text style={styles.submitText}>No</Text>
                 <ClickBox height={converter(width/30, width/30, width/30)} width={converter(width/30, width/30, width/30)} borderRadius={converter(3, 4, 6)} toggle={!submitOption} toggleColor={Colors.secondaryColor300} />
-            </Pressable>
+            </Pressable> */}
             <ModularButton 
-                style={{
-                    width: '75%',
-                    height: converter(height/40, height/50, height/35), 
-                    borderRadius: converter(3, 4, 8),
-                    shadowColor: 'black',
-                    shadowOpacity: 0.25,
-                    shadowOffset: {width: 0, height: 2},
-                    shadowRadius: 8,
-                    elevation: 4
-                 }} 
+                style={styles.submitButton} 
                 buttonColor={Colors.secondaryColor300} 
                 textSize={converter(width/35, width/35, width/30)} 
                 textStyles={{fontWeight: 'bold'}} 
                 textColor={Colors.highlightColor}
-                onPress={submitHandler}
+                onPress={submitYesHandler}
             >
                 Submit
+            </ModularButton>
+            <ModularButton 
+                style={styles.submitButton} 
+                buttonColor={Colors.errorColor} 
+                textSize={converter(width/35, width/35, width/30)} 
+                textStyles={{fontWeight: 'bold'}} 
+                textColor={Colors.highlightColor}
+                onPress={submitNoHandler}
+            >
+                Cancel
             </ModularButton>
         </View>
     </View>
@@ -502,8 +510,6 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                                     )
                                 }
                                 </View>
-                                
-                                
                             </ScrollView>
                             <View style={styles.scheduleFooter}>
                                 
