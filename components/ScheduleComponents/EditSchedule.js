@@ -482,8 +482,8 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                                         const fullMonth = originalDate.toLocaleString('default', {month: 'long'})
                                         const numericDay = (parseInt(originalDate.toLocaleString('default', {day: 'numeric'}))).toString()
                                         const year = originalDate.toLocaleString('default', {year: 'numeric'})
-                                        const headlineDate = `${fullMonth}, ${numericDay}`
-                                        const date = `${fullMonth}, ${numericDay} ${year}`
+                                        const headlineDate = `${fullMonth} ${numericDay}`
+                                        const date = `${fullMonth} ${numericDay} ${year}`
                                         const time = entry.time
                                         const zoomLink = entry.zoom_link
                                         const clinicMonthName = entry.clinicMonthName
