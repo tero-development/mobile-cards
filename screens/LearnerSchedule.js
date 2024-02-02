@@ -14,6 +14,9 @@ import {converterSetup, useStyles} from '../utils/dimensions'
 import EditSchedule from '../components/ScheduleComponents/EditSchedule'
 import Loader from '../UI/Loader'
 import { getSelectedCafeIds, getCafeDates } from '../httpServices/cafes'
+import BackButton from '../UI/BackButton'
+
+
 
 const LearnerSchedule = ({navigation, route}) =>{
     const { updateAssessment} = useContext(AssessmentContext)
@@ -110,6 +113,10 @@ const LearnerSchedule = ({navigation, route}) =>{
         return ()=>{}
     },[])
 
+    function navigateBack(){
+        navigation.navigate('HomeScreen')
+    }
+
     const {selectedCafes, scheduledDates} = cafeDetails
 
 
@@ -168,6 +175,7 @@ const LearnerSchedule = ({navigation, route}) =>{
             </View>
             {(scheduledDates.length > 0 && modalIsVisble) && <EditSchedule visible={modalIsVisble} closeModalHandler={closeModalHandler}/> }
             </ScrollView>
+            <BackButton viewStyle={{left:converter( width/70,  width/100,  width/70)}} textSize={converter(width/30, width/30, width/35)} iconSize={converter(width/20, width/25, width/25)} navigationHandler={navigateBack}/>
         </LinearGradient>
     )
 }

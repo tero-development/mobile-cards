@@ -17,6 +17,7 @@ import Loader from '../UI/Loader'
 import _ from 'lodash'
 import MidContent from '../components/ProfileComponents/MidContent'
 import { Easing } from 'react-native-reanimated'
+import BackButton from '../UI/BackButton'
 
 
 
@@ -234,6 +235,10 @@ const ProfileScreen = ({navigation}) =>{
     ]
 
 
+    function navigateBack(){
+        navigation.navigate('HomeScreen')
+    }
+
     // the company needs to be handled dynamically somehow
 
     async function submitHandler(){
@@ -337,6 +342,7 @@ const ProfileScreen = ({navigation}) =>{
                     </View>
                 </View>
                 </Animated.View>
+            <BackButton navigationHandler={navigateBack}/>
             </LinearGradient >
         </KeyboardAvoidingView>
          

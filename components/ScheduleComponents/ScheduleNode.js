@@ -30,7 +30,7 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
 
     const localStyles = {
         container:{
-            width: converter(width/10 * 6.75, width/10 * 7.5, width/10 * 7),
+            width: converter(width/10 * 6.75, width/10 * 7.2, width/10 * 7),
             marginBottom: height/40,
             
         },
