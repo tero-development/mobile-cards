@@ -20,7 +20,8 @@
     ],
     "ios": {
       "buildNumber": "1.0.0",
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.terodev.teroLearning"
     },
     "android": {
       "versionCode": 2,
