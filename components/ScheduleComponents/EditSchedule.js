@@ -1,4 +1,4 @@
-import {Modal, View, Text, useWindowDimensions, Pressable, ScrollView} from 'react-native'
+import {Modal, View, Text, useWindowDimensions, FlatList, ScrollView} from 'react-native'
 import Colors from '../../utils/colors'
 import Title from '../../UI/Title'
 import {converterSetup, useStyles} from '../../utils/dimensions'
@@ -101,13 +101,16 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
         scheduleBody:{
             height: converter(height /2.5, height /3,height /3),
             backgroundColor: Colors.highlightColor,
-            padding: width/20
+            paddingHorizontal: width/20
         },
-        scheduleBodyInnerContainer:{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginBottom: height/30
+        // scheduleBodyInnerContainer:{
+        //     flex: 1,
+        //     justifyContent: 'center',
+        //     marginBottom: height/30
+        // },
+        flatListContainer:{
+            marginTop: converter(height/25, height/25, height/25),
+            paddingBottom: converter(height/20, height/25, height/25)
         },
         scheduleFooter:{
             height: converter(height/6, height/6, height/6),
@@ -407,7 +410,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
     <ModularLink 
         textColor={Colors.highlightColor} 
         textSize={height/50} 
-        textStyles={{textAlign: 'center'}}
+        textStyles={{textAlign: 'center', fontWeight: 'bold'}}
         onPress={standardClose}
     >
         Close
@@ -472,28 +475,33 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                                     <Text style={styles.topDate}>{year}</Text>
                                 </View>    
                             </View>
-                            <ScrollView style={styles.scheduleBody}>
-                                <View style={styles.scheduleBodyInnerContainer}>
+                            <View style={styles.scheduleBody}>
+                                {/* <View style={styles.scheduleBodyInnerContainer}> */}
+                                
                                 {
                                     filteredDateArray.length < 1? <Loader size='large' color={Colors.accentColor} /> : 
 
-                                    filteredDateArray.map(entry =>{
-                                        const originalDate = new Date(entry.date)
+                                    <FlatList
+                                    contentContainerStyle={styles.flatListContainer}
+                                    data={filteredDateArray}
+                                    keyExtractor={entry => entry._id}
+                                    renderItem={entry =>{
+                                        const originalDate = new Date(entry.item.date)
                                         const fullMonth = originalDate.toLocaleString('default', {month: 'long'})
                                         const numericDay = (parseInt(originalDate.toLocaleString('default', {day: 'numeric'}))).toString()
                                         const year = originalDate.toLocaleString('default', {year: 'numeric'})
                                         const headlineDate = `${fullMonth} ${numericDay}`
                                         const date = `${fullMonth} ${numericDay} ${year}`
-                                        const time = entry.time
-                                        const zoomLink = entry.zoom_link
-                                        const clinicMonthName = entry.clinicMonthName
-                                        const clinicLink = entry.clinic_link
-                                        const title = entry.title
+                                        const time = entry.item.time
+                                        const zoomLink = entry.item.zoom_link
+                                        const clinicMonthName = entry.item.clinicMonthName
+                                        const clinicLink = entry.item.clinic_link
+                                        const title = entry.item.title
                                         return(
                                             <ScheduleEntry 
-                                                key={entry._id} 
-                                                id={entry._id} 
-                                                monthNumber={entry.monthNumber} 
+                                                key={entry.item._id} 
+                                                id={entry.item._id} 
+                                                monthNumber={entry.item.monthNumber} 
                                                 monthName={entry.monthName} 
                                                 headlineDate={headlineDate}
                                                 date = {date} 
@@ -506,11 +514,43 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                                                 title={title}
                                                 />
                                         )
-                                    } 
-                                    )
+                                    } }
+                                />
+                                   
+                                    // filteredDateArray.map(entry =>{
+                                    //     const originalDate = new Date(entry.date)
+                                    //     const fullMonth = originalDate.toLocaleString('default', {month: 'long'})
+                                    //     const numericDay = (parseInt(originalDate.toLocaleString('default', {day: 'numeric'}))).toString()
+                                    //     const year = originalDate.toLocaleString('default', {year: 'numeric'})
+                                    //     const headlineDate = `${fullMonth} ${numericDay}`
+                                    //     const date = `${fullMonth} ${numericDay} ${year}`
+                                    //     const time = entry.time
+                                    //     const zoomLink = entry.zoom_link
+                                    //     const clinicMonthName = entry.clinicMonthName
+                                    //     const clinicLink = entry.clinic_link
+                                    //     const title = entry.title
+                                    //     return(
+                                    //         <ScheduleEntry 
+                                    //             key={entry._id} 
+                                    //             id={entry._id} 
+                                    //             monthNumber={entry.monthNumber} 
+                                    //             monthName={entry.monthName} 
+                                    //             headlineDate={headlineDate}
+                                    //             date = {date} 
+                                    //             time={time}
+                                    //             zoomLink={zoomLink}
+                                    //             clinicMonthName ={clinicMonthName}
+                                    //             clinicLink={clinicLink}
+                                    //             cafeTracker={cafeTracker}
+                                    //             onPress={updateCafeTracker}
+                                    //             title={title}
+                                    //             />
+                                    //     )
+                                    // } 
+                                    // )
                                 }
-                                </View>
-                            </ScrollView>
+                                {/* </View> */}
+                            </View>
                             <View style={styles.scheduleFooter}>
                                 
                                     {

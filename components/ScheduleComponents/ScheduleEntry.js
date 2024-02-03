@@ -31,7 +31,7 @@ const ScheduleEntry = (props) =>{
             backgroundColor: Colors.secondaryColor400,
             paddingHorizontal: width/20,
             marginBottom: height/50,
-            width: converter('95%', '100%', '95%'),
+            width: "100%",
             height: converter(height/18, height/20,height/16),
             borderRadius: converter(8, 10, 20),
             flexDirection: 'row',
