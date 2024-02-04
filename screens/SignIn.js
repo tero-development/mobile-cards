@@ -172,7 +172,7 @@ const SignIn = ({navigation, route}) =>{
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : null} style={{ flex: 1 }}>
             <LinearGradient style={styles.rootScreen}  colors={[Colors.highlightColor, Colors.primaryColor]}>
                 <View style={styles.container}>
-                <IconButton isHeader={false} iconName='close' iconColor={Colors.secondaryColor} onPress={navigateSplashScreen} viewStyle={{position: 'absolute', left: width/20, top: height/10, zIndex: 1}}/>
+                    {!isLoading && <IconButton isHeader={false} iconName='close' iconColor={Colors.secondaryColor} onPress={navigateSplashScreen} viewStyle={{position: 'absolute', left: width/20, top: height/10, zIndex: 1}}/>}
                  <Logo />
            
                     <View >
