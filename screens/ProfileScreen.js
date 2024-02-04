@@ -342,7 +342,9 @@ const ProfileScreen = ({navigation}) =>{
                     </View>
                 </View>
                 </Animated.View>
-            <BackButton navigationHandler={navigateBack}/>
+            {
+                !isEditing && <BackButton navigationHandler={navigateBack}/>
+            }
             </LinearGradient >
         </KeyboardAvoidingView>
          
