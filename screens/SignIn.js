@@ -160,6 +160,8 @@ const SignIn = ({navigation, route}) =>{
         >
             Forgot Password
         </ModularLink>
+        <Title color={Colors.accentColor} textSize={converter(width/35, width/30, width/35)}>Need help? Email swells@tero.com</Title>
+
     </View>
 
     if(isError){
