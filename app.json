@@ -2,7 +2,7 @@
   "expo": {
     "name": "Tero Learning",
     "slug": "teroLearning",
-    "version": "1.4.2",
+    "version": "1.5.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "backgroundColor": "#BCEBE8",
@@ -24,7 +24,7 @@
       "bundleIdentifier": "com.terodev.teroLearning"
     },
     "android": {
-      "versionCode": 4,
+      "versionCode": 5,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#BCEBE8"
