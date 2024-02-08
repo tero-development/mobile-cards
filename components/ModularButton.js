@@ -11,7 +11,7 @@ const ModularButton = ({children, onPress, style, textSize, textColor, textStyle
         buttonOuterContainer:{
             width: converter(width/2, width/1.6, width/2, width/2.25),
             height: height /20,
-            borderRadius: converter(6, 8, 12, 12),
+            borderRadius: converter(width/50, width/35, width/55, width/55),
             justifyContent: 'center',
             overflow: 'hidden',
             marginBottom:converter(height/50, height/40, height/50, height/50)
