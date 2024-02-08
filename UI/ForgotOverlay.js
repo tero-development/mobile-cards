@@ -31,8 +31,8 @@ const ForgotOverlay = ({directSend, closeFunction, passedEmail, navigation}) =>{
             textAlign: 'center',
             color: Colors.secondaryColor,
             marginBottom: height/30,
-            fontSize: converter(width/30, width/25, width/35),
-            width: converter(width/2, width/1.5, width/1.9)
+            fontSize: converter(width/30, width/25, width/35, width/35),
+            width: converter(width/2, width/1.5, width/1.9, width/2)
         },
         topText:{
             marginBottom: height / 100,
@@ -45,7 +45,7 @@ const ForgotOverlay = ({directSend, closeFunction, passedEmail, navigation}) =>{
             width: width / 10 * 5
         },
         title:{
-            fontSize: converter(width/16, width/14, width/16),
+            fontSize: converter(width/16, width/14, width/16, width/16),
             fontWeight: 'bold',
             marginBottom: height / 100,
             color: Colors.secondaryColor

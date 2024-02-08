@@ -144,7 +144,7 @@ const SignIn = ({navigation, route}) =>{
         
         <ModularButton
                     style={{
-                        marginTop: converter(height/60, height/60, height/60)
+                        marginTop: converter(height/60, height/60, height/60, height/50)
                     }}
                     textColor={'white'}
                     buttonColor={Colors.accentColor}
@@ -176,7 +176,7 @@ const SignIn = ({navigation, route}) =>{
                  <Logo />
            
                     <View >
-                        <Title color={Colors.secondaryColor} textSize={converter(width/16, width/14, width/16)} style={{marginBottom: height/20, textAlign: 'center'}}>Sign In</Title>
+                        <Title color={Colors.secondaryColor} textSize={converter(width/16, width/14, width/16, width/16)} style={{marginBottom: height/20, textAlign: 'center'}}>Sign In</Title>
                         {isLoading? <Loader size='large' color={Colors.accentColor}/> : midContent}
                     </View>
                 </View>

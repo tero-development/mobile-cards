@@ -27,7 +27,7 @@ const LabeledInput = ({style, viewStyle, label, color, textInputConfig, disable,
             alignItems: 'center',
             borderWidth: converter(1.5, 2, 3, 3.5),
             borderRadius: converter(width/50, width/35, width/55, width/60),
-            marginBottom:converter(height/50, height/40, height/50, height/50)
+            marginBottom: height/50
         },
         passwordInputStyle:{
             paddingVertical: 2,
@@ -49,7 +49,7 @@ const LabeledInput = ({style, viewStyle, label, color, textInputConfig, disable,
             borderRadius: converter(width/50, width/35, width/55, width/60),
             paddingHorizontal: converter(width/40, width/30, width/40, width/40),
             fontSize: converter(width/30, width/25, width/35, width/35),
-            marginBottom:converter(height/50, height/40, height/50, height/50)
+            marginBottom:height/50
         },
         
         deactivated:{
