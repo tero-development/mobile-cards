@@ -9,12 +9,12 @@ const ModularButton = ({children, onPress, style, textSize, textColor, textStyle
 
     const localStyles = {
         buttonOuterContainer:{
-            width: converter(width/2, width/1.6, width/2),
+            width: converter(width/2, width/1.6, width/2, width/2.25),
             height: height /20,
-            borderRadius: converter(6, 8, 12),
+            borderRadius: converter(6, 8, 12, 12),
             justifyContent: 'center',
             overflow: 'hidden',
-            marginBottom:converter(height/50, height/40, height/50)
+            marginBottom:converter(height/50, height/40, height/50, height/50)
         },
         buttonInnerContainer:{
           height: '100%',
@@ -23,7 +23,7 @@ const ModularButton = ({children, onPress, style, textSize, textColor, textStyle
         },
         buttonText:{
             color: 'white',
-            fontSize: converter(width/30, width/25, width/30),
+            fontSize: converter(width/30, width/25, width/30, width/35),
             textAlign: 'center',
             fontWeight: 'bold'
         },

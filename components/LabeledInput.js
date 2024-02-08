@@ -21,7 +21,7 @@ const LabeledInput = ({style, viewStyle, label, color, textInputConfig, disable,
        const localStyles = {
         passwordViewStyle:{
             height: height /20,
-            width: converter(width/2, width/1.6, width/2, width/2),
+            width: converter(width/2, width/1.6, width/2, width/2.25),
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
@@ -43,7 +43,7 @@ const LabeledInput = ({style, viewStyle, label, color, textInputConfig, disable,
             fontSize: converter(width/30, width/30, width/35, width/35)
         },
         inputStyle:{
-            width: converter(width/2, width/1.6, width/2, width/2),
+            width: converter(width/2, width/1.6, width/2, width/2.25),
             height: height /20,
             borderWidth: converter(1.5, 2, 3, 3),
             borderRadius: converter(6, 8, 12, 12),

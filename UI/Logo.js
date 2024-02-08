@@ -14,7 +14,7 @@ const Logo =() =>{
         logo: {
             width: height/8, 
             height: height/8, 
-            marginBottom: converter(height/50, height/40, height/40)
+            marginBottom: converter(height/50, height/40, height/40, height/35)
         }
     }
  
