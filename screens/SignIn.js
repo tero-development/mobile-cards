@@ -93,8 +93,7 @@ const SignIn = ({navigation, route}) =>{
                         const response = await verifyCredentials({employeeId: employee._id, password: password})
                         if(response._id){
                             setIsLoading(false)
-                            // navigateHome()
-                            navigation.navigate('ResetPassword')
+                            navigateHome()
                         } else{
                             setIsLoading(false)
                             setErrorMessage('incorrect user or password')

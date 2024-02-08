@@ -100,7 +100,7 @@ const CreateAccount = ({navigation, route}) =>{
         <View style={styles.container}>
         <IconButton isHeader={false} iconName='close' iconColor={Colors.secondaryColor} onPress={navigateSplashScreen} viewStyle={{position: 'absolute', left: width/20, top: height/10, zIndex: 1}}/>
             <Logo />
-            <Title color={Colors.secondaryColor} textSize={converter(width/16, width/14, width/16)} style={{marginBottom: height/40, textAlign: 'center'}}>Create Your Account</Title>
+            <Title color={Colors.secondaryColor} textSize={converter(width/16, width/14, width/16, width/18)} style={{marginBottom: height/40, textAlign: 'center'}}>Create Your Account</Title>
             <PasswordRules />
             <LabeledInput 
                 textInputConfig={{

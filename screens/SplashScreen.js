@@ -113,8 +113,8 @@ const SplashScreen = ({navigation}) =>{
                 try{
                     const employee = await searchEmployee(email)
                     if(employee === 'not found'){
-                        // setIsLoading(false)
-                        // navigation.navigate("CreateAccount")
+                        setIsLoading(false)
+                        navigation.navigate("CreateAccount")
                         setErrorMessage("Email address not found, user not yet enrolled.")
                         setIsError(true)
                         setIsLoading(false)
@@ -125,7 +125,8 @@ const SplashScreen = ({navigation}) =>{
                     } 
                     else{
                         setIsLoading(false)
-                        navigation.navigate('SignIn', employee)
+                        // navigation.navigate('SignIn', employee)
+                        navigation.navigate('CreateAccount')
                     }
                 } catch(e){
                     alert(e)
