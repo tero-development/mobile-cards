@@ -12,7 +12,7 @@ const PasswordRules = () =>{
             marginBottom: height/40,
         },
         passwordRules:{
-            fontSize: converter(width/35, width/30, width/35),
+            fontSize: converter(width/35, width/30, width/35, width/40),
             color: Colors.accentColor,
             fontWeight: 'bold'
         }

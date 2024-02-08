@@ -157,7 +157,7 @@ const ResetPassword = ({navigation}) =>{
     <LinearGradient style={styles.screen}  colors={['white', Colors.primaryColor]}>
         <View style={styles.container}>
             <Logo />
-            <Title color={Colors.secondaryColor} textSize={converter(width/16, width/14, width/16)} style={{marginBottom: height/40, textAlign: 'center'}}>Reset Password</Title>
+            <Title color={Colors.secondaryColor} textSize={converter(width/16, width/14, width/16, width/18)} style={{marginBottom: height/40, textAlign: 'center'}}>Reset Password</Title>
             {isLoading? <Loader size='large' color={Colors.accentColor}/> : midContent}
         </View>
     </LinearGradient>

@@ -144,7 +144,7 @@ const ForgotPassword = ({navigation, route}) =>{
                 <View style={styles.container}>
                 <IconButton isHeader={false} iconName='close' iconColor={Colors.secondaryColor} onPress={navigateSignIn} viewStyle={{position: 'absolute', left: width/20, top: height/10, zIndex: 1}}/>
                     <Logo />
-                    <Title color={Colors.secondaryColor} textSize={converter(width/16, width/14, width/16, width/16)} style={{marginBottom: height/20, textAlign: 'center'}}>Forgot Password?</Title>
+                    <Title color={Colors.secondaryColor} textSize={converter(width/16, width/14, width/16, width/18)} style={{marginBottom: height/20, textAlign: 'center'}}>Forgot Password?</Title>
                     {isLoading? <Loader size='large' color={Colors.accentColor}/> : midContent}
                 </View>
             </LinearGradient>

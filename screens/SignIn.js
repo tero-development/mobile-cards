@@ -93,7 +93,8 @@ const SignIn = ({navigation, route}) =>{
                         const response = await verifyCredentials({employeeId: employee._id, password: password})
                         if(response._id){
                             setIsLoading(false)
-                            navigateHome()
+                            // navigateHome()
+                            navigation.navigate('ResetPassword')
                         } else{
                             setIsLoading(false)
                             setErrorMessage('incorrect user or password')
@@ -160,7 +161,7 @@ const SignIn = ({navigation, route}) =>{
         >
             Forgot Password
         </ModularLink>
-        <Title color={Colors.accentColor} textSize={converter(width/35, width/30, width/35)}>Need help? Email swells@tero.com</Title>
+        <Title color={Colors.accentColor} textSize={converter(width/35, width/30, width/35, width/40)}>Need help? Email swells@tero.com</Title>
 
     </View>
 
