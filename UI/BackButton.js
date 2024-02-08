@@ -24,7 +24,7 @@ const BackButton = ({iconColor, iconSize, textColor, textSize, navigationHandler
     },
     defaultText:{
         color: Colors.secondaryColor,
-        fontSize: converter(width/25, width/20, width/25),
+        fontSize: converter(width/25, width/20, width/25, width/30),
         fontWeight: 'bold',
         margin: 0,
         padding: 0
@@ -41,7 +41,7 @@ const BackButton = ({iconColor, iconSize, textColor, textSize, navigationHandler
     return(
         
     <Pressable style={[styles.container, viewStyle&&viewStyle]} onPress={navigationHandler}>
-        <Ionicons style={{margin: 0, padding: 0}}  name={"chevron-back"}  size={iconSize? iconSize : converter(width/19, width/15, width/20)} color={iconColor? iconColor: Colors.secondaryColor} />
+        <Ionicons style={{margin: 0, padding: 0}}  name={"chevron-back"}  size={iconSize? iconSize : converter(width/19, width/15, width/20, width/25)} color={iconColor? iconColor: Colors.secondaryColor} />
         <Text style={[styles.defaultText, textSize&&{fontSize: textSize}, textColor&&{color: textColor}]}>Back</Text>
     </Pressable>
     )

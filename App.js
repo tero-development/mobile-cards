@@ -70,7 +70,7 @@ export default function App() {
           drawerActiveTintColor: Colors.secondaryColor400,
           drawerInactiveTintColor: Colors.secondaryColor300,
           drawerStyle:{backgroundColor: Colors.primaryColor100},
-          drawerLabelStyle:{fontSize: converter(width/30, width/25, width/35)}
+          drawerLabelStyle:{fontSize: converter(width/25, width/25, width/35, width/35)}
         }}>
             <Drawer.Screen name="HomeScreen" component={HomeScreen} options={{title: "Home"}}/>
             {/* <Drawer.Screen name="AdminScreen" component={AdminScreen} options={{title: "Home"}}/> */}
