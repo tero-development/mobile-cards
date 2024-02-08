@@ -1,13 +1,13 @@
-import {View, StyleSheet,Image, KeyboardAvoidingView, Text, Alert} from 'react-native'
+import {View, Image, KeyboardAvoidingView, Text, useWindowDimensions} from 'react-native'
 import { useState, useContext } from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
+import { converterSetup, useStyles } from '../utils/dimensions'
 import Title from '../UI/Title'
 import Colors from '../utils/colors'
 import LabeledInput from '../components/LabeledInput'
 import ModularLink from '../components/ModularLink'
 import IconButton from '../UI/IconButton'
 import { SignInContext } from '../store/signin-context'
-import DeviceFractions from '../utils/dimensions'
 import { verifyPasswordHandler } from '../utils/helperFunctions'
 import { sendCredentials } from '../httpServices/credentials'
 import { updateEmployee } from '../httpServices/employees'
@@ -15,6 +15,7 @@ import PasswordRules from '../components/CreateAccountComponents/PasswordRules'
 import { updateCredentials, clearErrorHandler, colorHandler, errorFormatHandler } from '../utils/inputErrorDetection'
 import ErrorOverlay from '../UI/ErrorOverlay'
 import Loader from '../UI/Loader'
+import Logo from '../UI/Logo'
 
 const ConfirmAccount = ({navigation, route}) =>{
     const employee = route.params
@@ -28,6 +29,48 @@ const ConfirmAccount = ({navigation, route}) =>{
     const [errorType, setErrorType] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
     const [isLoading, setIsLoading] = useState(false)
+
+    const {width, height} = useWindowDimensions()
+
+    const converter = converterSetup(width, height)
+
+    const localStyles = {
+        screen:{
+            flex: 1
+        },
+        keyboardView:{
+            flex:1
+        },
+        gradient:{
+            flex: 1,
+            paddingBottom: height/10
+        },
+        container:{ 
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center'
+        },
+        innerContainer:{
+            alignItems: 'center'
+        },
+        iconContainer:{
+            alignItems: 'flex-start',
+            width: width,
+            paddingLeft: width/20,
+            marginBottom: height/20
+        },
+        returnText:{
+            width: width / 10 * 7,
+            marginBottom: height/50,
+            color: Colors.accentColor,
+            fontSize: converter(width/30, width/30, width/30, width/30),
+            textAlign: 'center'
+        }
+    }
+ 
+    const styles = useStyles(localStyles)
+
+
 
     const passwordCredentials = {
         password: credentials.password,
@@ -86,7 +129,7 @@ const ConfirmAccount = ({navigation, route}) =>{
             }} 
             label={'Password'} 
             color={colorHandler(errorType, ['password_invalid', 'password_mismatch'], password)} 
-            style={{marginBottom: DeviceFractions.deviceH50}
+            style={{marginBottom: height/50}
             }
             type="password"
         />
@@ -99,7 +142,7 @@ const ConfirmAccount = ({navigation, route}) =>{
             }} 
             label={'Confirm Password'} 
             color={colorHandler(errorType, [null, 'password_mismatch'], confirmPassword)}
-            style={{marginBottom: DeviceFractions.deviceH50}}
+            style={{marginBottom: height/50}}
             type='password'
 
             />
@@ -107,7 +150,7 @@ const ConfirmAccount = ({navigation, route}) =>{
 
         <ModularLink
             textColor={Colors.secondaryColor}
-            textSize={20}
+
             textWeight={'bold'}
             onPress={()=>{errorFormatHandler(passwordCredentials, validationGroup, submitHandler, setErrorType, setErrorMessage, setIsError)}}
             >
@@ -126,11 +169,9 @@ const ConfirmAccount = ({navigation, route}) =>{
     <KeyboardAvoidingView behavior='height' style={styles.keyboardView}>
     <LinearGradient style={styles.gradient}  colors={['white', Colors.primaryColor]}>
         <View style={styles.container}>
-            <IconButton isHeader={true} iconName='close' iconSize={28} iconColor={Colors.accentColor} onPress={navigateSplashScreen} viewStyle={{marginBottom: DeviceFractions.deviceH20}}/>
-            <View style={styles.imageWrapper}>
-                <Image style={{width:'100%', height:'100%'}} source={require('../assets/images/ExSell_logo_vertical_color.png')} />
-            </View>
-            <Title color={'#016B72'} textSize={28} style={{marginBottom: DeviceFractions.deviceH50}}>Update Your Account</Title>
+            <IconButton isHeader={true}  iconName='close' iconColor={Colors.accentColor} onPress={navigateSplashScreen} viewStyle={{marginBottom: height/20}}/>
+            <Logo/>
+            <Title color={'#016B72'} textSize={converter(width/16, width/14, width/16, width/18)} style={{marginBottom: height/50}}>Update Your Account</Title>
             {isLoading? <Loader size='large' color={Colors.accentColor}/> : midContent}
         </View>
     </LinearGradient>
@@ -139,45 +180,5 @@ const ConfirmAccount = ({navigation, route}) =>{
     )
 }
 
-const styles = StyleSheet.create({
-    screen:{
-        flex: 1
-    },
-    keyboardView:{
-        flex:1
-    },
-    gradient:{
-        flex: 1,
-        paddingBottom: DeviceFractions.deviceH10
-    },
-    container:{ 
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    innerContainer:{
-        alignItems: 'center'
-    },
-    iconContainer:{
-        alignItems: 'flex-start',
-        width: DeviceFractions.deviceWidth,
-        paddingLeft: DeviceFractions.deviceW20,
-        marginBottom: DeviceFractions.deviceH20
-    },
-    
-    imageWrapper:{
-        width: 60,
-        height: 75,
-        marginBottom: DeviceFractions.deviceH50
-    },
-
-    returnText:{
-        width: DeviceFractions.deviceWidth / 10 * 7,
-        marginBottom: DeviceFractions.deviceH50,
-        color: Colors.accentColor,
-        fontSize: 16,
-        textAlign: 'center'
-    }
-})
 
 export default ConfirmAccount

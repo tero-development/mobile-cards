@@ -44,7 +44,7 @@ const IconButton = ({isHeader, hasEditProfile, iconName, iconSize, iconColor, on
    const header = 
    <View style={[styles.iconContainer, hasEditProfile && styles.withProfile, viewStyle]}>
         <Pressable onPress={onPress} style={{width: iconSize}}> 
-            <Ionicons  name={iconName} size={iconSize? iconSize : converter(width/15, width/15, width/20, width/25)}  color={iconColor} />
+            <Ionicons name={iconName} size={iconSize? iconSize : converter(width/15, width/15, width/20, width/25)}  color={iconColor} />
         </Pressable>
         {hasEditProfile && 
         <Pressable onPress={navigateProfile}>

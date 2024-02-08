@@ -126,7 +126,7 @@ const SplashScreen = ({navigation}) =>{
                     else{
                         setIsLoading(false)
                         // navigation.navigate('SignIn', employee)
-                        navigation.navigate('CreateAccount')
+                        navigation.navigate('ConfirmAccount')
                     }
                 } catch(e){
                     alert(e)
