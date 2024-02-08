@@ -9,7 +9,7 @@ const ModularLink = ({children, onPress, textSize, textWeight, textColor, textSt
 
     const localStyles = {
         text:{
-            fontSize: converter(width/25, width/20, width/27)
+            fontSize: converter(width/25, width/20, width/27, width/30)
         }
     }
 

@@ -24,7 +24,7 @@ const DeviceFractions = {
 export function converterSetup(width, height){
     const targetDimensions = {width: width, height: height}
 
-    function converter(style1, style2, style3){
+    function converter(style1, style2, style3, style4){
         const {width, height} = targetDimensions
     
         let style
@@ -44,6 +44,12 @@ export function converterSetup(width, height){
             style = style3
             return style
         }
+        
+        if(width < 1200){
+            style = style4
+            return style
+        }
+
         else{
             style = style1
             return style

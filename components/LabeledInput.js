@@ -21,35 +21,35 @@ const LabeledInput = ({style, viewStyle, label, color, textInputConfig, disable,
        const localStyles = {
         passwordViewStyle:{
             height: height /20,
-            width: converter(width/2, width/1.6, width/2),
+            width: converter(width/2, width/1.6, width/2, width/2),
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
-            borderWidth: converter(1.5, 2, 3),
-            borderRadius: converter(6, 8, 12),
-            marginBottom:converter(height/50, height/40, height/50)
+            borderWidth: converter(1.5, 2, 3, 3),
+            borderRadius: converter(6, 8, 12, 12),
+            marginBottom:converter(height/50, height/40, height/50, height/50)
         },
         passwordInputStyle:{
             paddingVertical: 2,
             paddingHorizontal: 10,
-            flex: converter(0.80, 0.85, 0.85),
-            fontSize: converter(width/30, width/25, width/35)
+            flex: converter(0.80, 0.85, 0.85, 0.85),
+            fontSize: converter(width/30, width/25, width/35, width/35)
         },
         icon: { 
-            flex: converter(0.20, 0.15, 0.15),
+            flex: converter(0.20, 0.15, 0.15, 0.15),
         }, 
         labelStyle:{
             fontWeight: 'bold',
-            fontSize: converter(width/30, width/30, width/35)
+            fontSize: converter(width/30, width/30, width/35, width/35)
         },
         inputStyle:{
-            width: converter(width/2, width/1.6, width/2),
+            width: converter(width/2, width/1.6, width/2, width/2),
             height: height /20,
-            borderWidth: converter(1.5, 2, 3),
-            borderRadius: converter(6, 8, 12),
-            paddingHorizontal: converter(width/40, width/30, width/40),
-            fontSize: converter(width/30, width/25, width/35),
-            marginBottom:converter(height/50, height/40, height/50)
+            borderWidth: converter(1.5, 2, 3, 3),
+            borderRadius: converter(6, 8, 12, 12),
+            paddingHorizontal: converter(width/40, width/30, width/40, width/40),
+            fontSize: converter(width/30, width/25, width/35, width/35),
+            marginBottom:converter(height/50, height/40, height/50, height/50)
         },
         
         deactivated:{
@@ -74,7 +74,7 @@ const LabeledInput = ({style, viewStyle, label, color, textInputConfig, disable,
                 />
                 <MaterialCommunityIcons 
                         name={showPassword ? 'eye-off' : 'eye'} 
-                        size={converter(16, 20, 30)} 
+                        size={converter(width/30, width/20, width/25, width/25)} 
                         color={color}
                         style={styles.icon} 
                         onPress={toggleShowPassword} 

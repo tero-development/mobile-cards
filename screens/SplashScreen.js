@@ -206,7 +206,7 @@ const SplashScreen = ({navigation}) =>{
                         <Text style={{color: Colors.accentColor, fontSize: converter(width/45, width/40, width/45)}}>Powered by</Text>
                         <Title color={Colors.secondaryColor} textSize={converter(width/35, width/30, width/35)} style={{marginBottom: converter(width/30, width/30, width/30)}} >Tero International Inc.</Title>  
 
-                         {/* <Title color={Colors.accentColor} textSize={converter(width/35, width/30, width/35)}>Need help? Email swells@tero.com</Title> */}
+                         <Title color={Colors.accentColor} textSize={converter(width/35, width/30, width/35)}>Need help? Email swells@tero.com</Title>
 
                 </View>
             </View>
