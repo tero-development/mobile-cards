@@ -18,11 +18,11 @@ import React, { useState } from 'react';
       dropdown: {
         width: converter(width/2, width/1.6, width/2),
         height: height /20,
-        borderWidth: converter(1.5, 2, 3),
-        borderRadius: converter(6, 8, 12),
-        paddingHorizontal: converter(width/40, width/30, width/40),
+        borderWidth: converter(1.5, 2, 3, 3.5),
+        borderRadius: converter(width/50, width/35, width/55, width/60),
+        paddingHorizontal: converter(width/40, width/30, width/40, width/40),
         fontSize: 16,
-        marginBottom:converter(height/50, height/40, height/50)
+        marginBottom:converter(height/50, height/40, height/50, height/50)
       },
       icon: {
         marginRight: 5,
@@ -34,36 +34,36 @@ import React, { useState } from 'react';
         top: -height / 150,
         zIndex: 999,
         paddingHorizontal: 8,
-        fontSize: converter(width/35, width/25, width/35)
+        fontSize: converter(width/35, width/25, width/35, width/35)
       },
       textStyle: {
-        fontSize: converter(width/35, width/30, width/35),
+        fontSize: converter(width/35, width/30, width/35, width/40),
         color: 'Colors.secondaryColor',
         fontWeight: 'bold'
       },
       iconStyle: {
-        width: 20,
-        height: 20
+        width: converter(width/22, width/20, width/26, width/30),
+        height: converter(width/22, width/20, width/26, width/30)
       },
       inputSearchStyle: {
         height: 40,
-        fontSize: converter(width/35, width/25, width/35)
+        fontSize: converter(width/35, width/25, width/35, width/50)
       },
       listContainer:{
         backgroundColor: Colors.primaryColor100,
         borderWidth: 0,
-        borderRadius: converter(10, 15, 20),
+        borderRadius: converter(width/50, width/35, width/55, width/70),
         justifyContent: 'center',
         paddingVertical: '3%',
         paddingHorizontal: '3%'
       },
       itemText:{
         color: Colors.secondaryColor,
-        fontSize: converter(width/35, width/25, width/35)
+        fontSize: converter(width/35, width/25, width/35, width/35)
 
       },
       itemContainer:{
-        borderRadius: converter(6, 8, 12),
+        borderRadius: converter(width/50, width/35, width/55, width/70),
         backgroundColor: 'white',
         marginBottom: '2%',
         elevation: 2,
@@ -114,7 +114,7 @@ import React, { useState } from 'react';
               name={iconName}
               style={[styles.icon, color]}
               color={color}
-              size={converter(16, 20, 30)}
+              size={converter(width/22, width/20, width/26, width/30)}
             />
           )}
         />
@@ -148,7 +148,7 @@ import React, { useState } from 'react';
               name={iconName}
               style={[styles.icon, color]}
               color={color}
-              size={converter(16, 20, 30)}
+              size={converter(width/22, width/20, width/26, width/30)}
             />
           )}
         />

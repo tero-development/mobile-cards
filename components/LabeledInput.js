@@ -74,7 +74,7 @@ const LabeledInput = ({style, viewStyle, label, color, textInputConfig, disable,
                 />
                 <MaterialCommunityIcons 
                         name={showPassword ? 'eye-off' : 'eye'} 
-                        size={converter(width/30, width/20, width/25, width/25)} 
+                        size={converter(width/22, width/20, width/25, width/25)} 
                         color={color}
                         style={styles.icon} 
                         onPress={toggleShowPassword} 

@@ -9,16 +9,16 @@ const LabeledPhoneInput = ({style, viewStyle, label, textSize, color, textInputC
     const localStyles = {
         labelStyle:{
             fontWeight: 'bold',
-            fontSize: converter(width/30, width/30, width/35)
+            fontSize: converter(width/30, width/30, width/35, width/35)
         },
         inputStyle:{
             width: width/2,
                 height: height /20,
-                borderWidth: converter(1.5, 2, 3),
-                borderRadius: converter(6, 8, 12),
-                paddingHorizontal: converter(width/40, width/30, width/40),
-                fontSize: converter(width/30, width/25, width/35),
-                marginBottom:converter(height/50, height/40, height/50)
+                borderWidth: converter(1.5, 2, 3, 3.5),
+                borderRadius: converter(width/50, width/35, width/55, width/60),
+                paddingHorizontal: converter(width/40, width/30, width/30, width/30),
+                fontSize: converter(width/30, width/25, width/35, width/40),
+                marginBottom:converter(height/50, height/40, height/50, height/50)
         },
         deactivated:{
             borderRadius: 0,

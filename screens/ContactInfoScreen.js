@@ -90,7 +90,7 @@ const ContactInfoScreen = ({navigation}) =>{
             },
               dropStyle:{
                 width: width/2.25,
-                marginTop:converter(height/50, height/40, height/50)
+                marginTop:converter(height/50, height/40, height/50, height/50)
               },
               phonePairContainer:{
                 flexDirection: 'row',
@@ -103,9 +103,9 @@ const ContactInfoScreen = ({navigation}) =>{
                 marginBottom:0
             },
             phoneToggle:{
-                borderWidth: converter(1.5, 2, 3), 
+                borderWidth: converter(1.5, 2, 3, 3.5), 
                 borderColor: Colors.secondaryColor, 
-                borderRadius: converter(6, 8, 12),
+                borderRadius: converter(6, 8, 12, 15),
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'space-evenly',
@@ -118,7 +118,7 @@ const ContactInfoScreen = ({navigation}) =>{
                 maxWidth: '45%',
                 color: Colors.secondaryColor,
                 fontWeight: 'bold',
-                fontSize: converter(width/45, width/40, width/40)
+                fontSize: converter(width/45, width/40, width/40, width/40)
             }
         }
     
@@ -317,7 +317,7 @@ const ContactInfoScreen = ({navigation}) =>{
             <IconButton 
                 isHeader={false} 
                 iconName={!disablePhone? 'checkmark-circle-outline' : 'close-circle-outline'} 
-                iconSize={converter(16, 20, 30)} 
+                iconSize={converter(width/20, width/20, width/25, width/30)} 
                 iconColor={Colors.secondaryColor}
                 onPress={togglePhoneHandler} 
             />
@@ -349,7 +349,7 @@ const ContactInfoScreen = ({navigation}) =>{
             <LinearGradient style={styles.screen} colors={['white', Colors.primaryColor]}>
             <View style={styles.container}>
                 <View>
-                <Title color={Colors.secondaryColor} textSize={converter(width/28, width/24, width/26)} style={{marginBottom: height/20, textAlign: 'center'}}>
+                <Title color={Colors.secondaryColor} textSize={converter(width/28, width/24, width/26, width/28)} style={{marginBottom: height/20, textAlign: 'center'}}>
                         Fill out all fields to create your ExSell profile
                     </Title>
                     {isLoading? <Loader size='large' color={Colors.accentColor}/> : midContent}

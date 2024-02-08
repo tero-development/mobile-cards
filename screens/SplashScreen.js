@@ -125,8 +125,7 @@ const SplashScreen = ({navigation}) =>{
                     } 
                     else{
                         setIsLoading(false)
-                        // navigation.navigate('SignIn', employee)
-                        navigation.navigate('ContactInfo')
+                        navigation.navigate('SignIn', employee)
                     }
                 } catch(e){
                     alert(e)
