@@ -19,10 +19,10 @@ const ErrorOverlay = ({message, onPress}) =>{
             textAlign: 'center',
             color: Colors.secondaryColor,
             marginBottom: height/30,
-            fontSize: converter(width/35, width/27, width/35)
+            fontSize: converter(width/35, width/27, width/35, width/35)
         },
         title:{
-            fontSize: converter(width/25, width/20, width/25),
+            fontSize: converter(width/25, width/20, width/25, width/25),
             fontWeight: 'bold',
             marginBottom: height / 100,
             color: Colors.secondaryColor

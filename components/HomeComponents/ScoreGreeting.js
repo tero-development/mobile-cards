@@ -54,66 +54,65 @@ const ScoreGreeting = ({points, rank, name}) =>{
             width: width/2
         },
         scoreCircle:{
-            borderWidth: converter(7, 10, 18),
-            borderColor: converter(Colors.secondaryColor, Colors.secondaryColor, Colors.secondaryColor),
-            borderRadius: converter(100, 100, 150),
-            padding: converter(45,65, 60),
-            height: converter(height/10 * 0.5,height/10 * 1.4, height/10 * 1.8),
-            width: converter(height/10 * 0.5,height/10 * 1.4, height/10 * 1.8),
+            borderWidth: width/50,
+            borderColor: converter(Colors.secondaryColor, Colors.secondaryColor, Colors.secondaryColor, Colors.secondaryColor),
+            borderRadius: converter(100, 100, 150, 150),
+            padding: converter(width/10*1.35,width/10*1.6, 60, 60),
+            height: converter(height/10 * 0.5,height/10 * 1.4, height/10 * 1.8, height/10 * 1.8),
+            width: converter(height/10 * 0.5,height/10 * 1.4, height/10 * 1.8, height/10 * 1.8),
             justifyContent: 'center',
             alignItems: 'center',
             transform: [{rotate: rotate}],
-            zIndex: converter(1, 1, 1)
+            zIndex: converter(1, 1, 1, 1, 1)
         },
         scoreCircleLine:{
-            borderWidth: converter(0, 0, 0),
-            borderLeftWidth: converter(6, 10, 10),
-            borderRightWidth: converter(0, 0, 0),
-            borderBottomWidth: converter(6, 10, 10),
-            borderTopWidth: converter(0, 0, 0),
-            borderColor: converter(Colors.primaryColor400, Colors.primaryColor400, Colors.primaryColor400),
-            borderRadius: converter(100, 100, 150),
-            // borderRadius: converter(100, 10, 150),
-            padding: converter(45,65, 60),
-            height: converter(height/10 * 0.5,height/10 * 1.4, height/10 * 1.8),
-            width: converter(height/10 * 0.5,height/10 * 1.4, height/10 * 1.8),
+            borderWidth: converter(0, 0, 0, 0),
+            borderLeftWidth: converter(6, 10, 10,10),
+            borderRightWidth: converter(0, 0, 0, 0),
+            borderBottomWidth: converter(6, 10, 10, 10),
+            borderTopWidth: converter(0, 0, 0, 0),
+            borderColor: converter(Colors.primaryColor400, Colors.primaryColor400, Colors.primaryColor400, Colors.primaryColor400),
+            borderRadius: converter(100, 100, 150, 150),
+            padding: converter(width/10*1.4,width/10*1.65, 60, 60),
+            height: converter(height/10 * 0.5,height/10 * 1.4, height/10 * 1.8, height/10 * 1.78),
+            width: converter(height/10 * 0.5,height/10 * 1.4, height/10 * 1.8, height/10 * 1.78),
             justifyContent: 'center',
             alignItems: 'center',
             transform: [{rotate: rotate}],
             zIndex: converter(2,2,2),
-            marginLeft: converter(0, 0, width/75)
+            marginLeft: converter(0, 0, width/75, width/100)
         },
         scoreInnerCircle:{
-            borderWidth: converter(7, 10, 18),
+            borderWidth: converter(7, 10, 18, 18),
             // borderLeftWidth: 0,
-            borderRadius: converter(100, 100, 150),
+            borderRadius: converter(100, 100, 150, 150),
             borderColor: Colors.primaryColor,
-            padding: converter(5,10,10),
-            height: converter(height/10 * 1.2, height/10 * 1.2, height/10 * 1.3),
-            width: converter(height/10 * 1.2, height/10 * 1.2, height/10 * 1.3),
+            padding: converter(10,10,10, 10),
+            height: converter(height/10 * 1.2, height/10 * 1.2, height/10 * 1.3, height/10 * 1.3),
+            width: converter(height/10 * 1.2, height/10 * 1.2, height/10 * 1.3, height/10 * 1.3),
             justifyContent: 'center',
             alignItems: 'center',
             transform: [{rotate: negativeRotate}],
-            zIndex:converter(1, 1, 1)
+            zIndex:converter(1, 1, 1, 1)
 
         },
         scoreInnerCircleLine:{
-            borderWidth: converter(0, 0, 0),
-            borderLeftWidth: converter(7, 10, 15),
-            borderTopWidth: converter(7, 10, 15),
-            borderRadius: converter(100, 100, 150),
+            borderWidth: converter(0, 0, 0, 0),
+            borderLeftWidth: converter(7, 10, 15, 15),
+            borderTopWidth: converter(7, 10, 15, 15),
+            borderRadius: converter(100, 100, 150, 150),
             borderColor: Colors.secondaryColor400,
-            padding: converter(5,10,10),
-            height: converter(height/10 * 1.2, height/10 * 1.2, height/10 * 1.3),
-            width: converter(height/10 * 1.2, height/10 * 1.2, height/10 * 1.3),
+            padding: converter(5,10,10, 10),
+            height: converter(height/10 * 1.2, height/10 * 1.2, height/10 * 1.3, height/10 * 1.3),
+            width: converter(height/10 * 1.2, height/10 * 1.2, height/10 * 1.3, height/10 * 1.3),
             justifyContent: 'center',
             alignItems: 'center',
             transform: [{rotate: negativeRotate}],
-            zIndex: converter(2, 2, 2)
+            zIndex: converter(2, 2, 2, 2)
         },
         scoreText:{
             color: Colors.secondaryColor,
-            fontSize: converter(25, 40, 70),
+            fontSize: converter(width/10*1, width/10*1.2, width/10*1, width/10*0.90),
             fontWeight: 'bold'
         }
     }
@@ -144,8 +143,8 @@ const ScoreGreeting = ({points, rank, name}) =>{
                     <Text style={styles.scoreText}>{points}</Text>
                 </View>
             </View>
-        <Title color={Colors.secondaryColor} textSize={converter(16, 20, 34)}>{name}</Title>
-        <Title color={Colors.secondaryColor} textSize={converter(12, 16, 28)}>Leaderboard Rank: {rank}</Title>
+        <Title color={Colors.secondaryColor} textSize={converter(16, 20, 34, 34)}>{name}</Title>
+        <Title color={Colors.secondaryColor} textSize={converter(12, 16, 28, 28)}>Leaderboard Rank: {rank}</Title>
     </View>
     )
 }

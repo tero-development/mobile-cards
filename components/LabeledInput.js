@@ -31,7 +31,7 @@ const LabeledInput = ({style, viewStyle, label, color, textInputConfig, disable,
         },
         passwordInputStyle:{
             paddingVertical: 2,
-            paddingHorizontal: 10,
+            paddingHorizontal: converter(width/40, width/30, width/40, width/50),
             flex: converter(0.80, 0.85, 0.85, 0.85),
             fontSize: converter(width/30, width/25, width/35, width/35)
         },

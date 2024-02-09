@@ -92,7 +92,7 @@ const MidContent=({variables, type})=>{
           },
           dropStyle:{
             width: width/2.5,
-            marginTop:converter(height/50, height/40, height/50)
+            marginTop:converter(height/50, height/40, height/50, height/50)
           },
           phonePairContainer:{
             flexDirection: 'row',
@@ -106,9 +106,9 @@ const MidContent=({variables, type})=>{
             width: width/2.25
         },
         phoneToggle:{
-            borderWidth: converter(1.5, 2, 3), 
+            borderWidth: converter(1.5, 2, 3, 3.5), 
             borderColor: Colors.secondaryColor, 
-            borderRadius: converter(6, 8, 12),
+            borderRadius: converter(width/50, width/35, width/55, width/60),
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-evenly',
@@ -120,7 +120,7 @@ const MidContent=({variables, type})=>{
             maxWidth: '45%',
             color: Colors.secondaryColor,
             fontWeight: 'bold',
-            fontSize: converter(width/40, width/40, width/40)
+            fontSize: converter(width/40, width/40, width/45, width/46)
         }
     }
  
