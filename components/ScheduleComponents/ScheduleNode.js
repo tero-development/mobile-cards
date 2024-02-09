@@ -30,24 +30,24 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
 
     const localStyles = {
         container:{
-            width: converter(width/10 * 6.75, width/10 * 7.2, width/10 * 7),
+            width: converter(width/10 * 6.75, width/10 * 7.2, width/10 * 7, width/10 * 6.25),
             marginBottom: height/40,
             
         },
         nodeTop:{
             backgroundColor: Colors.accentColor400,
-            borderRadius: converter(15, 20, 35),
+            borderRadius: converter(width/25, width/20, width/20, width/25),
             paddingHorizontal: height/40,
             paddingVertical: height/50,
-            borderBottomRightRadius: converter(15, 20, 35),
-            borderBottomLeftRadius: converter(15, 20, 35),
+            borderRadius: converter(width/25, width/20, width/20, width/25),
+            borderRadius: converter(width/25, width/20, width/20, width/25),
             height: height / 6,
             zIndex: 1,
             marginBottom: height / 500
         },
         nodeTopExpanded:{
             backgroundColor: Colors.accentColor300,
-            borderRadius: converter(15, 20, 35),
+            borderRadius: converter(width/25, width/20, width/20, width/25),
             paddingHorizontal: height/40,
             paddingVertical: height/50,
             borderBottomLeftRadius: 0, 
@@ -68,13 +68,13 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
         },
         topTitle:{
             color: Colors.highlightColor,
-            fontSize: converter(width/24, width / 20, width/22),
+            fontSize: converter(width/24, width / 20, width/22, width/28),
             fontWeight: 'bold',
             flexWrap: 'wrap'
         },
         topTimeText:{
             color: Colors.highlightColor,
-            fontSize: converter(width/35, width/30, width/35)
+            fontSize: converter(width/35, width/30, width/35, width/32)
         },
         topDetailContainer:{
             justifyContent: 'space-evenly',
@@ -100,11 +100,10 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
             top: 20
         },
         nodeBottomExpanded:{
-            backgroundColor: 'red',
             height: height / 5.5,
             flexDirection: 'row',
-            borderBottomRightRadius: converter(15, 20, 35),
-            borderBottomLeftRadius: converter(15, 20, 35),
+            borderBottomRightRadius: converter(width/25, width/20, width/20, width/25),
+            borderBottomLeftRadius: converter(width/25, width/20, width/20, width/25),
             position: 'absolute',
             left: 0,
             right: 0,
@@ -207,7 +206,7 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
                         <Text style={[styles.topCafeType, rightSidePrompt === 'Not Scheduled'&& {color: Colors.errorColor, fontWeight:'bold'}]}>
                             {rightSidePrompt}
                         </Text>
-                        <Ionicons name={expanded? 'chevron-up' : 'chevron-down'} size={35} color={Colors.highlightColor}/>
+                        <Ionicons name={expanded? 'chevron-up' : 'chevron-down'} size={converter(width/15, width/15, width/15, width/18)} color={Colors.highlightColor}/>
                     </View>            
                 </View>
 
@@ -222,7 +221,7 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
                     roundL={true}
                     bgColor={Colors.highlightColor} 
                     iconName={'school-outline'} 
-                    iconSize={converter(24, 30, 60)} 
+                    iconSize={converter(width/15, width/12, width/12, width/15)} 
                     iconColor={Colors.secondaryColor400}
                     textColor={Colors.secondaryColor400}
                     link={currentListTarget !== undefined && currentListTarget.clinicLink}
@@ -233,7 +232,7 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
                     title={companyCafeDesignation} 
                     topTitle={monthName}
                     iconName={'speedometer-outline'} 
-                    iconSize={converter(24, 30, 60)} 
+                    iconSize={converter(width/15, width/12, width/12, width/15)} 
                     iconColor={Colors.primaryColor300}
                     textColor={Colors.primaryColor300}
                     link={currentListTarget !== undefined && currentListTarget.zoomLink}
@@ -244,7 +243,7 @@ const ScheduleNode = ({ targetSkill, groupTargetId,  companyCafeDesignation,  op
                     roundR={true}
                     bgColor={Colors.secondaryColor400} 
                     iconName={'calendar-outline'} 
-                    iconSize={converter(24, 30, 60)} 
+                    iconSize={converter(width/15, width/12, width/12, width/15)} 
                     iconColor={Colors.highlightColor}
                     textColor={Colors.highlightColor}
                     variableGroup={variableGroup}

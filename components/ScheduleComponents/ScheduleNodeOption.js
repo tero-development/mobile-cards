@@ -16,14 +16,14 @@ const ScheduleNodeOption  = ({title, topTitle, iconName, iconSize, iconColor, ro
             alignItems: 'center'
         },
         roundedLeft:{
-            borderBottomLeftRadius: converter(15, 20, 35)
+            borderBottomLeftRadius: converter(width/25, width/20, width/20, width/25),
         },
         roundedRight:{
-            borderBottomRightRadius: converter(15, 20, 35)
+            borderBottomRightRadius: converter(width/25, width/20, width/20, width/25),
         },
         text:{
             fontWeight: 'bold',
-            fontSize: converter(width/30, width/30, width/30)
+            fontSize: converter(width/30, width/30, width/30, width/35)
         }
     }
  
