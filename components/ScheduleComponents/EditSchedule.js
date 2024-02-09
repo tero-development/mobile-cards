@@ -67,12 +67,12 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
             width: width / 10 * 8.5
         },
         scheduleHeader:{
-            height: converter(height/8, height/8, height/8),
+            height: converter(height/8, height/8, height/8, height/8),
             backgroundColor: Colors.secondaryColor,
             paddingHorizontal: width/20,
             paddingVertical: height / 85,
-            borderTopLeftRadius: converter(14, 18, 25),
-            borderTopRightRadius: converter(14, 18, 25),
+            borderTopLeftRadius: converter(width/25, width/20, width/20, width/25),
+            borderTopRightRadius: converter(width/25, width/20, width/20, width/25),
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center'
@@ -83,12 +83,12 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
         },
         topTitle:{
             color: Colors.highlightColor,
-            fontSize: converter(height / 45, height / 45, height / 35),
+            fontSize: converter(height / 45, height / 45, height / 35, height/35),
             fontWeight: 'bold',
             flexWrap: 'wrap'
         },
         topDate:{
-            fontSize: height / 50,
+            fontSize: converter(width/25, width/25, width/25, width/30),
             color: Colors.highlightColor,
             textAlign: 'right'
         },
@@ -99,7 +99,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
     
         },
         scheduleBody:{
-            height: converter(height /2.5, height /3,height /3),
+            height: converter(height /2.5, height /3,height /3, height/3),
             backgroundColor: Colors.highlightColor,
             paddingHorizontal: width/20
         },
@@ -109,14 +109,14 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
         //     marginBottom: height/30
         // },
         flatListContainer:{
-            marginTop: converter(height/25, height/25, height/25),
-            paddingBottom: converter(height/20, height/25, height/25)
+            marginTop: converter(height/25, height/25, height/25, height/25),
+            paddingBottom: converter(height/20, height/25, height/25, height/25)
         },
         scheduleFooter:{
-            height: converter(height/6, height/6, height/6),
+            height: converter(height/6, height/6, height/6, height/6),
             backgroundColor: Colors.accentColor400,
-            borderBottomLeftRadius: converter(14, 18, 25),
-            borderBottomRightRadius: converter(14, 18, 25),
+            borderBottomLeftRadius: converter(width/25, width/20, width/20, width/25),
+            borderBottomRightRadius: converter(width/25, width/20, width/20, width/25),
             justifyContent: 'center',
             alignItems: 'center'
         },
@@ -128,7 +128,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
         },
         submitContainer:{
             backgroundColor: Colors.highlightColor,
-            borderRadius: converter(10, 15, 20),
+            borderRadius: converter(width/30, width/30, width/30, width/40),
             flex: 0.6,
             justifyContent: 'center',
             alignItems: 'center',
@@ -136,8 +136,8 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
         },
         submitButton:{
             width: '75%',
-            height: converter(height/35, height/40, height/35), 
-            borderRadius: converter(5, 5, 10),
+            height: converter(height/35, height/40, height/35, height/35), 
+            borderRadius: converter(width/100, width/60, width/80, width/100),
             shadowColor: 'black',
             shadowOpacity: 0.25,
             shadowOffset: {width: 0, height: 2},
@@ -153,7 +153,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
         // },
         submitText:{
             color: Colors.secondaryColor,
-            fontSize: converter(width/40, width/ 40, width/35)
+            fontSize: converter(width/40, width/ 40, width/35, width/35)
         },
         modal:{
             flex:1
@@ -409,7 +409,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
     let footerContent = 
     <ModularLink 
         textColor={Colors.highlightColor} 
-        textSize={height/50} 
+        textSize={converter(height/50, height/50, height/40, height/40)} 
         textStyles={{textAlign: 'center', fontWeight: 'bold'}}
         onPress={standardClose}
     >
@@ -421,7 +421,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
         <View>
             {
                 separatedSaveTitle.map(word =>{
-                    return <Title key={separatedSaveTitle[separatedSaveTitle.indexOf(word)]}  textSize={height / 35} color={Colors.highlightColor}>{word}</Title>
+                    return <Title key={separatedSaveTitle[separatedSaveTitle.indexOf(word)]}  textSize={converter(height / 35, height / 40, height / 30, height/25)} color={Colors.highlightColor}>{word}</Title>
                 })
             }
         </View>
@@ -437,7 +437,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
             <ModularButton 
                 style={styles.submitButton} 
                 buttonColor={Colors.secondaryColor300} 
-                textSize={converter(width/35, width/35, width/30)} 
+                textSize={converter(width/35, width/35, width/30, width/30, width/35)} 
                 textStyles={{fontWeight: 'bold'}} 
                 textColor={Colors.highlightColor}
                 onPress={submitYesHandler}
@@ -447,7 +447,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
             <ModularButton 
                 style={styles.submitButton} 
                 buttonColor={Colors.errorColor} 
-                textSize={converter(width/35, width/35, width/30)} 
+                textSize={converter(width/35, width/35, width/30, width/35)} 
                 textStyles={{fontWeight: 'bold'}} 
                 textColor={Colors.highlightColor}
                 onPress={submitNoHandler}
@@ -477,8 +477,70 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                             </View>
                             <View style={styles.scheduleBody}>
                                 {/* <View style={styles.scheduleBodyInnerContainer}> */}
+                                <ScheduleEntry 
+                                                key={2334} 
+                                                id={234332} 
+                                                monthNumber={1} 
+                                                monthName={"March"} 
+                                                headlineDate={"March 2"}
+                                                date = {"2024-03-01T14:00:00.000+00"} 
+                                                time={"9:00am-10:00am CST"}
+                                                zoomLink={"https://www.zoom.us"}
+                                                clinicMonthName ={"March"}
+                                                clinicLink={"https://www.zoom.us"}
+                                                cafeTracker={cafeTracker}
+                                                onPress={updateCafeTracker}
+                                                title={"Handling Questions"}
+                                                />
+                                    <ScheduleEntry 
+                                                key={2333} 
+                                                id={2343232} 
+                                                monthNumber={1} 
+                                                monthName={"March"} 
+                                                headlineDate={"March 2"}
+                                                date = {"2024-03-01T14:00:00.000+00"} 
+                                                time={"9:00am-10:00am CST"}
+                                                zoomLink={"https://www.zoom.us"}
+                                                clinicMonthName ={"March"}
+                                                clinicLink={"https://www.zoom.us"}
+                                                cafeTracker={cafeTracker}
+                                                onPress={updateCafeTracker}
+                                                title={"Handling Questions"}
+                                                />
+
+<ScheduleEntry 
+                                                key={233234} 
+                                                id={234234232} 
+                                                monthNumber={1} 
+                                                monthName={"March"} 
+                                                headlineDate={"March 2"}
+                                                date = {"2024-03-01T14:00:00.000+00"} 
+                                                time={"9:00am-10:00am CST"}
+                                                zoomLink={"https://www.zoom.us"}
+                                                clinicMonthName ={"March"}
+                                                clinicLink={"https://www.zoom.us"}
+                                                cafeTracker={cafeTracker}
+                                                onPress={updateCafeTracker}
+                                                title={"Handling Questions"}
+                                                />
+
+<ScheduleEntry 
+                                                key={21134} 
+                                                id={2311432} 
+                                                monthNumber={1} 
+                                                monthName={"March"} 
+                                                headlineDate={"March 2"}
+                                                date = {"2024-03-01T14:00:00.000+00"} 
+                                                time={"9:00am-10:00am CST"}
+                                                zoomLink={"https://www.zoom.us"}
+                                                clinicMonthName ={"March"}
+                                                clinicLink={"https://www.zoom.us"}
+                                                cafeTracker={cafeTracker}
+                                                onPress={updateCafeTracker}
+                                                title={"Handling Questions"}
+                                                />
                                 
-                                {
+                                {/* {
                                     filteredDateArray.length < 1? <Loader size='large' color={Colors.accentColor} /> : 
 
                                     <FlatList
@@ -517,48 +579,17 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                                     } }
                                 />
                                    
-                                    // filteredDateArray.map(entry =>{
-                                    //     const originalDate = new Date(entry.date)
-                                    //     const fullMonth = originalDate.toLocaleString('default', {month: 'long'})
-                                    //     const numericDay = (parseInt(originalDate.toLocaleString('default', {day: 'numeric'}))).toString()
-                                    //     const year = originalDate.toLocaleString('default', {year: 'numeric'})
-                                    //     const headlineDate = `${fullMonth} ${numericDay}`
-                                    //     const date = `${fullMonth} ${numericDay} ${year}`
-                                    //     const time = entry.time
-                                    //     const zoomLink = entry.zoom_link
-                                    //     const clinicMonthName = entry.clinicMonthName
-                                    //     const clinicLink = entry.clinic_link
-                                    //     const title = entry.title
-                                    //     return(
-                                    //         <ScheduleEntry 
-                                    //             key={entry._id} 
-                                    //             id={entry._id} 
-                                    //             monthNumber={entry.monthNumber} 
-                                    //             monthName={entry.monthName} 
-                                    //             headlineDate={headlineDate}
-                                    //             date = {date} 
-                                    //             time={time}
-                                    //             zoomLink={zoomLink}
-                                    //             clinicMonthName ={clinicMonthName}
-                                    //             clinicLink={clinicLink}
-                                    //             cafeTracker={cafeTracker}
-                                    //             onPress={updateCafeTracker}
-                                    //             title={title}
-                                    //             />
-                                    //     )
-                                    // } 
-                                    // )
-                                }
+                                } */}
                                 {/* </View> */}
                             </View>
                             <View style={styles.scheduleFooter}>
                                 
                                     {
-                                        isLoading? 
+                                        // isLoading? 
 
-                                            <Loader size="large" color={Colors.highlightColor}/>
+                                        //     <Loader size="large" color={Colors.highlightColor}/>
                                         
-                                        :
+                                        // :
 
                                         footerContent
                                         

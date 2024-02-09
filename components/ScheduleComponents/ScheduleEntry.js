@@ -32,8 +32,8 @@ const ScheduleEntry = (props) =>{
             paddingHorizontal: width/20,
             marginBottom: height/50,
             width: "100%",
-            height: converter(height/18, height/20,height/16),
-            borderRadius: converter(8, 10, 20),
+            height: converter(height/18, height/20,height/16, height/16),
+            borderRadius: converter(width/50, width/35, width/55, width/60),
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
@@ -47,18 +47,17 @@ const ScheduleEntry = (props) =>{
         dateText:{
             color: Colors.highlightColor,
             fontWeight: 'bold',
-            fontSize: converter(width/35, width/30, width/32)
+            fontSize: converter(width/35, width/30, width/32, width/35)
         },
         timeText:{
-            fontSize: 10,
             color: Colors.highlightColor,
-            fontSize: converter(width/40, width/35, width/36)
+            fontSize: converter(width/40, width/35, width/36, width/40)
         },
         clickBox:{
             backgroundColor: Colors.unselectedColor,
-            height: converter(width/30, width/30, width/30),
-            width: converter(width/30, width/30, width/30),
-            borderRadius: converter(3, 4, 6)
+            height: converter(width/30, width/30, width/30, width/35),
+            width: converter(width/30, width/30, width/30, width/35),
+            borderRadius: converter(width/125, width/150, width/100, width/150)
         },
         clickBoxSelected:{
             backgroundColor: Colors.primaryColor100
