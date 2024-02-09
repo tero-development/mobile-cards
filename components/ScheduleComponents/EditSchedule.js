@@ -477,7 +477,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                             </View>
                             <View style={styles.scheduleBody}>
                                 {/* <View style={styles.scheduleBodyInnerContainer}> */}
-                                <ScheduleEntry 
+                                {/* <ScheduleEntry 
                                                 key={2334} 
                                                 id={234332} 
                                                 monthNumber={1} 
@@ -538,9 +538,9 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                                                 cafeTracker={cafeTracker}
                                                 onPress={updateCafeTracker}
                                                 title={"Handling Questions"}
-                                                />
+                                                /> */}
                                 
-                                {/* {
+                                {
                                     filteredDateArray.length < 1? <Loader size='large' color={Colors.accentColor} /> : 
 
                                     <FlatList
@@ -579,7 +579,7 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                                     } }
                                 />
                                    
-                                } */}
+                                }
                                 {/* </View> */}
                             </View>
                             <View style={styles.scheduleFooter}>
