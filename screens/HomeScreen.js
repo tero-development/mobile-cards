@@ -7,9 +7,11 @@ import {SeasonContext} from '../store/season-context'
 import SeasonContextProvider from '../store/season-context'
 import {searchEmployee} from '../httpServices/employees'
 import { getActiveSeason } from '../httpServices/seasons'
-import { getCafeTracker } from '../httpServices/cafes'
+import { getCafeTracker, getCafeDates, getSelectedCafeIds } from '../httpServices/cafes'
 import { getContact } from '../httpServices/HBcontacts'
 import { getCompany } from '../httpServices/companies'
+import { AssessmentContext } from '../store/assessment-context'
+import { getAssessment } from '../httpServices/assessments'
 import IconButton from '../UI/IconButton'
 import Colors from '../utils/colors'
 import ModularLink from '../components/ModularLink'
@@ -35,12 +37,17 @@ const HomeScreen = ({navigation}) =>{
         updateEmployeeId,
         updateSignInClear,
     } = useContext(SignInContext)
+    const {season} = useContext(SeasonContext)
     const {updateSeason} = useContext(SeasonContext)
+    const { updateAssessment} = useContext(AssessmentContext)
     const {
         cafeDetails,
-         updateCafeTrackerAll,
-        updateShallowTrackerAll, 
-        updateCafeClear} = useContext(CafeContext)
+        updateCafeTrackerAll,
+        updateShallowTrackerAll,
+        updateSelectedCafes,
+        updateScheduledDates,
+        updateCafeClear
+    } = useContext(CafeContext)
     const [isScheduleIncomplete, setIsScheduleIncomplete] = useState(false)
     const {hubspotDetails, updateContactId} = useContext(HubspotContext)
 
@@ -55,10 +62,9 @@ const HomeScreen = ({navigation}) =>{
         container:{ 
             flex: 1,
             alignItems: 'center',
-            justifyContent: 'center' 
+            justifyContent: 'center'
         }
     }
-
 
     const styles = useStyles(localStyles)
 
@@ -93,6 +99,45 @@ const HomeScreen = ({navigation}) =>{
                                 if(tracker){
                                     updateCafeTrackerAll(tracker)
                                     updateShallowTrackerAll(tracker)
+                                    try{
+                                        const assessment = await getAssessment(employee._id, season._id)
+                                        if(assessment){
+                                            // console.log('LearnerSchedule ln 38 assessment:')
+                                            // console.log(assessment)
+                                            updateAssessment(assessment)
+                                            try{
+                                                updateSelectedCafes(assessment.currentSkillsChallenges)
+                                                // console.log('LearnerSchedule ln 43 currentSkillChallenges:')
+                                                // console.log(assessment.currentSkillsChallenges)
+                                                const selectedIds = await getSelectedCafeIds(assessment.currentSkillsChallenges.map(entry => entry._id))
+                                               
+                                                if(selectedIds){
+                                                    // console.log('')
+                                                    // console.log('LearnerSchedule ln 49 selectedIds:')
+                                                    // console.log(selectedIds)
+                                                    updateScheduledDates(selectedIds)
+                                                    try{
+                                                        //these are the offered dates, from the 'cafes' table
+                                                        const cafeDates = await getCafeDates(selectedIds)
+                                                        if(cafeDates){
+                                                            // console.log('')
+                                                            // console.log('LearnerSchedule ln 51 cafeDates:')
+                                                            // console.log(cafeDates)
+                                                            updateScheduledDates(cafeDates)
+                                                        }
+                                                    }catch(e){
+                                                        alert(e)
+                                                    }
+                                                    
+                                                }
+                                            }catch(e){
+                                                alert(e)
+                                            }
+                                            
+                                        }
+                                    } catch(e){
+                                        alert(e)
+                                    }
                                 }
                             }catch(e){
                                 alert(e)
@@ -107,32 +152,27 @@ const HomeScreen = ({navigation}) =>{
             }
         }
 
-        
         updateSignInClear()
         retrieveEmployee()
-   
         return () =>{}
 
     },[])
+    
+    // useEffect(()=>{
+    //     async function retrieveHBId(){
+    //         try{
+    //             const response = await getContact(credentials.email)
+    //             if(response.total > 0){
+    //                 updateContactId(response.results[0].id)
+    //             }
+    //         }catch(e){
+    //             alert(e)
+    //         }
+    //     }
 
-    useEffect(()=>{
-        async function retrieveHBId(){
-            try{
-                const response = await getContact(credentials.email)
-                if(response.total > 0){
-                    updateContactId(response.results[0].id)
-                }
-            }catch(e){
-                alert(e)
-            }
-        }
-
-        if(credentials.employeeId !== undefined){
-            retrieveHBId()
-        }
-
-        return ()=>{}
-    }, [])
+    //     retrieveHBId()
+    //     return ()=>{}
+    // }, [])
 
 
     //if cafeTracker is of type Object:
@@ -184,8 +224,8 @@ const HomeScreen = ({navigation}) =>{
         navigation.navigate('CompetencyScreen')
     }
 
-    function navigateQuiz(){
-        navigation.navigate('QuizScreen')
+    function navigateCafe(){
+        navigation.navigate('CafeScreen')
     }
 
 
@@ -210,7 +250,7 @@ const HomeScreen = ({navigation}) =>{
                     prompText={'Incomplete'}
                     promptColor={Colors.errorColor}  
                 />
-                {/* <HomeSelection onPress={navigateCompetency} title='Competency Cards' iconName='copy' /> */}
+                <HomeSelection onPress={navigateCafe} title='ExSellerator' iconName='speedometer-outline' />
                 <HomeSelection
                 onPress={()=>{}} 
                     title='Achievements' 
@@ -220,7 +260,7 @@ const HomeScreen = ({navigation}) =>{
                     prompText={'upcoming'}
                     promptColor={Colors.activeColor}  
                 />
-                {/* <HomeSelection onPress={navigateQuiz} title='Knowledge Check' iconName='clipboard' /> */}
+                {/* <HomeSelection onPress={navigateCompetency} title='Competency Cards' iconName='copy' /> */}
                 <ModularLink 
                     onPress={signOutHandler}     
                     textColor={Colors.secondaryColor}

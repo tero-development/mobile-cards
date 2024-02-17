@@ -12,7 +12,7 @@ import SignIn from './screens/SignIn';
 import CreateAccount from './screens/CreateAccount';
 import HomeScreen from './screens/HomeScreen';
 import LearnerSchedule from './screens/LearnerSchedule';
-// import AssessmentScreen from './screens/AssessmentScreen';
+import AssessmentScreen from './screens/AssessmentScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import QuizScreen from './screens/QuizScreen';
 import ConfirmAccount from './screens/ConfirmAccount';
@@ -28,6 +28,7 @@ import AdminScreen from './screens/AdminScreen';
 import QuizAdminScreen from './screens/QuizAdminScreen';
 import LinkScreen from './screens/LinksScreen';
 import DateSchedulingScreen from './screens/DateSchedulingScreen';
+import CafeScreen from './screens/CafeScreen';
 import * as Notifications from 'expo-notifications'
 // import { requestPermissionsAsync } from 'expo-notifications';
 
@@ -52,8 +53,6 @@ export default function App() {
   const Drawer = createDrawerNavigator()
 
       
-
-
   
   const DrawerGroup = () =>{
 
@@ -73,11 +72,11 @@ export default function App() {
           drawerLabelStyle:{fontSize: converter(width/25, width/25, width/35, width/35)}
         }}>
             <Drawer.Screen name="HomeScreen" component={HomeScreen} options={{title: "Home"}}/>
-            {/* <Drawer.Screen name="AdminScreen" component={AdminScreen} options={{title: "Home"}}/> */}
             <Drawer.Screen name="ProfileScreen" component={ProfileScreen} options={{title: "Profile"}}/>
             <Drawer.Screen name="LearnerSchedule" component={LearnerSchedule} options={{title: 'My Schedule'}}/>
-            {/* <Drawer.Screen name="CompetencyScreen" component={AssessmentScreen}options={{title: 'Competency Cards'}}/> */}
-            {/* <Drawer.Screen name="QuizScreen" component={QuizScreen} options={{title: 'Knowledge Check'}}/> */}
+            <Drawer.Screen name="CompetencyScreen" component={AssessmentScreen}options={{title: 'Competency Cards'}}/>
+            <Drawer.Screen name="CafeScreen" component={CafeScreen} options={{title: 'ExSellerator'}}/>
+            {/* <Drawer.Screen name="AdminScreen" component={AdminScreen} options={{title: "Home"}}/> */}
             {/* <Drawer.Screen name="QuizAdminScreen" component={QuizAdminScreen} options={{title: 'Quiz Builder'}}/> */}
             {/* <Drawer.Screen name="DateSchedulingScreen" component={DateSchedulingScreen} options={{title: 'Date Scheduling'}}/> */}
             {/* <Drawer.Screen name="LinkScreen" component={LinkScreen} options={{title: 'Links'}}/> */}

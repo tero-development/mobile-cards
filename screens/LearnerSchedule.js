@@ -2,10 +2,10 @@ import {View, useWindowDimensions, ScrollView} from 'react-native'
 import { useState, useContext, useEffect } from 'react'
 import Title from '../UI/Title'
 import { LinearGradient } from 'expo-linear-gradient'
-import { AssessmentContext } from '../store/assessment-context'
 import { SeasonContext } from '../store/season-context'
 import { SignInContext } from '../store/signin-context'
 import { CafeContext } from '../store/cafe-context'
+import { AssessmentContext } from '../store/assessment-context'
 import { getAssessment } from '../httpServices/assessments'
 import Colors from '../utils/colors'
 import ScheduleNode from '../components/ScheduleComponents/ScheduleNode'
@@ -19,13 +19,8 @@ import BackButton from '../UI/BackButton'
 
 
 const LearnerSchedule = ({navigation, route}) =>{
-    const { updateAssessment} = useContext(AssessmentContext)
-    const {season} = useContext(SeasonContext)
-    const {credentials} = useContext(SignInContext)
     const {
         cafeDetails, 
-        updateSelectedCafes,
-        updateScheduledDates,
         updateEditScheduleVariables,
         updateEditScheduleVariablesClear
         } = useContext(CafeContext)
@@ -64,54 +59,6 @@ const LearnerSchedule = ({navigation, route}) =>{
     const styles = useStyles(localStyles)
 
 
-    
-    useEffect(()=>{
-        async function retrieveAssessment(){
-            try{
-                const assessment = await getAssessment(credentials.employeeId, season._id)
-                if(assessment){
-                    // console.log('LearnerSchedule ln 38 assessment:')
-                    // console.log(assessment)
-                    updateAssessment(assessment)
-                    try{
-                        updateSelectedCafes(assessment.currentSkillsChallenges)
-                        // console.log('LearnerSchedule ln 43 currentSkillChallenges:')
-                        // console.log(assessment.currentSkillsChallenges)
-                        const selectedIds = await getSelectedCafeIds(assessment.currentSkillsChallenges.map(entry => entry._id))
-                       
-                        if(selectedIds){
-                            // console.log('')
-                            // console.log('LearnerSchedule ln 49 selectedIds:')
-                            // console.log(selectedIds)
-                            updateScheduledDates(selectedIds)
-                            try{
-                                //these are the offered dates, from the 'cafes' table
-                                const cafeDates = await getCafeDates(selectedIds)
-                                if(cafeDates){
-                                    // console.log('')
-                                    // console.log('LearnerSchedule ln 51 cafeDates:')
-                                    // console.log(cafeDates)
-                                    updateScheduledDates(cafeDates)
-                                }
-                            }catch(e){
-                                alert(e)
-                            }
-                            
-                        }
-                    }catch(e){
-                        alert(e)
-                    }
-                    
-                }
-            } catch(e){
-                alert(e)
-            }
-        }
-
-        retrieveAssessment()
-
-        return ()=>{}
-    },[])
 
     function navigateBack(){
         navigation.navigate('HomeScreen')

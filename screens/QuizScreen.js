@@ -1,12 +1,30 @@
 import {useMemo} from 'react'
-import {View, Text, StyleSheet} from 'react-native'
+import {useWindowDimensions} from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import QuizBuilder from '../components/QuizComponents/QuizBuilder'
 import Colors from '../utils/colors'
 import IconButton from '../UI/IconButton'
-import DeviceFractions from '../utils/dimensions'
+import {converterSetup, useStyles} from '../utils/dimensions'
 
 const QuizScreen = ({navigation}) =>{
+
+    const {width, height} = useWindowDimensions()
+
+    const converter = converterSetup(width, height)
+
+    const localStyles = {
+        screen:{
+            flex: 1
+        },
+        container:{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center'
+        }
+    }
+
+    const styles = useStyles(localStyles)
+
 
     function openDrawer({}){
         navigation.toggleDrawer()
@@ -118,20 +136,10 @@ const QuizScreen = ({navigation}) =>{
     ], []);
     return(
         <LinearGradient style={styles.screen} colors={[Colors.highlightColor, Colors.primaryColor]}>
-            <IconButton isHeader={false} iconName='menu' iconSize={28} iconColor={Colors.secondaryColor} onPress={openDrawer} viewStyle={{position: 'absolute', left: DeviceFractions.deviceW20, top: DeviceFractions.deviceH10, zIndex: 1}}/>
+            <IconButton isHeader={false} iconName='menu'  iconColor={Colors.secondaryColor} onPress={openDrawer} viewStyle={{position: 'absolute', left: width/20, top: height/10, zIndex: 1}}/>
             <QuizBuilder cafeTitle='Handling Questions' questionArray={questionList} />
         </LinearGradient>
     )
 }
-
-const styles = StyleSheet.create({
-    screen:{
-        flex: 1
-    },
-    container:{
-        flex: 1,
-        alignItems: 'center'
-    }
-})
 
 export default QuizScreen
