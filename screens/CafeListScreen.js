@@ -1,34 +1,30 @@
-import {View, Text, useWindowDimensions, ScrollView, Pressable} from 'react-native'
+import {View, useWindowDimensions, ScrollView} from 'react-native'
 import {useContext, useState, useEffect} from 'react'
 import Title from '../UI/Title'
 import { LinearGradient } from 'expo-linear-gradient'
 import { CafeContext } from '../store/cafe-context'
 import { CompanyContext } from '../store/company-context'
 import { QuizContext } from '../store/quiz-context'
+import { getAllCafes } from '../httpServices/cafes'
 import Colors from '../utils/colors'
+import CafeListing from '../components/CafeComponents/CafeListing'
 import IconButton from '../UI/IconButton'
 import {converterSetup, useStyles} from '../utils/dimensions'
+import Loader from '../UI/Loader'
 import BackButton from '../UI/BackButton'
-// import ScenarioModal from '../components/CafeComponents/ScenarioModal'
 
 
-const CafeScreen = ({navigation, route}) =>{
+const CafeListScreen = ({navigation, route}) =>{
     const {cafeDetails} = useContext(CafeContext)
     const {company} = useContext(CompanyContext)
     const {quizzes, updateQuizzes} = useContext(QuizContext)
     const [isLoading, setIsLoading] = useState(true)
-    const [modalIsVisible, setModalIsVisble] = useState(false)
 
-
-    const {title, scenarios, quiz} = route.params
-
-    const {scenario1, scenario2} = scenarios
-    
     const {width, height} = useWindowDimensions()
 
     const converter = converterSetup(width, height)
 
-    const localStyles = { 
+    const localStyles = {
         rootScreen:{
             flex: 1
         },
@@ -56,47 +52,44 @@ const CafeScreen = ({navigation, route}) =>{
 
     const styles = useStyles(localStyles)
  
+    // const styles = useStyles(localStyles)
 
-    // useEffect(()=>{
-    //     async function retrieveQuizzes(){
-    //         try{
-    //             const response = await getAllCafes(company._id)
-    //             if(response){
-    //                 updateQuizzes(response.map(entry => { 
-    //                     return {title: entry.title, quizSet: entry.quizSet}
-    //                 }))
+    useEffect(()=>{
+        async function retrieveQuizzes(){
+            try{
+                const response = await getAllCafes(company._id)
+                if(response){
+                    updateQuizzes(response.map(entry => { 
+                        return {title: entry.title, scenarios: entry.scenarios, quizSet: entry.quizSet}
+                    }))
                     
-    //             }
-    //         }catch(e){
-    //             alert(e)
-    //         }
-    //     }
+                }
+            }catch(e){
+                alert(e)
+            }
+        }
 
-    //     retrieveQuizzes()
+        retrieveQuizzes()
 
-    //     return ()=>{
+        return ()=>{
 
-    //     }
-    // },[])
+        }
+    },[])
 
-    // useEffect(()=>{
-    //     if(quizzes.length > 0){
-    //         setIsLoading(false)
-    //     }
+    useEffect(()=>{
+        if(quizzes.length > 0){
+            setIsLoading(false)
+        }
         
-    //     return ()=>{}
-    // }, [quizzes])
+        return ()=>{}
+    }, [quizzes])
 
-    function navigateQuiz(quiz){
-        navigation.navigate("QuizScreen", {quiz: quiz})
+    function navigateCafe(quizObject){
+        navigation.navigate("CafeScreen", quizObject)
     } 
 
     function navigateBack(){
-        navigation.navigate('CafeListScreen')
-    }
-
-    function closeModalHandler(){
-        setModalIsVisble(false)
+        navigation.navigate('HomeScreen')
     }
 
     const {selectedCafes, scheduledDates} = cafeDetails
@@ -120,18 +113,35 @@ const CafeScreen = ({navigation, route}) =>{
                         width: width / 10 * 8, 
                         textAlign:'right'}}
                 >
-                    {title}
-                </Title>
+                        ExSellerators
+                    </Title>
             </View>
             <View style={styles.container}>
-                <View>
-                    <Text>{scenario1}</Text>
-                    <Text>{scenario2}</Text>
+                <View style={styles.nodeContainer}>
+                    {
+                        //'selectedCafes' is assessment.currentSkillsChallenges, 'scheduledDates' is an array of all the offered dates per selectedCafe 
+                        (selectedCafes.length < 1 && scheduledDates.length < 1) || isLoading ? <Loader size="large" color={Colors.accentColor} /> : 
+                        selectedCafes.map(
+                            cafe => {
+                                const respectiveQuiz = quizzes.find(quizObject => 
+                                    {
+                                        if(quizObject.title === cafe.title){
+                                            return quizObject
+                                        }
+                                    })
+                                return <CafeListing 
+                                    key={cafe._id}
+                                    title={cafe.title}
+                                    onPress={()=>navigateCafe(respectiveQuiz)}
+                                />
+                            }
+                        )
+                        
+                    }
                 </View>
             </View>
             </ScrollView>
             <BackButton viewStyle={{left:converter( width/70,  width/100,  width/70)}} textSize={converter(width/30, width/30, width/35)} iconSize={converter(width/20, width/25, width/25)} navigationHandler={navigateBack}/>
-            {/* {(scheduledDates.length > 0 && modalIsVisble) && <ScenarioModal visible={modalIsVisible} closeModalHandler={closeModalHandler}/> } */}
         </LinearGradient>
     )
 }
@@ -139,4 +149,4 @@ const CafeScreen = ({navigation, route}) =>{
 
 
 
-export default CafeScreen
+export default CafeListScreen

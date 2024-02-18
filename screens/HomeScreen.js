@@ -89,7 +89,6 @@ const HomeScreen = ({navigation}) =>{
                     updateIndustryYears(employee.industryYears)
                     updateEmployeeTerritory(employee.employeeTerritory)
                     updatePhoneNumber(employee.phoneNumber)
-                    updateCompany(employee.company_id)
                     try{
                         const season = await getActiveSeason(employee.company_id)
                         if(season){
@@ -224,8 +223,8 @@ const HomeScreen = ({navigation}) =>{
         navigation.navigate('CompetencyScreen')
     }
 
-    function navigateCafe(){
-        navigation.navigate('CafeScreen')
+    function navigateCafeList(){
+        navigation.navigate('CafeListScreen')
     }
 
 
@@ -250,7 +249,7 @@ const HomeScreen = ({navigation}) =>{
                     prompText={'Incomplete'}
                     promptColor={Colors.errorColor}  
                 />
-                <HomeSelection onPress={navigateCafe} title='ExSellerator' iconName='speedometer-outline' />
+                <HomeSelection onPress={navigateCafeList} title='ExSellerator' iconName='speedometer-outline' />
                 <HomeSelection
                 onPress={()=>{}} 
                     title='Achievements' 

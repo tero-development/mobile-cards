@@ -12,15 +12,15 @@ function quizReducer(state, action){
 }
 
 const QuizContextProvider = ({children}) =>{
-    const [quiz, dispatch] = useReducer(quizReducer, {})
+    const [quizzes, dispatch] = useReducer(quizReducer, [])
 
-    function updateAssessment(quizArray){
+    function updateQuizzes(quizArray){
         dispatch({type:'update_quiz', payload: quizArray})
     }
 
     const value = {
-        quiz: quiz,
-        updateAssessment: updateAssessment
+        quizzes: quizzes,
+        updateQuizzes: updateQuizzes
     }
 
     return(

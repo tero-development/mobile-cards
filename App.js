@@ -23,26 +23,15 @@ import CompanyContextProvider from './store/company-context';
 import SeasonContextProvider from './store/season-context';
 import AssessmentContextProvider from './store/assessment-context';
 import CafeContextProvider from './store/cafe-context';
+import QuizContextProvider from './store/quiz-context';
 import HubspotContextProvider from './store/hubspot-context';
+import CafeListScreen from './screens/CafeListScreen';
+import CafeScreen from './screens/CafeScreen';
 import AdminScreen from './screens/AdminScreen';
 import QuizAdminScreen from './screens/QuizAdminScreen';
 import LinkScreen from './screens/LinksScreen';
 import DateSchedulingScreen from './screens/DateSchedulingScreen';
-import CafeScreen from './screens/CafeScreen';
-import * as Notifications from 'expo-notifications'
-// import { requestPermissionsAsync } from 'expo-notifications';
 
-
-
-// Notifications.setNotificationHandler({
-//   handleNotification: async()=>{
-//     return{
-//       shouldPlaySound: false,
-//       shouldSetBadge: false,
-//       shouldShowAlert: true
-//     }
-//   }
-// })
 
 
 // requestPermissionsAsync()
@@ -75,7 +64,7 @@ export default function App() {
             <Drawer.Screen name="ProfileScreen" component={ProfileScreen} options={{title: "Profile"}}/>
             <Drawer.Screen name="LearnerSchedule" component={LearnerSchedule} options={{title: 'My Schedule'}}/>
             <Drawer.Screen name="CompetencyScreen" component={AssessmentScreen}options={{title: 'Competency Cards'}}/>
-            <Drawer.Screen name="CafeScreen" component={CafeScreen} options={{title: 'ExSellerator'}}/>
+            <Drawer.Screen name="CafeListScreen" component={CafeListScreen} options={{title: 'ExSellerator'}}/>
             {/* <Drawer.Screen name="AdminScreen" component={AdminScreen} options={{title: "Home"}}/> */}
             {/* <Drawer.Screen name="QuizAdminScreen" component={QuizAdminScreen} options={{title: 'Quiz Builder'}}/> */}
             {/* <Drawer.Screen name="DateSchedulingScreen" component={DateSchedulingScreen} options={{title: 'Date Scheduling'}}/> */}
@@ -97,6 +86,7 @@ export default function App() {
             <AssessmentContextProvider>
               <CafeContextProvider>
                 <HubspotContextProvider>
+                  <QuizContextProvider>
               <Stack.Navigator screenOptions={{
                 headerShown: false
               }}>
@@ -108,7 +98,10 @@ export default function App() {
                     <Stack.Screen name="ForgotPassword" component={ForgotPassword}/>
                     <Stack.Screen name="ResetPassword" component={ResetPassword}/>
                     <Stack.Screen name="DrawerGroup" component={DrawerGroup} />
+                    <Stack.Screen name="QuizScreen" component={QuizScreen} />
+                    <Stack.Screen name="CafeScreen" component={CafeScreen} />
               </Stack.Navigator>
+                </QuizContextProvider>
               </HubspotContextProvider>  
             </CafeContextProvider>
           </AssessmentContextProvider>

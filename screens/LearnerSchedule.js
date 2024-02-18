@@ -24,7 +24,7 @@ const LearnerSchedule = ({navigation, route}) =>{
         updateEditScheduleVariables,
         updateEditScheduleVariablesClear
         } = useContext(CafeContext)
-    const [modalIsVisble, setModalIsVisble] = useState(false)
+    const [modalIsVisible, setModalIsVisible] = useState(false)
 
     const {width, height} = useWindowDimensions()
 
@@ -74,12 +74,12 @@ const LearnerSchedule = ({navigation, route}) =>{
 
     function openModalHandler(variableGroup){
         updateEditScheduleVariables(variableGroup)
-        setModalIsVisble(true)
+        setModalIsVisible(true)
     }
 
     function closeModalHandler(){
         updateEditScheduleVariablesClear()
-        setModalIsVisble(false)
+        setModalIsVisible(false)
     }
 
 
@@ -120,7 +120,7 @@ const LearnerSchedule = ({navigation, route}) =>{
                     }
                 </View>
             </View>
-            {(scheduledDates.length > 0 && modalIsVisble) && <EditSchedule visible={modalIsVisble} closeModalHandler={closeModalHandler}/> }
+            {(scheduledDates.length > 0 && modalIsVisible) && <EditSchedule visible={modalIsVisible} closeModalHandler={closeModalHandler}/> }
             </ScrollView>
             <BackButton viewStyle={{left:converter( width/70,  width/100,  width/70)}} textSize={converter(width/30, width/30, width/35)} iconSize={converter(width/20, width/25, width/25)} navigationHandler={navigateBack}/>
         </LinearGradient>

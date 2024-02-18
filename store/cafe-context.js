@@ -43,6 +43,7 @@ function cafeReducer(state, action){
                     year: "",
                     currentCafeOfferedSet: [], 
                     targetSkill: "",
+                    quizSet: []
                 }
             }
     }
@@ -61,6 +62,7 @@ const CafeContextProvider = ({children}) =>{
             year: "",
             currentCafeOfferedSet: [], 
             targetSkill: "",
+            quizSet: []
         }
     })
 
