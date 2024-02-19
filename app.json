@@ -29,7 +29,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#BCEBE8"
       },
-      "package": "com.terodev.teroLearning"
+      "package": "com.terodev.teroLearning",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"

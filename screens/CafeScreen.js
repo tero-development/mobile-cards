@@ -61,10 +61,11 @@ const CafeScreen = ({navigation, route}) =>{
             height: converter(height/2.15),
             width: width/10 * 7,
             backgroundColor: Colors.accentColor400,
-            paddingHorizontal: converter(width/30),
-            paddingVertical: converter(width/50),
+            paddingHorizontal: converter(width/20),
+            paddingTop: converter(width/35),
+            paddingBottom: converter(width/50),
             borderRadius: converter(width/25, width/20, width/20, width/25),
-            marginHorizontal: width/10*1.5,
+            marginHorizontal: width/10*1.5 ,
             justifyContent: 'space-between'
         },
         scenarioText:{
@@ -216,7 +217,7 @@ const CafeScreen = ({navigation, route}) =>{
                     <View style={styles.scenarioContainer}>
                         <View style={styles.scenarioSubContainer}>
                             <View>
-                                <Title color={Colors.highlightColor} textSize={converter(width/20)} style={{marginBottom: converter(width/30)}}>Scenario</Title>
+                                <Title color={Colors.highlightColor} textSize={converter(width/15)} style={{marginBottom: converter(width/40)}}>Scenario</Title>
                                 <Text style={styles.scenarioText}>Some customers like to test salespeople. You believe successfully handling hostile customer questions and objections is a powerful differentiator over your competitors.</Text>
                                 <Text style={styles.scenarioText}>You know that when faced with aggression, the first human challenge is to resist getting defensive or apologetic and remain assertive. You also know that providing a factual and logical answer to a hostile question or objection sometimes results in the customer escalating and arguing their point further. Going deeper by addressing where the customer is coming from and reframing the question can shift the interaction and demonstrate why they should do business with you. The L, A, Q method Corteva teaches can also be highly effective.</Text>                             
                             </View>
@@ -224,7 +225,7 @@ const CafeScreen = ({navigation, route}) =>{
                         </View>
                         <View style={styles.scenarioSubContainer}>
                             <View>
-                                <Title color={Colors.highlightColor} textSize={converter(width/20)} style={{marginBottom: converter(width/30)}}>Process </Title>
+                                <Title color={Colors.highlightColor} textSize={converter(width/15)} style={{marginBottom: converter(width/40)}}>Process </Title>
                                 <Text style={styles.scenarioText}>1.	Have each member of your breakout group share the most hostile question you’ve either experienced or expect to encounter this selling season. </Text>
                                 <Text style={styles.scenarioText}>2.	Reach consensus on one hostile question to focus on for this exercise.</Text>
                                 <Text style={styles.scenarioText}>3.	Use the techniques from the Handling Questions Clinic to formulate a recommendation on how to respond to this one hostile question.</Text>
@@ -234,7 +235,7 @@ const CafeScreen = ({navigation, route}) =>{
                         </View>
                         <View style={styles.scenarioSubContainer}>
                             <View>
-                                <Title color={Colors.highlightColor} textSize={converter(width/20)} style={{marginBottom: converter(width/30)}}>Remember </Title>
+                                <Title color={Colors.highlightColor} textSize={converter(width/15)} style={{marginBottom: converter(width/40)}}>Remember </Title>
                                 <Text style={styles.scenarioText}>•	Quality and content matters – you’re competing for points.</Text>
                                 <Text style={styles.scenarioText}>•	Get started right away – you have 10 minutes so use them well.</Text>
                                 <Text style={styles.scenarioText}>•	Differentiator – get most if not all team members involved in the 4-minute presentation.</Text>

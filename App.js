@@ -1,8 +1,9 @@
+import { useWindowDimensions } from 'react-native'
+import React, { useState, useEffect } from 'react'
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { useWindowDimensions } from 'react-native';
 import Colors from './utils/colors';
 import { converterSetup, useStyles } from './utils/dimensions';
 import DismissKeyboard from './UI/DismissKeyboard';
@@ -31,17 +32,21 @@ import AdminScreen from './screens/AdminScreen';
 import QuizAdminScreen from './screens/QuizAdminScreen';
 import LinkScreen from './screens/LinksScreen';
 import DateSchedulingScreen from './screens/DateSchedulingScreen';
+import registerNNPushToken from 'native-notify';
+import { getPushDataObject } from 'native-notify';
 
-
-
-// requestPermissionsAsync()
 
 export default function App() {
-  
   const Stack = createNativeStackNavigator()
   const Drawer = createDrawerNavigator()
 
+  registerNNPushToken(19726, 'r0jYUMCR1ozZ26vHqTL4OR')
+  let pushDataObject = getPushDataObject()
       
+
+  useEffect(() => {
+    console.log(pushDataObject);
+}, [pushDataObject]);
   
   const DrawerGroup = () =>{
 

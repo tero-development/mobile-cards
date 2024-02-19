@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "480237381505",
+    "project_id": "tero-learning",
+    "storage_bucket": "tero-learning.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:480237381505:android:7aed024300b4d70b3cea80",
+        "android_client_info": {
+          "package_name": "com.terodev.teroLearning"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKW3l3YNwr_olstgZTGlwWzrTDt2KYW4M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
