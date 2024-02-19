@@ -31,10 +31,10 @@ const QuizScreen = ({navigation, route}) =>{
 
     
     function navigateCafeList(){
-        navigation.navigate('CafeListScreen')
+        navigation.navigate('CafeScreen', route.params)
     }
 
-    const quizObject = route.params.quiz
+    const quizObject = route.params
 
 
     return(
