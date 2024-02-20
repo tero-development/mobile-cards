@@ -28,8 +28,6 @@ const CafeListing=({title, onPress, locked})=>{
     }
 
     const styles = useStyles(localStyles)
-
-
     return( 
         <Pressable style={styles.container} onPress={onPress}>
             <Text style={styles.listingTitle}>{title}</Text>
