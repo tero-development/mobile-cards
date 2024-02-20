@@ -32,21 +32,12 @@ import AdminScreen from './screens/AdminScreen';
 import QuizAdminScreen from './screens/QuizAdminScreen';
 import LinkScreen from './screens/LinksScreen';
 import DateSchedulingScreen from './screens/DateSchedulingScreen';
-import registerNNPushToken from 'native-notify';
-import { getPushDataObject } from 'native-notify';
+
 
 
 export default function App() {
   const Stack = createNativeStackNavigator()
   const Drawer = createDrawerNavigator()
-
-  registerNNPushToken(19726, 'r0jYUMCR1ozZ26vHqTL4OR')
-  let pushDataObject = getPushDataObject()
-      
-
-  useEffect(() => {
-    console.log(pushDataObject);
-}, [pushDataObject]);
   
   const DrawerGroup = () =>{
 

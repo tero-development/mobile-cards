@@ -585,11 +585,11 @@ const EditSchedule = ({visible, closeModalHandler}) =>{
                             <View style={styles.scheduleFooter}>
                                 
                                     {
-                                        // isLoading? 
+                                        isLoading? 
 
-                                        //     <Loader size="large" color={Colors.highlightColor}/>
+                                            <Loader size="large" color={Colors.highlightColor}/>
                                         
-                                        // :
+                                        :
 
                                         footerContent
                                         
