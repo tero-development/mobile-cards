@@ -23,9 +23,9 @@ const CafeScreen = ({navigation, route}) =>{
     const [modalIsVisible, setModalIsVisble] = useState(false)
     const [activeSection, setActiveSection] = useState("")
 
-    const {title, scenarios, quiz} = route.params
+    const {title, scenario, quiz} = route.params
 
-    const {scenario1, scenario2} = scenarios
+    const {background} = scenario
     
     const {width, height} = useWindowDimensions()
 
@@ -218,12 +218,11 @@ const CafeScreen = ({navigation, route}) =>{
                         <View style={styles.scenarioSubContainer}>
                             <View>
                                 <Title color={Colors.highlightColor} textSize={converter(width/15)} style={{marginBottom: converter(width/40)}}>Scenario</Title>
-                                <Text style={styles.scenarioText}>Some customers like to test salespeople. You believe successfully handling hostile customer questions and objections is a powerful differentiator over your competitors.</Text>
-                                <Text style={styles.scenarioText}>You know that when faced with aggression, the first human challenge is to resist getting defensive or apologetic and remain assertive. You also know that providing a factual and logical answer to a hostile question or objection sometimes results in the customer escalating and arguing their point further. Going deeper by addressing where the customer is coming from and reframing the question can shift the interaction and demonstrate why they should do business with you. The L, A, Q method Corteva teaches can also be highly effective.</Text>                             
+                                <Text style={styles.scenarioText}>{scenario.background}</Text>
                             </View>
-                            <ScenarioNavigation type={"first"}/>
+                            {/* <ScenarioNavigation type={"first"}/> */}
                         </View>
-                        <View style={styles.scenarioSubContainer}>
+                        {/* <View style={styles.scenarioSubContainer}>
                             <View>
                                 <Title color={Colors.highlightColor} textSize={converter(width/15)} style={{marginBottom: converter(width/40)}}>Process </Title>
                                 <Text style={styles.scenarioText}>1.	Have each member of your breakout group share the most hostile question you’ve either experienced or expect to encounter this selling season. </Text>
@@ -241,7 +240,7 @@ const CafeScreen = ({navigation, route}) =>{
                                 <Text style={styles.scenarioText}>•	Differentiator – get most if not all team members involved in the 4-minute presentation.</Text>
                             </View>
                             <ScenarioNavigation type={"last"}/>
-                        </View>
+                        </View> */}
                     </View>
                 </Animated.View> 
             </ScrollView>

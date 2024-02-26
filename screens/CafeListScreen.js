@@ -60,7 +60,7 @@ const CafeListScreen = ({navigation, route}) =>{
                 const response = await getAllCafes(company._id)
                 if(response){
                     updateQuizzes(response.map(entry => { 
-                        return {title: entry.title, scenarios: entry.scenarios, quizSet: entry.quizSet}
+                        return {title: entry.title, scenario: entry.scenario, quizSet: entry.quizSet}
                     }))
                     
                 }
