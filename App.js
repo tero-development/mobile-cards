@@ -34,7 +34,6 @@ import LinkScreen from './screens/LinksScreen';
 import DateSchedulingScreen from './screens/DateSchedulingScreen';
 
 
-
 export default function App() {
   const Stack = createNativeStackNavigator()
   const Drawer = createDrawerNavigator()
@@ -86,6 +85,7 @@ export default function App() {
               <Stack.Navigator screenOptions={{
                 headerShown: false
               }}>
+                    <Stack.Screen name="LinkScreen" component={LinkScreen} options={{title: 'Links'}}/>
                     <Stack.Screen name="SplashScreen" component={SplashScreen} />
                     <Stack.Screen name="SignIn" component={SignIn} />
                     <Stack.Screen name="CreateAccount" component={CreateAccount} />
