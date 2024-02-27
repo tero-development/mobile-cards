@@ -16,7 +16,13 @@
       },
       "distribution": "internal"
     },
-    "production": {}
+    "production": {
+      "production": {
+        "ios": {
+          "image": "latest"
+        }
+      }
+    }
   },
   "submit": {
     "production": {}
