@@ -3,7 +3,7 @@ import Title from '../UI/Title'
 
 const AssessmentScreen = () =>{
     return(
-        <View>
+        <View style={{flex: 1, alignItems: "center", justifyContent: 'center'}}>
             <Title>Assessment Screen</Title>
         </View>
     )

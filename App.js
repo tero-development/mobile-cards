@@ -85,7 +85,7 @@ export default function App() {
               <Stack.Navigator screenOptions={{
                 headerShown: false
               }}>
-                    <Stack.Screen name="LinkScreen" component={LinkScreen} options={{title: 'Links'}}/>
+                    <Stack.Screen name="CompetencyScreen" component={AssessmentScreen}options={{title: 'Competency Cards'}}/>
                     <Stack.Screen name="SplashScreen" component={SplashScreen} />
                     <Stack.Screen name="SignIn" component={SignIn} />
                     <Stack.Screen name="CreateAccount" component={CreateAccount} />
