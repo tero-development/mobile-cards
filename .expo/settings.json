@@ -3,7 +3,7 @@
   "lanType": "ip",
   "dev": true,
   "minify": false,
-  "urlRandomness": null,
+  "urlRandomness": "vqw78cc",
   "https": false,
   "devClient": true,
   "scheme": "com.terodev.TeroLearning"

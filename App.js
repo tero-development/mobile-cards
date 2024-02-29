@@ -1,5 +1,5 @@
-import { useWindowDimensions } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import { useWindowDimensions, Platform, Linking  } from 'react-native'
+import { useState, useEffect, useRef } from 'react'
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -32,9 +32,118 @@ import AdminScreen from './screens/AdminScreen';
 import QuizAdminScreen from './screens/QuizAdminScreen';
 import LinkScreen from './screens/LinksScreen';
 import DateSchedulingScreen from './screens/DateSchedulingScreen';
+import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 
 export default function App() {
+  const [expoPushToken, setExpoPushToken] = useState('');
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
+
+  useEffect(()=>{
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(notification);
+    })
+
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log("reponse listener log: ")
+      console.log(response)
+    });
+
+    return () =>{
+      if(notificationListener.current){
+        Notifications.removeNotificationSubscription(notificationListener.current)
+      }
+      if(responseListener.current){
+        Notifications.removeNotificationSubscription(responseListener.current)
+      }
+    }
+  }, [])
+
+  // received notification format
+  // {"date": 1709153301.552504, 
+  // "request": 
+  //   {
+  //     "content": 
+  //     {
+  //       "attachments": [Array], "badge": null, "body": "Here is the notification body", "categoryIdentifier": "", "data": [Object], "launchImageName": "", "sound": null, "subtitle": null, "summaryArgument": "", "summaryArgumentCount": 0, "targetContentIdentifier": null, "threadIdentifier": "", "title": "You've got mail! 📬"
+  //     }, 
+  //     "identifier": "871bfca2-78bd-4226-ba85-e0073f6c4caa", 
+  //     "trigger": {"class": "UNTimeIntervalNotificationTrigger", "repeats": false, "seconds": 2, "type": "timeInterval"}
+  //   }
+  // }
+
+
+  //response 
+  // {
+  //   "actionIdentifier": "expo.modules.notifications.actions.DEFAULT", 
+  //   "notification": 
+  //     {
+  //       "date": 1709154049.918837, 
+  //       "request": {"content": [Object], "identifier": "75dac3cf-edf7-466e-b042-7f1af3820dad", "trigger": [Object]}
+  //     }
+  // }
+
+ if(notification.request !== undefined){
+  console.log("received notification: ")
+  console.log(notification.request.content)
+  console.log("")
+ }
+
+ if(responseListener.current !== undefined ){
+    if(responseListener.current.notification !== undefined){
+      console.log("received notification: ")
+      console.log(responseListener.current)
+      console.log("")
+    }
+ }
+
+  async function registerForPushNotificationsAsync() {
+    let token;
+  
+    if (Platform.OS === 'android') {
+      await Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: Colors.primaryColor,
+      });
+    }
+
+    if (Device.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!');
+        return;
+      }
+      // Learn more about projectId:
+      // https://docs.expo.dev/push-notifications/push-notifications-setup/#configure-projectid
+      token = (await Notifications.getExpoPushTokenAsync({ projectId: '3dd4f5c3-4b29-45aa-ae82-895b43e64251' })).data;
+      console.log("token: "+token);
+    } else {
+      alert('Must use physical device for Push Notifications');
+    }
+    
+    return token;
+  }
+
   const Stack = createNativeStackNavigator()
   const Drawer = createDrawerNavigator()
   
@@ -74,7 +183,50 @@ export default function App() {
     <>
     <StatusBar style='dark'/>
     <DismissKeyboard>
-      <NavigationContainer>
+      <NavigationContainer
+            // linking={{
+            //   config: {
+            //     // Configuration for linking
+            //   },
+            //   async getInitialURL() {
+            //     // First, you may want to do the default deep link handling
+            //     // Check if app was opened from a deep link
+            //     const url = await Linking.getInitialURL();
+      
+            //     if (url != null) {
+            //       return url;
+            //     }
+      
+            //     // Handle URL from expo push notifications
+            //     const response = await Notifications.getLastNotificationResponseAsync();
+      
+            //     return response?.notification.request.content.data.url;
+            //   },
+            //   subscribe(listener) {
+            //     const onReceiveURL = ({ url }) => listener(url);
+      
+            //     // Listen to incoming links from deep linking
+            //     const eventListenerSubscription = Linking.addEventListener('url', onReceiveURL);
+      
+            //     // Listen to expo push notifications
+            //     const subscription = Notifications.addNotificationResponseReceivedListener(response => {
+            //       const url = response.notification.request.content.data.url;
+      
+            //       // Any custom logic to see whether the URL needs to be handled
+            //       //...
+      
+            //       // Let React Navigation handle the URL
+            //       listener(url);
+            //     });
+      
+            //     return () => {
+            //       // Clean up the event listeners
+            //       eventListenerSubscription.remove();
+            //       subscription.remove();
+            //     };
+            //   },
+            // }}
+      >
         <SignInContextProvider>
         <CompanyContextProvider>
           <SeasonContextProvider>
@@ -85,7 +237,10 @@ export default function App() {
               <Stack.Navigator screenOptions={{
                 headerShown: false
               }}>
-                    <Stack.Screen name="CompetencyScreen" component={AssessmentScreen}options={{title: 'Competency Cards'}}/>
+                <Stack.Screen name='CompetencyScreen' options={{ title: 'Competency Cards' }}>
+                  {({navigation})=>  <AssessmentScreen navigation={navigation}  message = {notification.request?.content.body} url = {notification.request?.content.data.url}/>}
+                </Stack.Screen>
+                    {/* <Stack.Screen name="CompetencyScreen" component={AssessmentScreen}options={{title: 'Competency Cards'}}/> */}
                     <Stack.Screen name="SplashScreen" component={SplashScreen} />
                     <Stack.Screen name="SignIn" component={SignIn} />
                     <Stack.Screen name="CreateAccount" component={CreateAccount} />
@@ -93,9 +248,9 @@ export default function App() {
                     <Stack.Screen name="ContactInfo" component={ContactInfoScreen}/>
                     <Stack.Screen name="ForgotPassword" component={ForgotPassword}/>
                     <Stack.Screen name="ResetPassword" component={ResetPassword}/>
-                    <Stack.Screen name="DrawerGroup" component={DrawerGroup} />
                     <Stack.Screen name="QuizScreen" component={QuizScreen} />
                     <Stack.Screen name="CafeScreen" component={CafeScreen} />
+                    <Stack.Screen name="DrawerGroup" component={DrawerGroup} />
               </Stack.Navigator>
                 </QuizContextProvider>
               </HubspotContextProvider>  
