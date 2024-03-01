@@ -20,7 +20,7 @@ const AssessmentScreen =({navigation, message, url, urlClear}) =>{
           content: {
             title: "Reroute 📬",
             body: "Routing to link screen...",
-            data: { data: 'goes here', url: 'myApp://links' },
+            data: { data: 'goes here', url: 'tlApp://links' },
           },
           trigger: {seconds: 10},
         });
