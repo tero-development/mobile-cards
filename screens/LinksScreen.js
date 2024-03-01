@@ -28,7 +28,7 @@ Notifications.setNotificationHandler({
 //   UIManager.setLayoutAnimationEnabledExperimental(true);
 // }
 
-const App = () => {
+const App = ({navigation}) => {
   // const [boxPosition, setBoxPosition] = useState('left');
 
   // const toggleBox = () => {
@@ -51,12 +51,14 @@ const App = () => {
 const [expoPushToken, setExpoPushToken] = useState('');
 
   useEffect(()=>{
-    console.log("Registering for push notifications")
-    registerForPushNotificationsAsync().then(token =>{
-      console.log("token: ", token)
-      setExpoPushToken(token)
-    })
-    .catch(e => console.log(e))
+    // console.log("Registering for push notifications")
+    // registerForPushNotificationsAsync().then(token =>{
+    //   console.log("token: ", token)
+    //   setExpoPushToken(token)
+    // })
+    // .catch(e => console.log(e))
+
+    console.log("FIRST TIME PRINTOUT")
 
   },[])
 
@@ -123,9 +125,8 @@ const [expoPushToken, setExpoPushToken] = useState('');
       <View style={styles.buttonContainer}>
         {/* <Button title="Toggle Layout" onPress={toggleBox} /> */}
         <Text>Expo RN Push notifications</Text>
-        <Button title="Send notification" onPress={sendNotification}
-
-        />
+        {/* <Button title="Send notification" onPress={sendNotification}/> */}
+        <Button title="go back" onPress={()=> navigation.navigate("CompetencyScreen")}/>
 
       </View>
       {/* <View
@@ -140,7 +141,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'flex-start',
     justifyContent: 'center',
-    backgroundColor: 'grey'
+    backgroundColor: 'plum'
   },
   box: {
     height: 100,

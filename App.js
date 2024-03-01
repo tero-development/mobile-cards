@@ -47,6 +47,7 @@ Notifications.setNotificationHandler({
 export default function App() {
   const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState(false);
+  const [url, setUrl] = useState(false)
   const notificationListener = useRef();
   const responseListener = useRef();
 
@@ -55,11 +56,12 @@ export default function App() {
 
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
       setNotification(notification);
+      setUrl(notification.request.content.data.url)
     })
 
     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log("reponse listener log: ")
-      console.log(response)
+      console.log("response listener log: ")
+      console.log(response.notification.request.content.data.url)
     });
 
     return () =>{
@@ -71,6 +73,10 @@ export default function App() {
       }
     }
   }, [])
+
+  function urlClear(){
+    setUrl(false)
+  }
 
   // received notification format
   // {"date": 1709153301.552504, 
@@ -184,48 +190,51 @@ export default function App() {
     <StatusBar style='dark'/>
     <DismissKeyboard>
       <NavigationContainer
-            // linking={{
-            //   config: {
-            //     // Configuration for linking
-            //   },
-            //   async getInitialURL() {
-            //     // First, you may want to do the default deep link handling
-            //     // Check if app was opened from a deep link
-            //     const url = await Linking.getInitialURL();
+            linking={{
+              prefixes:['myApp://'],
+              config: {
+                screens:{
+                  LinkScreen: "links"
+                }
+              },
+              async getInitialURL() {
+                // First, you may want to do the default deep link handling
+                // Check if app was opened from a deep link
+                const url = await Linking.getInitialURL();
       
-            //     if (url != null) {
-            //       return url;
-            //     }
+                if (url != null) {
+                  return url;
+                }
       
-            //     // Handle URL from expo push notifications
-            //     const response = await Notifications.getLastNotificationResponseAsync();
+                // Handle URL from expo push notifications
+                const response = await Notifications.getLastNotificationResponseAsync();
       
-            //     return response?.notification.request.content.data.url;
-            //   },
-            //   subscribe(listener) {
-            //     const onReceiveURL = ({ url }) => listener(url);
+                return response?.notification.request.content.data.url;
+              },
+              subscribe(listener) {
+                const onReceiveURL = ({ url }) => listener(url);
       
-            //     // Listen to incoming links from deep linking
-            //     const eventListenerSubscription = Linking.addEventListener('url', onReceiveURL);
+                // Listen to incoming links from deep linking
+                const eventListenerSubscription = Linking.addEventListener('url', onReceiveURL);
       
-            //     // Listen to expo push notifications
-            //     const subscription = Notifications.addNotificationResponseReceivedListener(response => {
-            //       const url = response.notification.request.content.data.url;
+                // Listen to expo push notifications
+                const subscription = Notifications.addNotificationResponseReceivedListener(response => {
+                  const url = response.notification.request.content.data.url;
       
-            //       // Any custom logic to see whether the URL needs to be handled
-            //       //...
+                  // Any custom logic to see whether the URL needs to be handled
+                  //...
       
-            //       // Let React Navigation handle the URL
-            //       listener(url);
-            //     });
+                  // Let React Navigation handle the URL
+                  listener(url);
+                });
       
-            //     return () => {
-            //       // Clean up the event listeners
-            //       eventListenerSubscription.remove();
-            //       subscription.remove();
-            //     };
-            //   },
-            // }}
+                return () => {
+                  // Clean up the event listeners
+                  eventListenerSubscription.remove();
+                  subscription.remove();
+                };
+              },
+            }}
       >
         <SignInContextProvider>
         <CompanyContextProvider>
@@ -238,9 +247,9 @@ export default function App() {
                 headerShown: false
               }}>
                 <Stack.Screen name='CompetencyScreen' options={{ title: 'Competency Cards' }}>
-                  {({navigation})=>  <AssessmentScreen navigation={navigation}  message = {notification.request?.content.body} url = {notification.request?.content.data.url}/>}
+                  {({navigation})=>  <AssessmentScreen navigation={navigation}  message = {notification.request?.content.body} url = {url} urlClear={urlClear}/>}
                 </Stack.Screen>
-                    {/* <Stack.Screen name="CompetencyScreen" component={AssessmentScreen}options={{title: 'Competency Cards'}}/> */}
+                    <Stack.Screen name="LinkScreen" component={LinkScreen}options={{title: 'Links'}}/>
                     <Stack.Screen name="SplashScreen" component={SplashScreen} />
                     <Stack.Screen name="SignIn" component={SignIn} />
                     <Stack.Screen name="CreateAccount" component={CreateAccount} />
