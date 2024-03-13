@@ -35,11 +35,13 @@ import DateSchedulingScreen from './screens/DateSchedulingScreen';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
+import StandardDrawer from './utils/StandardDrawer';
+import AdminDrawer from './utils/AdminDrawer';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
-    shouldPlaySound: false,
+    shouldPlaySound: true,
     shouldSetBadge: false,
   }),
 })
@@ -67,40 +69,40 @@ async function sendPushNotification(expoPushToken){
   })
 }
 
-async function registerForPushNotificationsAsync() {
-  let token;
+// async function registerForPushNotificationsAsync() {
+//   let token;
 
-  if (Platform.OS === 'android') {
-    await Notifications.setNotificationChannelAsync('default', {
-      name: 'default',
-      importance: Notifications.AndroidImportance.MAX,
-      vibrationPattern: [0, 250, 250, 250],
-      lightColor: Colors.primaryColor,
-    });
-  }
+//   if (Platform.OS === 'android') {
+//     await Notifications.setNotificationChannelAsync('default', {
+//       name: 'default',
+//       importance: Notifications.AndroidImportance.MAX,
+//       vibrationPattern: [0, 250, 250, 250],
+//       lightColor: Colors.primaryColor,
+//     });
+//   }
 
-  if (Device.isDevice) {
-    const { status: existingStatus } = await Notifications.getPermissionsAsync();
-    let finalStatus = existingStatus;
-    if (existingStatus !== 'granted') {
-      const { status } = await Notifications.requestPermissionsAsync();
-      finalStatus = status;
-    }
-    if (finalStatus !== 'granted') {
-      alert('Failed to get push token for push notification!');
-      return;
-    }
-    // Learn more about projectId:
-    // https://docs.expo.dev/push-notifications/push-notifications-setup/#configure-projectid
-    token = await Notifications.getExpoPushTokenAsync({
-      projectId: Constants.expoConfig.extra.eas.projectId,
-    });    console.log(token);
-  } else {
-    alert('Must use physical device for Push Notifications');
-  }
+//   if (Device.isDevice) {
+//     const { status: existingStatus } = await Notifications.getPermissionsAsync();
+//     let finalStatus = existingStatus;
+//     if (existingStatus !== 'granted') {
+//       const { status } = await Notifications.requestPermissionsAsync();
+//       finalStatus = status;
+//     }
+//     if (finalStatus !== 'granted') {
+//       alert('Failed to get push token for push notification!');
+//       return;
+//     }
+//     // Learn more about projectId:
+//     // https://docs.expo.dev/push-notifications/push-notifications-setup/#configure-projectid
+//     token = await Notifications.getExpoPushTokenAsync({
+//       projectId: Constants.expoConfig.extra.eas.projectId,
+//     });    console.log(token);
+//   } else {
+//     alert('Must use physical device for Push Notifications');
+//   }
 
-  return token.data;
-}
+//   return token.data?;
+// }
 
 export default function App() {
   const [expoPushToken, setExpoPushToken] = useState('');
@@ -109,19 +111,19 @@ export default function App() {
   const notificationListener = useRef();
   const responseListener = useRef();
 
-
   useEffect(()=>{
     registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
       setNotification(notification);
-      setUrl(notification.request.content.data.url)
+      setUrl(notification.request.content.data?.url)
     })
 
     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
       console.log("response listener log: ")
-      console.log(response.notification.request.content.data.url)
-    });
+      console.log(response)
+    })
+
 
     return () =>{
       if(notificationListener.current){
@@ -169,7 +171,7 @@ export default function App() {
 
  if(responseListener.current !== undefined ){
     if(responseListener.current.notification !== undefined){
-      console.log("received notification: ")
+      console.log("received response: ")
       console.log(responseListener.current)
       console.log("")
     }
@@ -211,6 +213,8 @@ export default function App() {
 
   const Stack = createNativeStackNavigator()
   const Drawer = createDrawerNavigator()
+
+  const admin = 1
   
   const DrawerGroup = () =>{
 
@@ -218,6 +222,13 @@ export default function App() {
 
     const converter = converterSetup(width, height)
 
+    let drawerFormat
+
+    switch(admin){
+      case 1: drawerFormat = AdminDrawer()
+      break
+      default: drawerFormat = StandardDrawer()
+    }
 
     return(
       <DismissKeyboard> 
@@ -229,15 +240,16 @@ export default function App() {
           drawerStyle:{backgroundColor: Colors.primaryColor100},
           drawerLabelStyle:{fontSize: converter(width/25, width/25, width/35, width/35)}
         }}>
-            <Drawer.Screen name="HomeScreen" component={HomeScreen} options={{title: "Home"}}/>
+            {/* <Drawer.Screen name="HomeScreen" component={HomeScreen} options={{title: "Home"}}/>
             <Drawer.Screen name="ProfileScreen" component={ProfileScreen} options={{title: "Profile"}}/>
             <Drawer.Screen name="LearnerSchedule" component={LearnerSchedule} options={{title: 'My Schedule'}}/>
             <Drawer.Screen name="CompetencyScreen" component={AssessmentScreen}options={{title: 'Competency Cards'}}/>
-            <Drawer.Screen name="CafeListScreen" component={CafeListScreen} options={{title: 'ExSellerator'}}/>
+            <Drawer.Screen name="CafeListScreen" component={CafeListScreen} options={{title: 'ExSellerator'}}/> */}
             {/* <Drawer.Screen name="AdminScreen" component={AdminScreen} options={{title: "Home"}}/> */}
             {/* <Drawer.Screen name="QuizAdminScreen" component={QuizAdminScreen} options={{title: 'Quiz Builder'}}/> */}
             {/* <Drawer.Screen name="DateSchedulingScreen" component={DateSchedulingScreen} options={{title: 'Date Scheduling'}}/> */}
             {/* <Drawer.Screen name="LinkScreen" component={LinkScreen} options={{title: 'Links'}}/> */}
+            {drawerFormat}
         </Drawer.Navigator>
       </DismissKeyboard>
       
@@ -268,7 +280,7 @@ export default function App() {
                 // Handle URL from expo push notifications
                 const response = await Notifications.getLastNotificationResponseAsync();
       
-                return response?.notification.request.content.data.url;
+                return response?.notification.request.content.data?.url;
               },
               subscribe(listener) {
                 const onReceiveURL = ({ url }) => listener(url);
@@ -278,7 +290,7 @@ export default function App() {
       
                 // Listen to expo push notifications
                 const subscription = Notifications.addNotificationResponseReceivedListener(response => {
-                  const url = response.notification.request.content.data.url;
+                  const url = response.notification.request.content.data?.url;
       
                   // Any custom logic to see whether the URL needs to be handled
                   //...
@@ -305,11 +317,11 @@ export default function App() {
               <Stack.Navigator screenOptions={{
                 headerShown: false
               }}>
-                <Stack.Screen name='CompetencyScreen' options={{ title: 'Competency Cards' }}>
+                {/* <Stack.Screen name='CompetencyScreen' options={{ title: 'Competency Cards' }}>
                   {({navigation})=>  <AssessmentScreen navigation={navigation}  message = {notification.request?.content.body} url = {url} urlClear={urlClear}/>}
-                </Stack.Screen>
-                    <Stack.Screen name="LinkScreen" component={LinkScreen}options={{title: 'Links'}}/>
+                </Stack.Screen> */}
                     <Stack.Screen name="SplashScreen" component={SplashScreen} />
+                    <Stack.Screen name="LinkScreen" component={LinkScreen}options={{title: 'Links'}}/>
                     <Stack.Screen name="SignIn" component={SignIn} />
                     <Stack.Screen name="CreateAccount" component={CreateAccount} />
                     <Stack.Screen name="ConfirmAccount" component={ConfirmAccount} />
