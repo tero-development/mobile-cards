@@ -18,7 +18,7 @@ import { CafeContext } from '../store/cafe-context'
 import { HubspotContext } from '../store/hubspot-context'
 
 
-const AdminScreen = ({navigation}) =>{
+const ProducerScreen = ({navigation}) =>{
     const {
         credentials,
         updateFirstname,
@@ -153,17 +153,9 @@ const AdminScreen = ({navigation}) =>{
         navigation.navigate('SplashScreen')
     }
 
-    function navigateDateScheduling(){
-        const cafes = allCafes
-        navigation.navigate('DateSchedulingScreen', cafes)
-    }
 
-    function navigateLinkScreen(){
-        navigation.navigate('LinkScreen')
-    }
-
-    function navigateAdminQuiz(){
-        navigation.navigate('QuizAdminScreen')
+    function navigateQuizProducer(){
+        navigation.navigate('QuizManagement')
     }
 
 
@@ -174,12 +166,10 @@ const AdminScreen = ({navigation}) =>{
             <LinearGradient style={styles.rootScreen} colors={[Colors.highlightColor, Colors.primaryColor]}>
             <IconButton isHeader={true} hasEditProfile={true} iconName='menu' iconSize={28} iconColor={Colors.secondaryColor} onPress={openDrawer}/>
             <View style={styles.container}>
-                <AdminGreeting points={'A'} rank={23} name={firstName? firstName : <Loader size='small' color={Colors.accentColor} />}/>
+                <AdminGreeting points={'P'} rank={23} name={firstName? firstName : <Loader size='small' color={Colors.accentColor} />}/>
                 {credentials.employeeId? <View style={styles.profileContainer}>
-                <HomeSelection onPress={navigateDateScheduling} title='Edit dates' iconName='calendar' iconSize={24}/>
-                <HomeSelection onPress={navigateLinkScreen} title='Links'  iconName='link-outline' iconSize={24}/>
-                <HomeSelection title='Statistics' iconName='analytics-outline' iconSize={24}/>
-                <HomeSelection onPress={navigateAdminQuiz} title='Quiz Builder' iconName='clipboard' iconSize={24}/>
+
+                <HomeSelection onPress={navigateQuizProducer} title='Quiz Management' iconName='clipboard' iconSize={24}/>
                 <ModularLink 
                     onPress={signOutHandler}     
                     textColor={Colors.secondaryColor}
@@ -208,4 +198,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default AdminScreen
+export default ProducerScreen

@@ -37,6 +37,7 @@ import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 import StandardDrawer from './utils/StandardDrawer';
 import AdminDrawer from './utils/AdminDrawer';
+import ProducerDrawer from './utils/ProducerDrawer';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -214,7 +215,7 @@ export default function App() {
   const Stack = createNativeStackNavigator()
   const Drawer = createDrawerNavigator()
 
-  const admin = 1
+  const admin = 2
   
   const DrawerGroup = () =>{
 
@@ -225,7 +226,10 @@ export default function App() {
     let drawerFormat
 
     switch(admin){
+  
       case 1: drawerFormat = AdminDrawer()
+      break
+      case 2: drawerFormat = ProducerDrawer()
       break
       default: drawerFormat = StandardDrawer()
     }

@@ -1,8 +1,8 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import AdminScreen from '../screens/AdminScreen';
-import QuizAdminScreen from '../screens/QuizAdminScreen';
-import LinkScreen from '../screens/LinksScreen';
+import QuizProducerScreen from '../screens/QuizProducerScreen'
 import DateSchedulingScreen from '../screens/DateSchedulingScreen';
+import ProducerScreen from '../screens/ProducerScreen'
 
   const Drawer = createDrawerNavigator()
   
@@ -10,10 +10,8 @@ import DateSchedulingScreen from '../screens/DateSchedulingScreen';
 
     return(
         <>
-            <Drawer.Screen name="AdminScreen" component={AdminScreen} options={{title: "Home"}}/>
-            <Drawer.Screen name="QuizAdminScreen" component={QuizAdminScreen} options={{title: 'Quiz Builder'}}/>
-            <Drawer.Screen name="DateSchedulingScreen" component={DateSchedulingScreen} options={{title: 'Date Scheduling'}}/>
-            <Drawer.Screen name="LinkScreen" component={LinkScreen} options={{title: 'Links'}}/>
+            <Drawer.Screen name="ProducerScreen" component={ProducerScreen} options={{title: "Home"}}/>
+            <Drawer.Screen name="QuizManagement" component={QuizProducerScreen} options={{title: 'Quiz Management'}}/>
         </>
     )
   }
