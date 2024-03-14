@@ -8,11 +8,11 @@ import { QuizContext } from '../store/quiz-context'
 import { getAllCafes } from '../httpServices/cafes'
 import { getMonths } from '../httpServices/producers'
 import Colors from '../utils/colors'
-import CafeListing from '../components/CafeComponents/CafeListing'
 import IconButton from '../UI/IconButton'
 import {converterSetup, useStyles} from '../utils/dimensions'
 import Loader from '../UI/Loader'
 import BackButton from '../UI/BackButton'
+import MonthListing from '../components/ProducerComponents.js/MonthListing'
 
 
 
@@ -125,7 +125,7 @@ const ProducerMonths = ({navigation, route}) =>{
                             months.map(
                                 month => {
                                     const classes = month.classes_ids
-                                    return <CafeListing 
+                                    return <MonthListing 
                                         key={month._id}
                                         title={month.monthName}
                                         onPress={()=>navigateClasses(classes)}
