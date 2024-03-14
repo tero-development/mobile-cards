@@ -14,7 +14,7 @@ import Loader from '../UI/Loader'
 import BackButton from '../UI/BackButton'
 
 
-const CafeListScreen = ({navigation, route}) =>{
+const ProducerClasses = ({navigation, route}) =>{
     const {cafeDetails} = useContext(CafeContext)
     const {company} = useContext(CompanyContext)
     const {quizzes, updateQuizzes} = useContext(QuizContext)
@@ -52,7 +52,8 @@ const CafeListScreen = ({navigation, route}) =>{
 
     const styles = useStyles(localStyles)
  
-    // const styles = useStyles(localStyles)
+    //The mongo pipleline should target the cafedates and be based on this designation
+    const routeDesignation = route.designation
 
     useEffect(()=>{
         async function retrieveQuizzes(){
@@ -84,18 +85,12 @@ const CafeListScreen = ({navigation, route}) =>{
         return ()=>{}
     }, [quizzes])
 
-    function navigateCafe(quizObject){
-        navigation.navigate("CafeScreen", quizObject)
-    } 
-
-    function navigateBack(){
-        navigation.navigate('HomeScreen')
+    function navigateClasses(classes){
+        navigation.navigate('ProducerClasses', {designation: routeDesignation, classes: classes})
     }
 
-    const {selectedCafes, scheduledDates} = cafeDetails
 
-
-    function openDrawer(){
+    function openDrawer({}){
         navigation.toggleDrawer()
     }
 
@@ -104,42 +99,37 @@ const CafeListScreen = ({navigation, route}) =>{
         <LinearGradient style={styles.rootScreen} colors={[Colors.highlightColor, Colors.primaryColor]}>
             <IconButton isHeader={false} iconName='menu'  iconColor={Colors.secondaryColor} onPress={openDrawer} viewStyle={{position: 'absolute', left: width/20, top: height/10, zIndex: 1}}/>
             <ScrollView style={styles.scrollContainer}>
-            <View style={{alignItems: 'center', marginBottom: height/40}}>
-                <Title 
-                    color={Colors.secondaryColor} 
-                    large={true} 
-                    style={{
-                        marginTop: height/30,  
-                        width: width / 10 * 8, 
-                        textAlign:'right'}}
-                >
-                        ExSellerators
-                    </Title>
-            </View>
-            <View style={styles.container}>
-                <View style={styles.nodeContainer}>
-                    {
-                        //'selectedCafes' is assessment.currentSkillsChallenges, 'scheduledDates' is an array of all the offered dates per selectedCafe 
-                        (selectedCafes.length < 1 && scheduledDates.length < 1) || isLoading ? <Loader size="large" color={Colors.accentColor} /> : 
-                        selectedCafes.map(
-                            cafe => {
-                                const respectiveQuiz = quizzes.find(quizObject => 
-                                    {
-                                        if(quizObject.title === cafe.title){
-                                            return quizObject
-                                        }
-                                    })
-                                return <CafeListing 
-                                    key={cafe._id}
-                                    title={cafe.title}
-                                    onPress={()=>navigateCafe(respectiveQuiz)}
-                                />
-                            }
-                        )
-                        
-                    }
+                <View style={{alignItems: 'center', marginBottom: height/40}}>
+                    <Title 
+                        color={Colors.secondaryColor} 
+                        large={true} 
+                        style={{
+                            marginTop: height/30,  
+                            width: width / 10 * 8, 
+                            textAlign:'right'}}
+                    >
+                            ExSellerators
+                        </Title>
                 </View>
-            </View>
+                <View style={styles.container}>
+                    <View style={styles.nodeContainer}>
+                        {
+                            //'selectedCafes' is assessment.currentSkillsChallenges, 'scheduledDates' is an array of all the offered dates per selectedCafe 
+                            (selectedCafes.length < 1 && scheduledDates.length < 1) || isLoading ? <Loader size="large" color={Colors.accentColor} /> : 
+                            selectedCafes.map(
+                                month => {
+                                    const classes = month.classes
+                                    return <CafeListing 
+                                        key={month.montName}
+                                        title={month.montName}
+                                        onPress={()=>navigateClasses(classes)}
+                                    />
+                                }
+                            )
+                            
+                        }
+                    </View>
+                </View>
             </ScrollView>
             <BackButton viewStyle={{left:converter( width/70,  width/100,  width/70)}} textSize={converter(width/30, width/30, width/35)} iconSize={converter(width/20, width/25, width/25)} navigationHandler={navigateBack}/>
         </LinearGradient>
@@ -149,4 +139,4 @@ const CafeListScreen = ({navigation, route}) =>{
 
 
 
-export default CafeListScreen
+export default ProducerClasses

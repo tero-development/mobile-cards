@@ -2,10 +2,11 @@ import {View, useWindowDimensions, ScrollView} from 'react-native'
 import {useContext, useState, useEffect} from 'react'
 import Title from '../UI/Title'
 import { LinearGradient } from 'expo-linear-gradient'
-import { CafeContext } from '../store/cafe-context'
+import { ProducerContext } from '../store/producer-tracker-context'
 import { CompanyContext } from '../store/company-context'
 import { QuizContext } from '../store/quiz-context'
 import { getAllCafes } from '../httpServices/cafes'
+import { getMonths } from '../httpServices/producers'
 import Colors from '../utils/colors'
 import CafeListing from '../components/CafeComponents/CafeListing'
 import IconButton from '../UI/IconButton'
@@ -14,10 +15,12 @@ import Loader from '../UI/Loader'
 import BackButton from '../UI/BackButton'
 
 
-const CafeListScreen = ({navigation, route}) =>{
-    const {cafeDetails} = useContext(CafeContext)
+
+const ProducerMonths = ({navigation, route}) =>{
+    const {schedule} = useContext(ProducerContext)
     const {company} = useContext(CompanyContext)
     const {quizzes, updateQuizzes} = useContext(QuizContext)
+    const [months, setMonths] = useState([])
     const [isLoading, setIsLoading] = useState(true)
 
     const {width, height} = useWindowDimensions()
@@ -52,24 +55,25 @@ const CafeListScreen = ({navigation, route}) =>{
 
     const styles = useStyles(localStyles)
  
-    // const styles = useStyles(localStyles)
+    const routeDesignation = route.designation
+
+    console.log(months)
 
     useEffect(()=>{
-        async function retrieveQuizzes(){
+
+
+        async function populateMonths(){
             try{
-                const response = await getAllCafes(company._id)
+                const response = await getMonths('62d47c7a36aeee14652966cd', '650b8c8746533a5af871ba0a')
                 if(response){
-                    updateQuizzes(response.map(entry => { 
-                        return {title: entry.title, scenario: entry.scenario, quizSet: entry.quizSet}
-                    }))
-                    
+                    setMonths(response)
                 }
             }catch(e){
                 alert(e)
             }
         }
 
-        retrieveQuizzes()
+        populateMonths()
 
         return ()=>{
 
@@ -77,25 +81,22 @@ const CafeListScreen = ({navigation, route}) =>{
     },[])
 
     useEffect(()=>{
-        if(quizzes.length > 0){
+        if(months.length > 0){
             setIsLoading(false)
         }
         
         return ()=>{}
-    }, [quizzes])
+    }, [months])
 
-    function navigateCafe(quizObject){
-        navigation.navigate("CafeScreen", quizObject)
-    } 
-
-    function navigateBack(){
-        navigation.navigate('HomeScreen')
+    function navigateClasses(classes){
+        navigation.navigate('ProducerClasses', {designation: routeDesignation, classes: classes})
     }
 
-    const {selectedCafes, scheduledDates} = cafeDetails
+    function navigateBack(){
+        navigation.navigate('ProducerScreen')
+    }
 
-
-    function openDrawer(){
+    function openDrawer( ){
         navigation.toggleDrawer()
     }
 
@@ -104,42 +105,37 @@ const CafeListScreen = ({navigation, route}) =>{
         <LinearGradient style={styles.rootScreen} colors={[Colors.highlightColor, Colors.primaryColor]}>
             <IconButton isHeader={false} iconName='menu'  iconColor={Colors.secondaryColor} onPress={openDrawer} viewStyle={{position: 'absolute', left: width/20, top: height/10, zIndex: 1}}/>
             <ScrollView style={styles.scrollContainer}>
-            <View style={{alignItems: 'center', marginBottom: height/40}}>
-                <Title 
-                    color={Colors.secondaryColor} 
-                    large={true} 
-                    style={{
-                        marginTop: height/30,  
-                        width: width / 10 * 8, 
-                        textAlign:'right'}}
-                >
-                        ExSellerators
-                    </Title>
-            </View>
-            <View style={styles.container}>
-                <View style={styles.nodeContainer}>
-                    {
-                        //'selectedCafes' is assessment.currentSkillsChallenges, 'scheduledDates' is an array of all the offered dates per selectedCafe 
-                        (selectedCafes.length < 1 && scheduledDates.length < 1) || isLoading ? <Loader size="large" color={Colors.accentColor} /> : 
-                        selectedCafes.map(
-                            cafe => {
-                                const respectiveQuiz = quizzes.find(quizObject => 
-                                    {
-                                        if(quizObject.title === cafe.title){
-                                            return quizObject
-                                        }
-                                    })
-                                return <CafeListing 
-                                    key={cafe._id}
-                                    title={cafe.title}
-                                    onPress={()=>navigateCafe(respectiveQuiz)}
-                                />
-                            }
-                        )
-                        
-                    }
+                <View style={{alignItems: 'center', marginBottom: height/40}}>
+                    <Title 
+                        color={Colors.secondaryColor} 
+                        large={true} 
+                        style={{
+                            marginTop: height/30,  
+                            width: width / 10 * 8, 
+                            textAlign:'right'}}
+                    >
+                            Select Month
+                        </Title>
                 </View>
-            </View>
+                <View style={styles.container}>
+                    <View style={styles.nodeContainer}>
+                        {
+                            //'selectedCafes' is assessment.currentSkillsChallenges, 'scheduledDates' is an array of all the offered dates per selectedCafe 
+                            months.length < 1 || isLoading ? <Loader size="large" color={Colors.accentColor} /> : 
+                            months.map(
+                                month => {
+                                    const classes = month.classes_ids
+                                    return <CafeListing 
+                                        key={month._id}
+                                        title={month.monthName}
+                                        onPress={()=>navigateClasses(classes)}
+                                    />
+                                }
+                            )
+                            
+                        }
+                    </View>
+                </View>
             </ScrollView>
             <BackButton viewStyle={{left:converter( width/70,  width/100,  width/70)}} textSize={converter(width/30, width/30, width/35)} iconSize={converter(width/20, width/25, width/25)} navigationHandler={navigateBack}/>
         </LinearGradient>
@@ -149,4 +145,4 @@ const CafeListScreen = ({navigation, route}) =>{
 
 
 
-export default CafeListScreen
+export default ProducerMonths

@@ -12,3 +12,17 @@ export async function unlockquiz(cafeDateId){
         return e
     }
 }
+
+export async function getMonths(companyId, seasonId){
+    try{
+        const response = await axios.get(`${url}/cafes/producerMonths/${companyId}&${seasonId}`)
+        if(response){
+            console.log(response)
+            return response.data
+
+        }
+    }catch(e){
+        return e
+    }
+}
+

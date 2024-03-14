@@ -37,7 +37,9 @@ import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 import StandardDrawer from './utils/StandardDrawer';
 import AdminDrawer from './utils/AdminDrawer';
-import ProducerDrawer from './utils/ProducerDrawer';
+import ProducerContextProvider from './store/producer-tracker-context';
+import ProducerDrawer from './utils/ProducerDrawer'
+import ProducerMonths from './screens/ProducerMonths';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -318,6 +320,7 @@ export default function App() {
               <CafeContextProvider>
                 <HubspotContextProvider>
                   <QuizContextProvider>
+                    <ProducerContextProvider>
               <Stack.Navigator screenOptions={{
                 headerShown: false
               }}>
@@ -335,7 +338,9 @@ export default function App() {
                     <Stack.Screen name="QuizScreen" component={QuizScreen} />
                     <Stack.Screen name="CafeScreen" component={CafeScreen} />
                     <Stack.Screen name="DrawerGroup" component={DrawerGroup} />
+                    <Stack.Screen name="ProducerMonths" component={ProducerMonths}/>
               </Stack.Navigator>
+                  </ProducerContextProvider>
                 </QuizContextProvider>
               </HubspotContextProvider>  
             </CafeContextProvider>
