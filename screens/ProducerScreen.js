@@ -123,15 +123,15 @@ const ProducerScreen = ({navigation}) =>{
 
 
     function navigateQuiz(){
-        navigation.navigate('ProducerMonths', {designation: "quiz"})
+        navigation.navigate('QuizMonths', {designation: "quizzes"})
     }
 
     function navigateAttendance(){
-        navigation.navigate('ProducerMonths', {designation: "attendance"})
+        navigation.navigate('AttendanceMonths', {designation: "attendance"})
     }
 
     function navigateScoring(){
-        navigation.navigate('ProducerMonths', {designation: "scoring"})
+        navigation.navigate('ScoreMonths', {designation: "scores"})
     }
 
 
@@ -144,9 +144,9 @@ const ProducerScreen = ({navigation}) =>{
                 {/* {credentials.employeeId?  */}
                 <View style={styles.profileContainer}>
 
-                <HomeSelection onPress={navigateQuiz} title='Quiz Management' iconName='clipboard' iconSize={24}/>
+                <HomeSelection onPress={navigateQuiz} title='Quizzes' iconName='clipboard' iconSize={24}/>
                 <HomeSelection onPress={navigateAttendance} title='Attendance' iconName='checkmark' iconSize={24}/>
-                <HomeSelection onPress={navigateScoring} title='Scoring' iconName='game-controller-outline' iconSize={24}/>
+                <HomeSelection onPress={navigateScoring} title='Scores' iconName='game-controller-outline' iconSize={24}/>
 
                 <ModularLink 
                     onPress={signOutHandler}     

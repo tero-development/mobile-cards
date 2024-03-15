@@ -9,7 +9,7 @@ import DateSchedulingScreen from '../screens/DateSchedulingScreen';
   const Drawer = createDrawerNavigator()
   
   const AdminDrawer = () =>{ 
-
+ 
     return(
         <>
             <Drawer.Screen name="AdminScreen" component={AdminScreen} options={{title: "Home"}}/>

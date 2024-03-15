@@ -338,7 +338,7 @@ export default function App() {
                     <Stack.Screen name="QuizScreen" component={QuizScreen} />
                     <Stack.Screen name="CafeScreen" component={CafeScreen} />
                     <Stack.Screen name="DrawerGroup" component={DrawerGroup} />
-                    <Stack.Screen name="ProducerMonths" component={ProducerMonths}/>
+                    {/* <Stack.Screen name="ProducerMonths" component={ProducerMonths} option={{title: "Quiz Management"}}/> */}
               </Stack.Navigator>
                   </ProducerContextProvider>
                 </QuizContextProvider>

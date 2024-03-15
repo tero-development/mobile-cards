@@ -55,9 +55,9 @@ const ProducerMonths = ({navigation, route}) =>{
 
     const styles = useStyles(localStyles)
  
-    const routeDesignation = route.designation
+    const routeDesignation = route.params.designation
 
-    console.log(months)
+    console.log(routeDesignation)
 
     useEffect(()=>{
 
