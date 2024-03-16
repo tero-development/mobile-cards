@@ -22,16 +22,16 @@ const ClassListing=({title, date, time, onPress, locked})=>{
         },
         listingTitle:{
             color: Colors.highlightColor,
-            fontSize: width/30,
+            fontSize: width/25,
             fontWeight: 'bold'
         },
         listingDate:{
             color: Colors.highlightColor,
-            fontSize: width/45,
+            fontSize: width/30,
         },
         listingTime:{
             color: Colors.highlightColor,
-            fontSize: width/50,
+            fontSize: width/35,
         }
     }
 

@@ -2,25 +2,22 @@ import {View, useWindowDimensions, ScrollView} from 'react-native'
 import {useContext, useState, useEffect} from 'react'
 import Title from '../UI/Title'
 import { LinearGradient } from 'expo-linear-gradient'
-import { ProducerContext } from '../store/producer-tracker-context'
+import { ProducerContext } from '../store/producer-context'
 import { CompanyContext } from '../store/company-context'
 import { QuizContext } from '../store/quiz-context'
-import { getAllCafes } from '../httpServices/cafes'
+import { getProClasses } from '../httpServices/cafes'
 import { getMonths } from '../httpServices/producers'
 import Colors from '../utils/colors'
 import IconButton from '../UI/IconButton'
 import {converterSetup, useStyles} from '../utils/dimensions'
 import Loader from '../UI/Loader'
 import BackButton from '../UI/BackButton'
-import MonthListing from '../components/ProducerComponents.js/MonthListing'
-
-
+import MonthListing from '../components/ProducerComponents/MonthListing'
 
 const ProducerMonths = ({navigation, route}) =>{
-    const {schedule} = useContext(ProducerContext)
+    const {schedule, stateClasses, scheduleClassesSetter, updateScheduleClasses} = useContext(ProducerContext)
     const {company} = useContext(CompanyContext)
-    const {quizzes, updateQuizzes} = useContext(QuizContext)
-    const [months, setMonths] = useState([])
+    const [tempClasses, setTempClasses] = useState([])
     const [isLoading, setIsLoading] = useState(true)
 
     const {width, height} = useWindowDimensions()
@@ -54,31 +51,11 @@ const ProducerMonths = ({navigation, route}) =>{
     }
 
     const styles = useStyles(localStyles)
+
+    const {months, classes} = schedule
  
     const routeDesignation = route.params.designation
 
-    console.log(routeDesignation)
-
-    useEffect(()=>{
-
-
-        async function populateMonths(){
-            try{
-                const response = await getMonths('62d47c7a36aeee14652966cd', '650b8c8746533a5af871ba0a')
-                if(response){
-                    setMonths(response)
-                }
-            }catch(e){
-                alert(e)
-            }
-        }
-
-        populateMonths()
-
-        return ()=>{
-
-        }
-    },[])
 
     useEffect(()=>{
         if(months.length > 0){
@@ -88,8 +65,65 @@ const ProducerMonths = ({navigation, route}) =>{
         return ()=>{}
     }, [months])
 
-    function navigateClasses(classes){
-        navigation.navigate('ProducerClasses', {designation: routeDesignation, classes: classes})
+    function navigateClasses(){
+        navigation.navigate('ProducerClasses', {designation: routeDesignation})
+    }
+
+    async function classRouting(month){
+        let placeholder = "blank"
+        try{
+            const response = await getProClasses(month)
+            if(response){
+                // console.log("from classRouting response, before if statement: ")
+                // console.log(response)
+                // updateScheduleClasses(response)
+                // scheduleClassesSetter(response) 
+                setTempClasses(response)
+            }
+        } catch(e){
+            alert(e)
+        }
+        //indicates that the value isn't in place after the first click, even though the call was successful
+        // if(classes.length > 0){
+        //     console.log("from classRouting if check:")
+        //     console.log(classes)
+        //     navigateClasses()
+        // }
+        updateScheduleClasses(temp) 
+    }
+
+    async function testCall(month){
+         const reply = await getProClasses(month)
+        .then(res => {
+            updateScheduleClasses(res)
+            if(res){
+                navigateClasses()
+            }
+        })
+        .catch(e => alert(e))
+        return reply
+    }
+
+    async function allTogether(month){
+        try{
+            const reply = await testCall(month)
+            if(reply){
+                // console.log(classes)
+                // if(classes.length > 0){
+                //     console.log("from classRouting if check:")
+                //     console.log(classes)
+                //     navigateClasses()
+                // }
+            }
+        }catch(e){
+            alert(e)
+        }
+        // updateScheduleClasses()
+        // if(classes.length > 0){
+        //     console.log("from classRouting if check:")
+        //     console.log(classes)
+        //     navigateClasses()
+        // }
     }
 
     function navigateBack(){
@@ -124,11 +158,11 @@ const ProducerMonths = ({navigation, route}) =>{
                             months.length < 1 || isLoading ? <Loader size="large" color={Colors.accentColor} /> : 
                             months.map(
                                 month => {
-                                    const classes = month.classes_ids
                                     return <MonthListing 
                                         key={month._id}
                                         title={month.monthName}
-                                        onPress={()=>navigateClasses(classes)}
+                                        // onPress={()=>testCall(month.monthName)}
+                                        onPress={async()=> testCall(month.monthName)}
                                     />
                                 }
                             )
@@ -141,8 +175,6 @@ const ProducerMonths = ({navigation, route}) =>{
         </LinearGradient>
     )
 }
-
-
 
 
 export default ProducerMonths

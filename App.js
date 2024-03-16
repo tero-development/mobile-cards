@@ -37,9 +37,8 @@ import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 import StandardDrawer from './utils/StandardDrawer';
 import AdminDrawer from './utils/AdminDrawer';
-import ProducerContextProvider from './store/producer-tracker-context';
+import ProducerContextProvider from './store/producer-context';
 import ProducerDrawer from './utils/ProducerDrawer'
-import ProducerMonths from './screens/ProducerMonths';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -338,7 +337,6 @@ export default function App() {
                     <Stack.Screen name="QuizScreen" component={QuizScreen} />
                     <Stack.Screen name="CafeScreen" component={CafeScreen} />
                     <Stack.Screen name="DrawerGroup" component={DrawerGroup} />
-                    {/* <Stack.Screen name="ProducerMonths" component={ProducerMonths} option={{title: "Quiz Management"}}/> */}
               </Stack.Navigator>
                   </ProducerContextProvider>
                 </QuizContextProvider>

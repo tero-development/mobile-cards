@@ -96,3 +96,14 @@ export async function getCafeDatesGroupedBySkill(paretnId){
         return e
     }
 }
+
+export async function getProClasses(month){
+    try{
+        const response = await axios.post(`${url}/cafes/producerclasses`, {monthName: month})
+        if(response){
+            return response.data
+        }
+    }catch(e){
+        return e
+    }
+}

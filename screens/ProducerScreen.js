@@ -15,105 +15,44 @@ import AdminGreeting from '../components/HomeComponents/AdminGreeting'
 import HomeSelection from '../components/HomeComponents/HomeSelection'
 import Loader from '../UI/Loader'
 import { CafeContext } from '../store/cafe-context'
-import { HubspotContext } from '../store/hubspot-context'
-
+import { ProducerContext } from '../store/producer-context'
+import { getMonths } from '../httpServices/producers'
 
 const ProducerScreen = ({navigation}) =>{
     const {
         credentials,
         updateSignInClear,
     } = useContext(SignInContext)
-    const {
-        updateCafeClear} = useContext(CafeContext)
-    
+    const {updateCafeClear} = useContext(CafeContext)
+    const {schedule, updateScheduleMonths} = useContext(ProducerContext)
+
     useEffect(()=>{
-        // let tempEmail = credentials.email
 
-        // async function getCafes(companyId){
-        //     try{
-        //         const response = await getAllCafes(companyId)
-        //         if(response){
-        //            setAllCafes(response)
-        //         }
-        //     }catch(e){
-        //         alert(e.message)
-        //     }
-        // }
 
-        // async function retrieveEmployee(){
-        //     try{
-        //         const employee = await searchEmployee(tempEmail)
-        //         if(employee){
-        //             updateEmployeeId(employee._id)
-        //             updateFirstname(employee.firstName)
-        //             updateLastName(employee.lastName)
-        //             updateEmail(employee.email)
-        //             updateManagerEmail(employee.managerEmail)
-        //             updateIndustryYears(employee.industryYears)
-        //             updateEmployeeTerritory(employee.employeeTerritory)
-        //             updatePhoneNumber(employee.phoneNumber)
-        //             updateCompany(employee.company_id)
-        //             try{
-        //                 const season = await getActiveSeason(employee.company_id)
-        //                 if(season){
-        //                     try{
-        //                         updateSeason(season)
-        //                         const tracker = await getCafeTracker(employee._id, season._id)
-        //                         if(tracker){
-        //                             updateCafeTrackerAll(tracker)
-        //                             updateShallowTrackerAll(tracker)
-        //                         }
-        //                     }catch(e){
-        //                         alert(e)
-        //                     }
-        //                 }
-        //             }catch(e){
-        //                 alert(e)
-        //             }
-        //         }
-        //     }catch(e){
-        //         alert(e)
-        //     }
-        // }
+        async function populateMonths(){
+            try{
+                const response = await getMonths('62d47c7a36aeee14652966cd', '650b8c8746533a5af871ba0a')
+                if(response){
+                    updateScheduleMonths(response)
+                }
+            }catch(e){
+                alert(e)
+            }
+        }
 
-        
-        // updateSignInClear()
-        // retrieveEmployee()
-        // getCafes(`62d47c7a36aeee14652966cd`)
+        populateMonths()
 
-   
-        return () =>{}
+        return ()=>{
 
+        }
     },[])
-
-
-
-
-    // const {cafeTracker, shallowTracker} = cafeDetails
-
-    // useEffect(()=>{
-    //     let value = false
-    //     if(cafeTracker.list.length < 5){
-    //         value = true
-    //     } else(
-    //         cafeTracker.list.forEach(entry=>{
-    //             if(entry.id === undefined){
-    //                 value = true
-    //             }
-    //         })
-    //     )
-    //     setIsScheduleIncomplete(value)
-    // },[cafeTracker.list])
-
-
-    // const {firstName} = credentials
-
+    
     const firstName = "Producer"
 
     function openDrawer(){
         navigation.toggleDrawer()
     }
-
+    
 
     function signOutHandler(){
         updateSignInClear()
