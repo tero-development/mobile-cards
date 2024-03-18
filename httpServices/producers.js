@@ -25,3 +25,15 @@ export async function getMonths(companyId, seasonId){
     }
 }
 
+export async function getDetailedRoster(cafeDateId){
+    try{
+        const response = await axios.post(`${url}/producers/detailedroster`, {cafeDateId: cafeDateId})
+        if(response){
+            return response.data
+
+        }
+    }catch(e){
+        return e
+    }
+}
+

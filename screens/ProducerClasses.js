@@ -5,8 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { ProducerContext } from '../store/producer-context'
 import { CompanyContext } from '../store/company-context'
 import { QuizContext } from '../store/quiz-context'
-import { getAllCafes } from '../httpServices/cafes'
-import { getMonths } from '../httpServices/producers'
+import { getDetailedRoster } from '../httpServices/producers'
 import Colors from '../utils/colors'
 import IconButton from '../UI/IconButton'
 import {converterSetup, useStyles} from '../utils/dimensions'
@@ -16,10 +15,7 @@ import ClassListing from '../components/ProducerComponents/ClassListing'
 
 
 const ProducerClasses = ({navigation, route}) =>{
-    const {schedule} = useContext(ProducerContext)
-    const {company} = useContext(CompanyContext)
-    const {quizzes, updateQuizzes} = useContext(QuizContext)
-    const [months, setMonths] = useState([])
+    const {schedule, updateScheduleRoster} = useContext(ProducerContext)
     const [isLoading, setIsLoading] = useState(true)
 
     const {width, height} = useWindowDimensions()
@@ -89,8 +85,30 @@ const ProducerClasses = ({navigation, route}) =>{
         return ()=>{}
     }, [classes])
 
-    function navigateClasses(classes){
-        navigation.navigate('ProducerClasses', {designation: routeDesignation, classes: classes})
+
+    async function navigateAlotmentScreen(cafeDateId, designation){
+        setIsLoading(true)
+        try{
+            const response = await getDetailedRoster(cafeDateId)
+            updateScheduleRoster(response.participants)
+            if(response){
+                navigateScores()
+                setIsLoading(false)
+            }
+        }catch(e){
+            alert(e)
+            setIsLoading(false)
+        }
+
+        switch(designation){
+            case "scores": navigateScores()
+            default: console.log("not the right type of designation")
+        }
+        // navigation.navigate('ProducerClasses', {designation: routeDesignation, classes: classes})
+    }
+
+    function navigateScores(){
+        navigation.navigate('ScoreScreen')
     }
 
     function navigateBack(){
@@ -125,12 +143,15 @@ const ProducerClasses = ({navigation, route}) =>{
                             classes.length < 1 || isLoading ? <Loader size="large" color={Colors.accentColor} /> : 
                             classes.map(
                                 classInstance => {
+                                    // if(classes.indexOf(classInstance) === 0){
+                                    //     console.log(classInstance)
+                                    // }
                                     return <ClassListing 
                                         key={classInstance._id}
                                         title={classInstance.title}
                                         date={classInstance.date_standard}
                                         time={classInstance.time}
-                                        onPress={()=>console.log("it clicks!")}
+                                        onPress={()=> navigateAlotmentScreen(classInstance._id, routeDesignation)}
                                     />
                                 }
                             )

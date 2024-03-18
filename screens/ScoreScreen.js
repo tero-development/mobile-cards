@@ -3,16 +3,20 @@ import {useContext, useState, useEffect} from 'react'
 import Title from '../UI/Title'
 import { LinearGradient } from 'expo-linear-gradient'
 import { ProducerContext } from '../store/producer-context'
-import { getProClasses } from '../httpServices/cafes'
+import { CompanyContext } from '../store/company-context'
+import { QuizContext } from '../store/quiz-context'
+import { getDetailedRoster } from '../httpServices/producers'
 import Colors from '../utils/colors'
 import IconButton from '../UI/IconButton'
 import {converterSetup, useStyles} from '../utils/dimensions'
 import Loader from '../UI/Loader'
 import BackButton from '../UI/BackButton'
-import MonthListing from '../components/ProducerComponents/MonthListing'
+import ClassListing from '../components/ProducerComponents/ClassListing'
 
-const ProducerMonths = ({navigation, route}) =>{
-    const {schedule, updateScheduleClasses} = useContext(ProducerContext)
+
+const ScoreScreen = ({navigation, route}) =>{
+    const {schedule} = useContext(ProducerContext)
+    const {company} = useContext(CompanyContext)
     const [isLoading, setIsLoading] = useState(true)
 
     const {width, height} = useWindowDimensions()
@@ -47,51 +51,19 @@ const ProducerMonths = ({navigation, route}) =>{
 
     const styles = useStyles(localStyles)
 
-    const {months} = schedule
+    const {roster} = schedule
+    
  
     const routeDesignation = route.params.designation
 
+
     useEffect(()=>{
-        if(months.length > 0){
+        if(roster.length > 0){
             setIsLoading(false)
         }
         
         return ()=>{}
-    }, [months])
-
-    function navigateClasses(){
-        navigation.navigate('ProducerClasses', {designation: routeDesignation})
-    }
-
-
-    async function classRouting(month){
-         setIsLoading(true)
-        //  const reply = await getProClasses(month)
-         await getProClasses(month)
-        .then(res => {
-            updateScheduleClasses(res)
-            if(res){
-                setIsLoading(false)
-                navigateClasses()
-            }
-        })
-        .catch(e => {
-            alert(e)
-            setIsLoading(false)
-        })
-
-        try{
-            const response = await getProClasses(month)
-            updateScheduleClasses(response)
-            if(response){
-                setIsLoading(false)
-                navigateClasses()
-            }
-        } catch(e){
-            alert(e)
-            setIsLoading(false)
-        }
-    }
+    }, [roster])
 
 
     function navigateBack(){
@@ -116,21 +88,25 @@ const ProducerMonths = ({navigation, route}) =>{
                             width: width / 10 * 8, 
                             textAlign:'right'}}
                     >
-                            Select Month
+                            Select Class
                         </Title>
                 </View>
                 <View style={styles.container}>
                     <View style={styles.nodeContainer}>
                         {
                             //'selectedCafes' is assessment.currentSkillsChallenges, 'scheduledDates' is an array of all the offered dates per selectedCafe 
-                            months.length < 1 || isLoading ? <Loader size="large" color={Colors.accentColor} /> : 
-                            months.map(
-                                month => {
-                                    return <MonthListing 
-                                        key={month._id}
-                                        title={month.monthName}
-                                        // onPress={()=>classRouting(month.monthName)}
-                                        onPress={async()=> classRouting(month.monthName)}
+                            roster.length < 1 || isLoading ? <Loader size="large" color={Colors.accentColor} /> : 
+                            roster.map(
+                                classInstance => {
+                                    // if(roster.indexOf(classInstance) === 0){
+                                    //     console.log(classInstance)
+                                    // }
+                                    return <ClassListing 
+                                        key={classInstance._id}
+                                        title={classInstance.title}
+                                        date={classInstance.date_standard}
+                                        time={classInstance.time}
+                                        onPress={()=> navigateAlotmentScreen(classInstance._id, routeDesignation)}
                                     />
                                 }
                             )
@@ -145,4 +121,6 @@ const ProducerMonths = ({navigation, route}) =>{
 }
 
 
-export default ProducerMonths
+
+
+export default ScoreScreen

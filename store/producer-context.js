@@ -8,6 +8,8 @@ function producerReducer(state, action){
             return {...state, classes : action.payload}
         case "update_months":
                 return {...state, months : action.payload}
+        case "update_roster":
+                return {...state, roster : action.payload}
         default:
             return state
     }
@@ -16,13 +18,9 @@ function producerReducer(state, action){
 const ProducerContextProvider = ({children}) =>{
     const [schedule, dispatch] = useReducer(producerReducer, {
         months: [],
-        classes: []
+        classes: [],
+        roster: []
     })
-    const [stateClasses, setStateClasses] = useState([])
-
-    function scheduleClassesSetter(classes){
-        setStateClasses(classes)
-    }
 
     async function updateScheduleClasses(classes){
         dispatch({type: 'update_classes', payload: classes})
@@ -32,16 +30,19 @@ const ProducerContextProvider = ({children}) =>{
         dispatch({type: 'update_months', payload: months})
     }
 
+    async function updateScheduleRoster(roster){
+        dispatch({type: 'update_roster', payload: roster})
+    }
+
     function updateScheduleClear(){
         dispatch({type:"", payload:""})
     }
 
     const value = {
         schedule: schedule,
-        stateClasses: stateClasses,
-        scheduleClassesSetter: scheduleClassesSetter,
         updateScheduleClasses: updateScheduleClasses,
         updateScheduleMonths: updateScheduleMonths,
+        updateScheduleRoster: updateScheduleRoster,
         updateScheduleClear: updateScheduleClear
     }
     

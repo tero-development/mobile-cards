@@ -28,7 +28,6 @@ const ProducerScreen = ({navigation}) =>{
 
     useEffect(()=>{
 
-
         async function populateMonths(){
             try{
                 const response = await getMonths('62d47c7a36aeee14652966cd', '650b8c8746533a5af871ba0a')
