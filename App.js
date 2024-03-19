@@ -39,6 +39,8 @@ import StandardDrawer from './utils/StandardDrawer';
 import AdminDrawer from './utils/AdminDrawer';
 import ProducerContextProvider from './store/producer-context';
 import ProducerDrawer from './utils/ProducerDrawer'
+import ProducerClasses from './screens/ProducerClasses';
+import ScoreScreen from './screens/ScoreScreen';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -337,6 +339,7 @@ export default function App() {
                     <Stack.Screen name="QuizScreen" component={QuizScreen} />
                     <Stack.Screen name="CafeScreen" component={CafeScreen} />
                     <Stack.Screen name="DrawerGroup" component={DrawerGroup} />
+                    <Stack.Screen name="ProducerClasses" component={ProducerClasses}/>
               </Stack.Navigator>
                   </ProducerContextProvider>
                 </QuizContextProvider>

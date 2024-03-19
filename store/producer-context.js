@@ -10,6 +10,13 @@ function producerReducer(state, action){
                 return {...state, months : action.payload}
         case "update_roster":
                 return {...state, roster : action.payload}
+        case "update_score_list":
+                return {...state, scoreList : action.payload}
+        case "update_quiz_score":
+                const index = action.payload.index
+                let placeholder = state.scoreList
+                placeholder.splice(index, 0, {...placeholder[index], quizScore: action.payload.message})
+                return {...state, scoreList : placeholder}          
         default:
             return state
     }
@@ -19,7 +26,8 @@ const ProducerContextProvider = ({children}) =>{
     const [schedule, dispatch] = useReducer(producerReducer, {
         months: [],
         classes: [],
-        roster: []
+        roster: [],
+        scoreList: []
     })
 
     async function updateScheduleClasses(classes){
@@ -34,6 +42,14 @@ const ProducerContextProvider = ({children}) =>{
         dispatch({type: 'update_roster', payload: roster})
     }
 
+    async function updateScoreList(roster){
+        dispatch({type: 'update_score_list', payload: roster})
+    }
+
+    async function updateQuizScore(object){
+        dispatch({type: 'update_quiz_score', payload: object})
+    }
+
     function updateScheduleClear(){
         dispatch({type:"", payload:""})
     }
@@ -43,6 +59,8 @@ const ProducerContextProvider = ({children}) =>{
         updateScheduleClasses: updateScheduleClasses,
         updateScheduleMonths: updateScheduleMonths,
         updateScheduleRoster: updateScheduleRoster,
+        updateScoreList: updateScoreList,
+        updateQuizScore: updateQuizScore,
         updateScheduleClear: updateScheduleClear
     }
     

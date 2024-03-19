@@ -90,9 +90,11 @@ const ProducerClasses = ({navigation, route}) =>{
         setIsLoading(true)
         try{
             const response = await getDetailedRoster(cafeDateId)
-            updateScheduleRoster(response.participants)
+            updateScheduleRoster(response[0].participants)
             if(response){
-                navigateScores()
+                // console.log("response from navigateAlotmentScreen:")
+                // console.log(response[0].participants)
+                // console.log("")
                 setIsLoading(false)
             }
         }catch(e){

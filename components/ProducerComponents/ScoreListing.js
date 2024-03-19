@@ -1,66 +1,99 @@
 import {View, Text, Pressable, useWindowDimensions} from 'react-native'
+import { useState, useContext } from 'react'
 import Colors from '../../utils/colors'
 import { converterSetup, useStyles } from '../../utils/dimensions'
-import IconButton from '../../UI/IconButton'
 import { TextInput } from 'react-native-gesture-handler'
+import { ProducerContext } from '../../store/producer-context'
 
-const ClassListing=({firstName, lastName, onPress})=>{
+const ScoreListing=({firstName, lastName, index, roster, rosterSetter})=>{
+    const [quizScore, setQuizScore] = useState("")
+    const [teamScore, setTeamScore] = useState("")
+    const { updateQuizScore} = useContext(ProducerContext)
+
     const {width, height} = useWindowDimensions()
 
     const converter = converterSetup(width, height)
 
     const localStyles = {
         container:{ 
-            backgroundColor: Colors.accentColor300,
+            backgroundColor: Colors.accentColor400,
             flexDirection: "row",
-            justifyContent: 'space-between',
             alignItems: 'center',
             height: height/8,
-            width: converter(width/10 * 7),
+            width: converter(width/10 * 8.5),
             marginBottom: height/50,
-            paddingHorizontal: width/25,
+            paddingLeft: width/18.5,
             borderRadius: converter(width/25, width/20, width/20, width/25)
         },
         name:{
             color: Colors.highlightColor,
-            fontSize: width/25,
-            fontWeight: 'bold'
+            fontSize: width/22.5,
+            fontWeight: 'bold',
+            flex: converter(0.55)
         },
-        listingDate:{
-            color: Colors.highlightColor,
+        inputContainer:{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flex: converter(0.35)
+        },
+        input:{
+            backgroundColor: Colors.highlightColor,
+            height: converter(width/12.5),
+            width: converter(width/12.5),
+            paddingLeft: converter(width/50),
             fontSize: width/30,
+            borderRadius: converter(width/75)
         },
-        listingTime:{
-            color: Colors.highlightColor,
-            fontSize: width/35,
-        }
+        // teamInput:{
+        //     backgroundColor: Colors.highlightColor,
+        //     fontSize: width/35,
+        // }
+    }
+
+
+
+    function setQuizPoints(word){
+        
+                
+        updateQuizScore({index: index, message: word})
+    
     }
 
     const styles = useStyles(localStyles)
     return( 
-        <Pressable style={styles.container} onPress={onPress}>
-            <View>
+            <View style={styles.container}>
                 <Text style={styles.name}>{`${firstName} ${lastName}`}</Text>
-                <TextInput 
-                    value ={"quizScore"}
-                    // onChangeText = {() =>}
-                    autoCorrect = {true}
-                    autoCapitalize = "none"
-                    // style={[styles.passwordInputStyle, disable && styles.deactivated,  {color: color}]} 
-                />
-                <TextInput 
-                    value ={"teamScore"}
-                    // onChangeText = {() =>}
-                    autoCorrect = {true}
-                    autoCapitalize = "none"
-                    // style={[styles.passwordInputStyle, disable && styles.deactivated,  {color: color}]} 
-                />
+                <View style={styles.inputContainer}>
+                    <TextInput 
+                        value ={quizScore}
+                        onChangeText = {(text) =>  {
+                            if(!isNaN(text)) { 
+                                // setQuizScore(text)
+                                setQuizPoints(text)
+                            } 
+                        }}
+                        placeholder=''
+                        autoCorrect = {true}
+                        autoCapitalize = "none"
+                        style={styles.input}
+                        keyboardType= 'number-pad'
+                    />
+                    <TextInput 
+                        value ={teamScore}
+                        onChangeText = {(text) =>  {
+                            if(!isNaN(text)) { 
+                                setTeamScore(text); 
+                            } 
+                        }}  
+                        autoCorrect = {true}
+                        autoCapitalize = "none"
+                        style={styles.input}
+                        keyboardType= 'number-pad'
+                    />
+                </View>
             </View>
-            <IconButton 
-                isHeader={false} iconName={"caret-forward-outline"}   iconColor={Colors.highlightColor} 
-            />
-        </Pressable>
     )
 }
 
-export default ClassListing
+export default ScoreListing
