@@ -15,7 +15,7 @@ function producerReducer(state, action){
         case "update_quiz_score":
                 const index = action.payload.index
                 let placeholder = state.scoreList
-                placeholder.splice(index, 0, {...placeholder[index], quizScore: action.payload.message})
+                placeholder.splice(index, 1, {...placeholder[index], quizScore: action.payload.message})
                 return {...state, scoreList : placeholder}          
         default:
             return state

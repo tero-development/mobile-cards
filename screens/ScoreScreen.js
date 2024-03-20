@@ -140,6 +140,7 @@ const ScoreScreen = ({navigation}) =>{
 
     console.log('From ScoreScreen scoreList: ')
     console.log(scoreList)
+    console.log(scoreList.length)
 
     function navigateBack(){
         navigation.navigate('ProducerScreen')
@@ -149,6 +150,8 @@ const ScoreScreen = ({navigation}) =>{
         navigation.toggleDrawer()
     }
 
+    console.log("roster from ScoreScreen: ")
+    console.log(roster)
 
     return(
         <LinearGradient style={styles.rootScreen} colors={[Colors.highlightColor, Colors.primaryColor]}>
@@ -179,9 +182,15 @@ const ScoreScreen = ({navigation}) =>{
                                     data={roster}
                                     keyExtractor={participant => participant._id}
                                     renderItem={participant =>{
-                                            let filtered = roster.filter(entry => entry.id === participant.item.id)
+                                            let filtered = roster.filter(entry => entry._id === participant.item._id)
+                                            console.log("filter from the mapping: ")
+                                            console.log(filtered)
                                             let current = filtered[0]
+                                            console.log("current: ")
+                                            console.log(current)
                                             let index = roster.indexOf(current)
+                                            console.log('index')
+                                            console.log(index)
                                         return (    
                                                 <ScoreListing
                                                 index={index}

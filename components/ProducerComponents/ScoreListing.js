@@ -51,11 +51,13 @@ const ScoreListing=({firstName, lastName, index, roster, rosterSetter})=>{
         // }
     }
 
-
+    console.log(index)
 
     function setQuizPoints(word){
         
-                
+        console.log("from set quiz points index number:")        
+        console.log(index)        
+        console.log("")        
         updateQuizScore({index: index, message: word})
     
     }
@@ -69,7 +71,7 @@ const ScoreListing=({firstName, lastName, index, roster, rosterSetter})=>{
                         value ={quizScore}
                         onChangeText = {(text) =>  {
                             if(!isNaN(text)) { 
-                                // setQuizScore(text)
+                                setQuizScore(text)
                                 setQuizPoints(text)
                             } 
                         }}
