@@ -13,15 +13,17 @@ function producerReducer(state, action){
         case "update_score_list":
                 return {...state, scoreList : action.payload}
         case "update_quiz_score":
-                const quizIndex = action.payload.index
-                let placeholder = state.scoreList
-                placeholder.splice(quizIndex, 1, {...placeholder[quizIndex], quizScore: action.payload.value})
-                return {...state, scoreList : placeholder}
+            const quizIndex = action.payload.index
+            let placeholder = state.scoreList
+            placeholder.splice(quizIndex, 1, {...placeholder[quizIndex], quizScore: action.payload.value})
+            return {...state, scoreList : placeholder}
         case "update_team_score":
-                const teamIndex = action.payload.index
-                let temp = state.scoreList
-                temp.splice(teamIndex, 1, {...temp[teamIndex], teamScore: action.payload.value})
-                return {...state, scoreList : temp}             
+            const teamIndex = action.payload.index
+            let temp = state.scoreList
+            temp.splice(teamIndex, 1, {...temp[teamIndex], teamScore: action.payload.value})
+            return {...state, scoreList : temp}
+        case "update_current_month":
+            return {...state, currentMonth: action.payload}
         default:
             return state
     }
@@ -32,7 +34,8 @@ const ProducerContextProvider = ({children}) =>{
         months: [],
         classes: [],
         roster: [],
-        scoreList: []
+        scoreList: [],
+        currentMonth: ""
     })
 
     async function updateScheduleClasses(classes){
@@ -41,6 +44,10 @@ const ProducerContextProvider = ({children}) =>{
 
     function updateScheduleMonths(months){
         dispatch({type: 'update_months', payload: months})
+    }
+
+    async function updateCurrentMonth(month){
+        dispatch({type: 'update_current_month', payload: month})
     }
 
     async function updateScheduleRoster(roster){
@@ -67,6 +74,7 @@ const ProducerContextProvider = ({children}) =>{
         schedule: schedule,
         updateScheduleClasses: updateScheduleClasses,
         updateScheduleMonths: updateScheduleMonths,
+        updateCurrentMonth: updateCurrentMonth,
         updateScheduleRoster: updateScheduleRoster,
         updateScoreList: updateScoreList,
         updateQuizScore: updateQuizScore,

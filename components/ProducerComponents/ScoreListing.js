@@ -5,7 +5,7 @@ import { converterSetup, useStyles } from '../../utils/dimensions'
 import { TextInput } from 'react-native-gesture-handler'
 import { ProducerContext } from '../../store/producer-context'
 
-const ScoreListing=({firstName, lastName, index, roster, rosterSetter})=>{
+const ScoreListing=({firstName, lastName, index, roster, rosterChecker})=>{
     const [quizScore, setQuizScore] = useState("")
     const [teamScore, setTeamScore] = useState("")
     const { updateQuizScore, updateTeamScore} = useContext(ProducerContext)
@@ -51,14 +51,15 @@ const ScoreListing=({firstName, lastName, index, roster, rosterSetter})=>{
         // }
     }
 
-    console.log(index)
 
     function setQuizPoints(text){
         updateQuizScore({index: index, value: text})
+        rosterChecker(prev => !prev)
     }
 
     function setTeamPoints(text){
         updateTeamScore({index: index, value: text})
+        rosterChecker(prev => !prev)
     }
 
     const styles = useStyles(localStyles)

@@ -2,12 +2,10 @@ import {View, StyleSheet} from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useContext, useState, useEffect } from 'react'
 import { SignInContext } from '../store/signin-context'
-import {SeasonContext} from '../store/season-context'
 import SeasonContextProvider from '../store/season-context'
 import {searchEmployee} from '../httpServices/employees'
-import { getActiveSeason } from '../httpServices/seasons'
 import { getCafeTracker, getAllCafes } from '../httpServices/cafes'
-import { getContact } from '../httpServices/HBcontacts'
+import { getActiveSeason } from '../httpServices/seasons'
 import IconButton from '../UI/IconButton'
 import Colors from '../utils/colors'
 import ModularLink from '../components/ModularLink'
@@ -16,16 +14,21 @@ import HomeSelection from '../components/HomeComponents/HomeSelection'
 import Loader from '../UI/Loader'
 import { CafeContext } from '../store/cafe-context'
 import { ProducerContext } from '../store/producer-context'
+import { SeasonContext } from '../store/season-context'
 import { getMonths } from '../httpServices/producers'
+import { CompanyContext } from '../store/company-context'
 
 const ProducerScreen = ({navigation}) =>{
     const {
         credentials,
         updateSignInClear,
     } = useContext(SignInContext)
+    const {updateSeason} = useContext(SeasonContext)
     const {updateCafeClear} = useContext(CafeContext)
+    const {updateCompany} = useContext(CompanyContext)
     const {schedule, updateScheduleMonths} = useContext(ProducerContext)
 
+    
     useEffect(()=>{
 
         async function populateMonths(){
@@ -39,8 +42,20 @@ const ProducerScreen = ({navigation}) =>{
             }
         }
 
-        populateMonths()
+        async function populateSeason(){
+            try{
+                const response = await getActiveSeason('62d47c7a36aeee14652966cd')
+                if(response){
+                    updateSeason(response)
+                }
+            }catch(e){
+                alert(e)
+            }
+        }
 
+        populateMonths()
+        populateSeason()
+        
         return ()=>{
 
         }

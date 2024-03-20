@@ -12,7 +12,7 @@ import BackButton from '../UI/BackButton'
 import MonthListing from '../components/ProducerComponents/MonthListing'
 
 const ProducerMonths = ({navigation, route}) =>{
-    const {schedule, updateScheduleClasses} = useContext(ProducerContext)
+    const {schedule, updateScheduleClasses, updateCurrentMonth} = useContext(ProducerContext)
     const [isLoading, setIsLoading] = useState(true)
 
     const {width, height} = useWindowDimensions()
@@ -66,7 +66,9 @@ const ProducerMonths = ({navigation, route}) =>{
 
     async function classRouting(month){
          setIsLoading(true)
-        //  const reply = await getProClasses(month)
+         console.log("ClassRouting from ProducerMonths parameter month: ")
+         console.log(month)
+        updateCurrentMonth(month)
          await getProClasses(month)
         .then(res => {
             updateScheduleClasses(res)

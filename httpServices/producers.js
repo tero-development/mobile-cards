@@ -37,3 +37,21 @@ export async function getDetailedRoster(cafeDateId){
     }
 }
 
+export async function sendScores(currentMonth, participantArray, companyId, seasonId){
+    try{
+        const response = await axios.post(`${url}/producers/sendscores`, 
+        {
+           currentMonth:currentMonth,
+           participantArray: participantArray,
+           companyId: companyId,
+           seasonId: seasonId
+        })
+        if(response){
+            return response.data
+
+        }
+    }catch(e){
+        return e
+    }
+}
+

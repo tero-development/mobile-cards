@@ -4,8 +4,8 @@ import Title from '../UI/Title'
 import { LinearGradient } from 'expo-linear-gradient'
 import { ProducerContext } from '../store/producer-context'
 import { CompanyContext } from '../store/company-context'
-import { QuizContext } from '../store/quiz-context'
-import { getDetailedRoster } from '../httpServices/producers'
+import { SeasonContext } from '../store/season-context'
+import { getDetailedRoster, sendScores } from '../httpServices/producers'
 import Colors from '../utils/colors'
 import IconButton from '../UI/IconButton'
 import {converterSetup, useStyles} from '../utils/dimensions'
@@ -16,8 +16,11 @@ import ModularButton from '../components/ModularButton'
 
 const ScoreScreen = ({navigation}) =>{
     const {schedule, updateScoreList} = useContext(ProducerContext)
+    const {season} = useContext(SeasonContext)
+    const {company} = useContext(CompanyContext)
     const [isLoading, setIsLoading] = useState(true)
     const [canSubmit, setCanSubmit] = useState(false)
+    const [scoreChange, setScoreChange] = useState(true)
     // const [sudoRoster, setSudoRoster] = useState([])
     const {width, height} = useWindowDimensions()
 
@@ -72,7 +75,7 @@ const ScoreScreen = ({navigation}) =>{
             fontSize: converter(width/27.5)
         },
         container:{
-            alignItems: 'center',
+            alignItems: 'center'
         },
         listContainer:{
             width: converter(width/10 * 8.5),
@@ -92,8 +95,10 @@ const ScoreScreen = ({navigation}) =>{
 
     const styles = useStyles(localStyles)
 
-    const {roster, scoreList} = schedule
-    
+    const {roster, scoreList, currentMonth} = schedule
+
+    // console.log("CurrentMonth from ScoreScreen: ")
+    // console.log(currentMonth)
 
     useEffect(()=>{
         if(roster.length > 0){
@@ -105,8 +110,8 @@ const ScoreScreen = ({navigation}) =>{
                             id: participant._id,
                             firstName: participant.firstName,
                             lastName: participant.lastName,
-                            quizScore: 0,
-                            teamScore: 0
+                            quizScore: "",
+                            teamScore: ""
                         }
                     )
                  })
@@ -118,14 +123,21 @@ const ScoreScreen = ({navigation}) =>{
     }, [roster])
 
 
-    // useEffect(()=>{
+    useEffect(()=>{
+        let response = true
+        const shallowScoreList = scoreList
+        shallowScoreList.forEach(entry => {
+           
+            if(entry.quizScore === "" || entry.teamScore === ""){
+                response = false
+                return
+            }
+        })
+        setCanSubmit(response)
+    }, [scoreChange])
 
-    // }, [scoreList])
-
-    console.log('From ScoreScreen scoreList: ')
-    console.log(scoreList)
-    console.log("scorelist length:")
-    console.log(scoreList.length)
+    // console.log("company from ScoreScreen:")
+    // console.log(company)
 
     function navigateBack(){
         navigation.navigate('ProducerScreen')
@@ -137,6 +149,7 @@ const ScoreScreen = ({navigation}) =>{
 
     // console.log("roster from ScoreScreen: ")
     // console.log(roster)
+    
 
     return(
         <LinearGradient style={styles.rootScreen} colors={[Colors.highlightColor, Colors.primaryColor]}>
@@ -180,7 +193,7 @@ const ScoreScreen = ({navigation}) =>{
                                                 <ScoreListing
                                                 index={index}
                                                 // roster={scoreList}
-                                                // rosterSetter={setSudoRoster} 
+                                                rosterChecker={setScoreChange} 
                                                 firstName={participant.item.firstName}
                                                 lastName={participant.item.lastName}
                                                 />
@@ -190,8 +203,29 @@ const ScoreScreen = ({navigation}) =>{
                     />}
                     <View style={styles.footerLine} />
 
-                    {canSubmit && <ModularButton style={{height: converter(height/15)}} textSize={converter(width/20)} buttonColor={Colors.accentColor300} rippleColor={Colors.accentColor} textColor={Colors.highlightColor}>Submit</ModularButton>         
-}
+                    {canSubmit && 
+                        <ModularButton 
+                            style={{height: converter(height/15)}} 
+                            textSize={converter(width/20)} 
+                            buttonColor={Colors.accentColor300} 
+                            rippleColor={Colors.accentColor} 
+                            textColor={Colors.highlightColor}
+                            onPress={async()=>{
+                                try{
+                                    const response = await sendScores(currentMonth, scoreList, company._id, season._id)
+                                    if(response){
+                                        console.log("async response from ScoreScreen:")
+                                        console.log(response)
+                                        navigateBack()
+                                    }
+                                } catch(e){
+                                    alert(e)
+                                }
+                            }}    
+                        >
+                            Submit
+                        </ModularButton>         
+                    }
                 </View>
 
                         
@@ -205,4 +239,20 @@ const ScoreScreen = ({navigation}) =>{
 
 
 export default ScoreScreen
+
+// const whatever = [
+//     {"firstName": "Roy", 
+//     "id": "6539f75d550ee9b24fa5fc5c", 
+//     "lastName": "Roseborne", 
+//     "quizScore": "", 
+//     "teamScore": ""}, 
+//     {"firstName": "Sarah", 
+//     "id": "633c5d46e91c58540d160251", 
+//     "lastName": "Wells", 
+//     "quizScore": "", 
+//     "teamScore": ""}
+// ]
+
+// [ObjectId("6539f75d550ee9b24fa5fc5c"),     
+// ObjectId("633c5d46e91c58540d160251")]
 

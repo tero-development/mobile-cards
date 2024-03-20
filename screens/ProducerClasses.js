@@ -4,7 +4,6 @@ import Title from '../UI/Title'
 import { LinearGradient } from 'expo-linear-gradient'
 import { ProducerContext } from '../store/producer-context'
 import { CompanyContext } from '../store/company-context'
-import { QuizContext } from '../store/quiz-context'
 import { getDetailedRoster } from '../httpServices/producers'
 import Colors from '../utils/colors'
 import IconButton from '../UI/IconButton'
@@ -50,32 +49,12 @@ const ProducerClasses = ({navigation, route}) =>{
 
     const styles = useStyles(localStyles)
 
-    const {classes} = schedule
+    const {classes, currentMonth} = schedule
     
+    // console.log("current month from ProducerClasses")
+    // console.log(currentMonth)
  
     const routeDesignation = route.params.designation
-
-    // useEffect(()=>{
-// maybe you could load until classes is set by the async classRouting in ProducerMonths
-
-    //     async function populateMonths(){
-    //         try{
-    //             const response = await getMonths('62d47c7a36aeee14652966cd', '650b8c8746533a5af871ba0a')
-    //             if(response){
-    //                 setMonths(response)
-    //             }
-    //         }catch(e){
-    //             alert(e)
-    //         }
-    //     }
-
-    //     populateMonths()
-
-    //     return ()=>{
-
-    //     }
-    // },[])
-
 
     useEffect(()=>{
         if(classes.length > 0){
@@ -92,9 +71,7 @@ const ProducerClasses = ({navigation, route}) =>{
             const response = await getDetailedRoster(cafeDateId)
             updateScheduleRoster(response[0].participants)
             if(response){
-                // console.log("response from navigateAlotmentScreen:")
-                // console.log(response[0].participants)
-                // console.log("")
+               
                 setIsLoading(false)
             }
         }catch(e){
@@ -146,9 +123,7 @@ const ProducerClasses = ({navigation, route}) =>{
                             classes.length < 1 || isLoading ? <Loader size="large" color={Colors.accentColor} /> : 
                             classes.map(
                                 classInstance => {
-                                    // if(classes.indexOf(classInstance) === 0){
-                                    //     console.log(classInstance)
-                                    // }
+                                
                                     return <ClassListing 
                                         key={classInstance._id}
                                         title={classInstance.title}
