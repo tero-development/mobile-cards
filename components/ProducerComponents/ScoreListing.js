@@ -8,7 +8,7 @@ import { ProducerContext } from '../../store/producer-context'
 const ScoreListing=({firstName, lastName, index, roster, rosterSetter})=>{
     const [quizScore, setQuizScore] = useState("")
     const [teamScore, setTeamScore] = useState("")
-    const { updateQuizScore} = useContext(ProducerContext)
+    const { updateQuizScore, updateTeamScore} = useContext(ProducerContext)
 
     const {width, height} = useWindowDimensions()
 
@@ -19,7 +19,7 @@ const ScoreListing=({firstName, lastName, index, roster, rosterSetter})=>{
             backgroundColor: Colors.accentColor400,
             flexDirection: "row",
             alignItems: 'center',
-            height: height/8,
+            height: converter(height/10),
             width: converter(width/10 * 8.5),
             marginBottom: height/50,
             paddingLeft: width/18.5,
@@ -53,13 +53,12 @@ const ScoreListing=({firstName, lastName, index, roster, rosterSetter})=>{
 
     console.log(index)
 
-    function setQuizPoints(word){
-        
-        console.log("from set quiz points index number:")        
-        console.log(index)        
-        console.log("")        
-        updateQuizScore({index: index, message: word})
-    
+    function setQuizPoints(text){
+        updateQuizScore({index: index, value: text})
+    }
+
+    function setTeamPoints(text){
+        updateTeamScore({index: index, value: text})
     }
 
     const styles = useStyles(localStyles)
@@ -86,6 +85,7 @@ const ScoreListing=({firstName, lastName, index, roster, rosterSetter})=>{
                         onChangeText = {(text) =>  {
                             if(!isNaN(text)) { 
                                 setTeamScore(text); 
+                                setTeamPoints(text)
                             } 
                         }}  
                         autoCorrect = {true}

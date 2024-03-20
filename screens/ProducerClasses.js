@@ -104,7 +104,8 @@ const ProducerClasses = ({navigation, route}) =>{
 
         switch(designation){
             case "scores": navigateScores()
-            default: console.log("not the right type of designation")
+            break;
+            default: alert("designation issue")
         }
         // navigation.navigate('ProducerClasses', {designation: routeDesignation, classes: classes})
     }

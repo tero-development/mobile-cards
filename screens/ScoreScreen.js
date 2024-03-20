@@ -11,14 +11,14 @@ import IconButton from '../UI/IconButton'
 import {converterSetup, useStyles} from '../utils/dimensions'
 import Loader from '../UI/Loader'
 import BackButton from '../UI/BackButton'
-import ClassListing from '../components/ProducerComponents/ClassListing'
 import ScoreListing from '../components/ProducerComponents/ScoreListing'
 import ModularButton from '../components/ModularButton'
 
 const ScoreScreen = ({navigation}) =>{
     const {schedule, updateScoreList} = useContext(ProducerContext)
     const [isLoading, setIsLoading] = useState(true)
-    const [sudoRoster, setSudoRoster] = useState([])
+    const [canSubmit, setCanSubmit] = useState(false)
+    // const [sudoRoster, setSudoRoster] = useState([])
     const {width, height} = useWindowDimensions()
 
     const converter = converterSetup(width, height)
@@ -74,7 +74,7 @@ const ScoreScreen = ({navigation}) =>{
         container:{
             alignItems: 'center',
         },
-        nodeContainer:{
+        listContainer:{
             width: converter(width/10 * 8.5),
             height: converter(height/10 * 4.25),
             marginTop: height/100
@@ -94,27 +94,6 @@ const ScoreScreen = ({navigation}) =>{
 
     const {roster, scoreList} = schedule
     
-
-    // useEffect(()=>{
-    //     if(roster.length > 0){
-    //         setSudoRoster(()=>{
-    //             return roster.map(participant =>{
-    //                 return(
-    //                     { 
-    //                         id: participant._id,
-    //                         firstName: participant.firstName,
-    //                         lastName: participant.lastName,
-    //                         quizScore: 0,
-    //                         teamScore: 0
-    //                     }
-    //                 )
-    //              })
-    //         })
-    //         setIsLoading(false)
-    //     }
-        
-    //     return ()=>{}
-    // }, [roster])
 
     useEffect(()=>{
         if(roster.length > 0){
@@ -138,8 +117,14 @@ const ScoreScreen = ({navigation}) =>{
         return ()=>{}
     }, [roster])
 
+
+    // useEffect(()=>{
+
+    // }, [scoreList])
+
     console.log('From ScoreScreen scoreList: ')
     console.log(scoreList)
+    console.log("scorelist length:")
     console.log(scoreList.length)
 
     function navigateBack(){
@@ -150,8 +135,8 @@ const ScoreScreen = ({navigation}) =>{
         navigation.toggleDrawer()
     }
 
-    console.log("roster from ScoreScreen: ")
-    console.log(roster)
+    // console.log("roster from ScoreScreen: ")
+    // console.log(roster)
 
     return(
         <LinearGradient style={styles.rootScreen} colors={[Colors.highlightColor, Colors.primaryColor]}>
@@ -178,24 +163,24 @@ const ScoreScreen = ({navigation}) =>{
                         </View>
                     </View>
                     {scoreList.length > 0 && <FlatList
-                                    contentContainerStyle={styles.nodeContainer}
+                                    contentContainerStyle={styles.listContainer}
                                     data={roster}
                                     keyExtractor={participant => participant._id}
                                     renderItem={participant =>{
                                             let filtered = roster.filter(entry => entry._id === participant.item._id)
-                                            console.log("filter from the mapping: ")
-                                            console.log(filtered)
+                                            // console.log("filter from the mapping: ")
+                                            // console.log(filtered)
                                             let current = filtered[0]
-                                            console.log("current: ")
-                                            console.log(current)
+                                            // console.log("current: ")
+                                            // console.log(current)
                                             let index = roster.indexOf(current)
-                                            console.log('index')
-                                            console.log(index)
+                                            // console.log('index')
+                                            // console.log(index)
                                         return (    
                                                 <ScoreListing
                                                 index={index}
-                                                roster={scoreList}
-                                                rosterSetter={setSudoRoster} 
+                                                // roster={scoreList}
+                                                // rosterSetter={setSudoRoster} 
                                                 firstName={participant.item.firstName}
                                                 lastName={participant.item.lastName}
                                                 />
@@ -205,8 +190,8 @@ const ScoreScreen = ({navigation}) =>{
                     />}
                     <View style={styles.footerLine} />
 
-                    <ModularButton style={{height: converter(height/15)}} textSize={converter(width/20)} buttonColor={Colors.accentColor300} rippleColor={Colors.accentColor} textColor={Colors.highlightColor}>Submit</ModularButton>         
-
+                    {canSubmit && <ModularButton style={{height: converter(height/15)}} textSize={converter(width/20)} buttonColor={Colors.accentColor300} rippleColor={Colors.accentColor} textColor={Colors.highlightColor}>Submit</ModularButton>         
+}
                 </View>
 
                         
