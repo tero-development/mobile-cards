@@ -218,7 +218,7 @@ export default function App() {
   const Stack = createNativeStackNavigator()
   const Drawer = createDrawerNavigator()
 
-  const admin = 0
+  const admin = 2
   
   const DrawerGroup = () =>{
 
