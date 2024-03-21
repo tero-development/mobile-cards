@@ -20,6 +20,7 @@ import HomeSelection from '../components/HomeComponents/HomeSelection'
 import Loader from '../UI/Loader'
 import { CafeContext } from '../store/cafe-context'
 import { HubspotContext } from '../store/hubspot-context'
+import { ScoreContext } from '../store/score-context'
 import { slice } from 'lodash'
 
 
@@ -37,8 +38,8 @@ const HomeScreen = ({navigation}) =>{
         updateEmployeeId,
         updateSignInClear,
     } = useContext(SignInContext)
-    const {season} = useContext(SeasonContext)
     const {updateSeason} = useContext(SeasonContext)
+    const {scoreTracker} = useContext(ScoreContext)
     const { updateAssessment} = useContext(AssessmentContext)
     const {
         cafeDetails,
@@ -229,6 +230,12 @@ const HomeScreen = ({navigation}) =>{
 
 
     //ionicons: 'calendar', 'game-controller',  'chevron-forward', 'star', 'play-circle'
+    let score
+    let maxScore
+    if(scoreTracker){
+        score = scoreTracker.tracker.March.quizScore + scoreTracker.tracker.March.teamScore
+        maxScore = scoreTracker.tracker.March.maxScore
+    }
 
     return(
         <SeasonContextProvider>
@@ -236,7 +243,7 @@ const HomeScreen = ({navigation}) =>{
             <IconButton isHeader={true} hasEditProfile={true} iconName='menu' iconColor={Colors.secondaryColor} onPress={openDrawer}/>
             <View style={styles.container}>
                 {
-                    (credentials.employeeId && firstName)?  <ScoreGreeting points={10} rank={1} name={firstName}/>
+                    (credentials.employeeId && firstName && scoreTracker !== undefined)?  <ScoreGreeting points={score} maxPoints={maxScore} name={firstName}/>
                     : <Loader size='large' color={Colors.accentColor}/> 
                 }
                 {credentials.employeeId? <View style={styles.profileContainer}>

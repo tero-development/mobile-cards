@@ -5,7 +5,7 @@ import Colors from '../../utils/colors'
 import {converterSetup, useStyles} from '../../utils/dimensions'
 import { Easing } from 'react-native-reanimated'
 
-const ScoreGreeting = ({points, rank, name}) =>{
+const ScoreGreeting = ({points, maxPoints, name}) =>{
 
     const {width, height} = useWindowDimensions()
 
@@ -144,7 +144,7 @@ const ScoreGreeting = ({points, rank, name}) =>{
                 </View>
             </View>
         <Title color={Colors.secondaryColor} textSize={converter(16, 20, 34, 34)}>{name}</Title>
-        <Title color={Colors.secondaryColor} textSize={converter(12, 16, 28, 28)}>Leaderboard Rank: {rank}</Title>
+        <Title color={Colors.secondaryColor} textSize={converter(12, 16, 28, 28)}>{`Score: ${points} / ${maxPoints}`}</Title>
     </View>
     )
 }

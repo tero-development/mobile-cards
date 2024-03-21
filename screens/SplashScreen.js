@@ -17,11 +17,13 @@ import {searchEmployee} from '../httpServices/employees'
 import { searchCompanyEmail } from '../httpServices/companies'
 import {verifyEmailHandler} from '../utils/helperFunctions'
 import { CompanyContext } from '../store/company-context'
+import { ScoreContext} from '../store/score-context'
 import { updateCredentials, clearErrorHandler, colorHandler, errorFormatHandler } from '../utils/inputErrorDetection'
 import ModularLink from '../components/ModularLink'
 import ErrorOverlay from '../UI/ErrorOverlay'
 import Loader from '../UI/Loader'
 import Logo from '../UI/Logo'
+import { getSingleScoreTracker } from '../httpServices/scoreTrackers'
 
 //** IMPORTANT!
 //The submitNavigationHandler function should make a call also
@@ -43,6 +45,7 @@ const SplashScreen = ({navigation}) =>{
     const [errorMessage, setErrorMessage] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const {company, updateCompany} = useContext(CompanyContext)
+    const {updateScoreTracker} = useContext(ScoreContext)
 
     const {width, height} = useWindowDimensions()
 
@@ -125,7 +128,17 @@ const SplashScreen = ({navigation}) =>{
                     } 
                     else{
                         setIsLoading(false)
-                        navigation.navigate('SignIn', employee)
+                        try{
+                            const scoreTracker = await getSingleScoreTracker(employee._id)
+                            if(scoreTracker){
+                                updateScoreTracker(scoreTracker.score_tracker)
+                                setIsLoading(false)
+                                navigation.navigate("SignIn", employee)
+                            }
+                        }catch(e){
+                            alert(e)
+                            setIsLoading(false)
+                        }
                     }
                 } catch(e){
                     alert(e)

@@ -40,7 +40,7 @@ import AdminDrawer from './utils/AdminDrawer';
 import ProducerContextProvider from './store/producer-context';
 import ProducerDrawer from './utils/ProducerDrawer'
 import ProducerClasses from './screens/ProducerClasses';
-import ScoreScreen from './screens/ScoreScreen';
+import ScoreContextProvider from './store/score-context';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -218,7 +218,7 @@ export default function App() {
   const Stack = createNativeStackNavigator()
   const Drawer = createDrawerNavigator()
 
-  const admin = 2
+  const admin = 0
   
   const DrawerGroup = () =>{
 
@@ -322,6 +322,7 @@ export default function App() {
                 <HubspotContextProvider>
                   <QuizContextProvider>
                     <ProducerContextProvider>
+                      <ScoreContextProvider>
               <Stack.Navigator screenOptions={{
                 headerShown: false
               }}>
@@ -341,6 +342,7 @@ export default function App() {
                     <Stack.Screen name="DrawerGroup" component={DrawerGroup} />
                     <Stack.Screen name="ProducerClasses" component={ProducerClasses}/>
               </Stack.Navigator>
+                  </ScoreContextProvider>
                   </ProducerContextProvider>
                 </QuizContextProvider>
               </HubspotContextProvider>  

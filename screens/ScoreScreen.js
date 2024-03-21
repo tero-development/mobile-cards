@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { ProducerContext } from '../store/producer-context'
 import { CompanyContext } from '../store/company-context'
 import { SeasonContext } from '../store/season-context'
-import { getDetailedRoster, sendScores } from '../httpServices/producers'
+import {  sendScores } from '../httpServices/producers'
 import Colors from '../utils/colors'
 import IconButton from '../UI/IconButton'
 import {converterSetup, useStyles} from '../utils/dimensions'
@@ -175,7 +175,7 @@ const ScoreScreen = ({navigation}) =>{
                             <Text style={styles.headerLineRightText}>Team Score</Text>
                         </View>
                     </View>
-                    {scoreList.length > 0 && <FlatList
+                    {isLoading? <Loader size="large" color={Colors.accentColor}/> : <FlatList
                                     contentContainerStyle={styles.listContainer}
                                     data={roster}
                                     keyExtractor={participant => participant._id}
@@ -212,14 +212,17 @@ const ScoreScreen = ({navigation}) =>{
                             textColor={Colors.highlightColor}
                             onPress={async()=>{
                                 try{
+                                    setIsLoading(true)
                                     const response = await sendScores(currentMonth, scoreList, company._id, season._id)
                                     if(response){
                                         console.log("async response from ScoreScreen:")
                                         console.log(response)
+                                        setIsLoading(false)
                                         navigateBack()
                                     }
                                 } catch(e){
                                     alert(e)
+                                    setIsLoading(false)
                                 }
                             }}    
                         >

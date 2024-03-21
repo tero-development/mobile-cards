@@ -72,7 +72,8 @@ const ScoreListing=({firstName, lastName, index, roster, rosterChecker})=>{
                         onChangeText = {(text) =>  {
                             if(!isNaN(text)) { 
                                 setQuizScore(text)
-                                setQuizPoints(text)
+                                const numericValue = parseInt(text)
+                                setQuizPoints(numericValue)
                             } 
                         }}
                         placeholder=''
@@ -80,19 +81,22 @@ const ScoreListing=({firstName, lastName, index, roster, rosterChecker})=>{
                         autoCapitalize = "none"
                         style={styles.input}
                         keyboardType= 'number-pad'
+                        maxLength = {2}
                     />
                     <TextInput 
                         value ={teamScore}
                         onChangeText = {(text) =>  {
                             if(!isNaN(text)) { 
                                 setTeamScore(text); 
-                                setTeamPoints(text)
+                                const numericValue = parseInt(text)
+                                setTeamPoints(numericValue)
                             } 
                         }}  
                         autoCorrect = {true}
                         autoCapitalize = "none"
                         style={styles.input}
                         keyboardType= 'number-pad'
+                        maxLength={2}
                     />
                 </View>
             </View>
