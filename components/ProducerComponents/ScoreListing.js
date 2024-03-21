@@ -9,7 +9,7 @@ import IconButton from '../../UI/IconButton'
 const ScoreListing=({firstName, lastName, index, roster, rosterChecker, onPress})=>{
     const [quizScore, setQuizScore] = useState("")
     const [teamScore, setTeamScore] = useState("")
-    const { updateQuizScore, updateTeamScore} = useContext(ProducerContext)
+    const { updateQuizScore, updateTeamRank} = useContext(ProducerContext)
 
     const {width, height} = useWindowDimensions()
 
@@ -20,10 +20,10 @@ const ScoreListing=({firstName, lastName, index, roster, rosterChecker, onPress}
             backgroundColor: Colors.accentColor400,
             flexDirection: "row",
             alignItems: 'center',
+            justifyContent: 'space-between',
             height: converter(height/10),
-            width: converter(width/10 * 8.5),
             marginBottom: height/50,
-            paddingLeft: width/18.5,
+            paddingHorizontal: width/18.5,
             borderRadius: converter(width/25, width/20, width/20, width/25)
         },
         name:{
@@ -59,7 +59,7 @@ const ScoreListing=({firstName, lastName, index, roster, rosterChecker, onPress}
     }
 
     function setTeamPoints(text){
-        updateTeamScore({index: index, value: text})
+        updateTeamRank({index: index, value: text})
         rosterChecker(prev => !prev)
     }
 

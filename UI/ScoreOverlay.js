@@ -1,18 +1,16 @@
-import {KeyboardAvoidingView,View, Text, useWindowDimensions} from 'react-native'
-import { useState } from 'react'
+import {KeyboardAvoidingView,View, Text, TextInput, useWindowDimensions} from 'react-native'
+import { useState, useContext} from 'react'
 import Colors from '../utils/colors'
 import ModularButton from '../components/ModularButton'
 import  {converterSetup,useStyles} from '../utils/dimensions'
-import Loader from './Loader'
+// import Loader from './Loader'
 import { ProducerContext } from '../store/producer-context'
 
-const ScoreOverlay = ({closeFunction, rosterChecker}) =>{
-    const [code, setCode] = useState('')
-    const [codeError, setCodeError] = useState(false)
-    const [isLoading, setIsLoading] = useState(false)
-    const [quizScore, setQuizScore] = useState("")
-    const [teamRank, setTeamRank] = useState("")
-    const { updateQuizScore, updateTeamScore} = useContext(ProducerContext)
+const ScoreOverlay = ({closeFunction, rosterChecker, overlayObject}) =>{
+    // const [isLoading, setIsLoading] = useState(false)
+    const [quizPoints, setQuizPoints] = useState("")
+    const [teamPoints, setTeamPoints] = useState("")
+    const { updateQuizScore, updateTeamRank} = useContext(ProducerContext)
 
     const {width, height} = useWindowDimensions()
 
@@ -63,17 +61,30 @@ const ScoreOverlay = ({closeFunction, rosterChecker}) =>{
 
     const styles = useStyles(localStyles)
 
+    const {index, firstName} = overlayObject
+
+
+    function applyQuizPoints(text){
+        updateQuizScore({index: index, value: text})
+        rosterChecker(prev => !prev)
+    }
+
+    function applyTeamPoints(text){
+        updateTeamRank({index: index, value: text})
+        rosterChecker(prev => !prev)
+    }
+
     const midContent = 
     <>
             
             <Text>Quiz Score</Text>
             <TextInput 
-                value ={"quizScore"}
+                value ={quizPoints}
                 onChangeText = {(text) =>  {
                     if(!isNaN(text)) { 
-                        setQuizScore(text)
+                        setQuizPoints(text)
                         const numericValue = parseInt(text)
-                        setQuizPoints(numericValue)
+                        applyQuizPoints(numericValue)
                     } 
                 }}
                 placeholder=''
@@ -85,12 +96,12 @@ const ScoreOverlay = ({closeFunction, rosterChecker}) =>{
             />
             <Text>Team Rank</Text>
             <TextInput 
-                value ={"teamScore"}
+                value ={teamPoints}
                 onChangeText = {(text) =>  {
                     if(!isNaN(text)) { 
-                        setTeamRank(text); 
+                        setTeamPoints(text); 
                         const numericValue = parseInt(text)
-                        setTeamPoints(numericValue)
+                        applyTeamPoints(numericValue)
                     } 
                 }}  
                 autoCorrect = {true}
@@ -99,7 +110,6 @@ const ScoreOverlay = ({closeFunction, rosterChecker}) =>{
                 keyboardType= 'number-pad'
                 maxLength={2}
             />
-            <ModularButton onPress={navigation} buttonColor={Colors.accentColor400} textColor={Colors.highlightColor} rippleColor={Colors.secondaryColor400}>Submit code</ModularButton>
             <ModularButton onPress={closeFunction} buttonColor={Colors.accentColor} textColor={Colors.highlightColor} rippleColor={Colors.secondaryColor}>close</ModularButton>
             
     </>
@@ -112,7 +122,7 @@ const ScoreOverlay = ({closeFunction, rosterChecker}) =>{
         <KeyboardAvoidingView behavior='height' style={styles.screen}>
             <View style={styles.container}>
                 <Text style={styles.title}>Enter Scores</Text>
-                <Text style={[styles.text, styles.topText]}>for participant _blank_</Text>
+                <Text style={[styles.text, styles.topText]}>{`For ${firstName}` }</Text>
                 {/* {isLoading? <Loader size='large' color={Colors.accentColor}/> : midContent} */}
                 {midContent}
             </View>

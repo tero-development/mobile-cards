@@ -17,7 +17,7 @@ function producerReducer(state, action){
             let placeholder = state.scoreList
             placeholder.splice(quizIndex, 1, {...placeholder[quizIndex], quizScore: action.payload.value})
             return {...state, scoreList : placeholder}
-        case "update_team_score":
+        case "update_team_rank":
             const teamIndex = action.payload.index
             let temp = state.scoreList
             temp.splice(teamIndex, 1, {...temp[teamIndex], teamScore: action.payload.value})
@@ -62,8 +62,8 @@ const ProducerContextProvider = ({children}) =>{
         dispatch({type: 'update_quiz_score', payload: object})
     }
 
-    async function updateTeamScore(object){
-        dispatch({type: 'update_team_score', payload: object})
+    async function updateTeamRank(object){
+        dispatch({type: 'update_team_rank', payload: object})
     }
 
     function updateScheduleClear(){
@@ -78,7 +78,7 @@ const ProducerContextProvider = ({children}) =>{
         updateScheduleRoster: updateScheduleRoster,
         updateScoreList: updateScoreList,
         updateQuizScore: updateQuizScore,
-        updateTeamScore: updateTeamScore,
+        updateTeamRank: updateTeamRank,
         updateScheduleClear: updateScheduleClear
     }
     

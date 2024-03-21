@@ -23,11 +23,7 @@ const ScoreScreen = ({navigation}) =>{
     const [isEditing, setIsEditing] = useState(false)
     const [canSubmit, setCanSubmit] = useState(false)
     const [scoreChange, setScoreChange] = useState(true)
-    const [overlayObject, setOverlayObject] = useState({
-        quizScore: "",
-        teamRank: "",
-        attendance: ""
-    })
+    const [overlayObject, setOverlayObject] = useState({})
     // const [sudoRoster, setSudoRoster] = useState([])
     const {width, height} = useWindowDimensions()
 
@@ -85,9 +81,10 @@ const ScoreScreen = ({navigation}) =>{
             alignItems: 'center'
         },
         listContainer:{
-            width: converter(width/10 * 8.5),
-            height: converter(height/10 * 4.25),
-            marginTop: height/100
+            // height: converter(height/10 * 4.25),
+            marginTop: height/100,
+            width: converter(width/10 * 7)
+
         },
         modal:{
             flex:1
@@ -104,8 +101,8 @@ const ScoreScreen = ({navigation}) =>{
 
     const {roster, scoreList, currentMonth} = schedule
 
-    // console.log("CurrentMonth from ScoreScreen: ")
-    // console.log(currentMonth)
+    console.log("ScoreList from ScoreScreen: ")
+    console.log(scoreList)
 
     useEffect(()=>{
         if(roster.length > 0){
@@ -154,7 +151,11 @@ const ScoreScreen = ({navigation}) =>{
         navigation.toggleDrawer()
     }
 
-    function openOverlay(){
+    function openOverlay(index, firstName){
+        setOverlayObject({
+            firstName: firstName,
+            index: index 
+        })
         setIsEditing(true)
     }
 
@@ -166,14 +167,14 @@ const ScoreScreen = ({navigation}) =>{
     // console.log(roster)
     
     if(isEditing){
-        return <ScoreOverlay closeFunction={closeOverlay} rosterChecker={setScoreChange} />
+        return <ScoreOverlay closeFunction={closeOverlay} rosterChecker={setScoreChange} overlayObject={overlayObject} />
     }
 
     return(
         <LinearGradient style={styles.rootScreen} colors={[Colors.highlightColor, Colors.primaryColor]}>
             <IconButton isHeader={false} iconName='menu'  iconColor={Colors.secondaryColor} onPress={openDrawer} viewStyle={{position: 'absolute', left: width/20, top: height/10, zIndex: 1}}/>
             <View style={styles.scrollContainer}>
-                <View style={{alignItems: 'center', marginBottom: height/40}}>
+                {/* <View style={{alignItems: 'center', marginBottom: height/40}}>
                     <Title 
                         color={Colors.secondaryColor} 
                         large={true} 
@@ -184,15 +185,15 @@ const ScoreScreen = ({navigation}) =>{
                     >
                             Scoring
                         </Title>
-                </View>
+                </View> */}
                 <View style={styles.container}>
-                    <View style={styles.headerLine}>
+                    {/* <View style={styles.headerLine}>
                         <Text style={styles.headerLineName}>Name</Text>
                         <View style={styles.headerLineRight}>
                             <Text style={styles.headerLineRightText}>Quiz Score</Text>
                             <Text style={styles.headerLineRightText}>Team Score</Text>
                         </View>
-                    </View>
+                    </View> */}
                     {isLoading? <Loader size="large" color={Colors.accentColor}/> : <FlatList
                                     contentContainerStyle={styles.listContainer}
                                     data={roster}
@@ -207,6 +208,38 @@ const ScoreScreen = ({navigation}) =>{
                                             let index = roster.indexOf(current)
                                             // console.log('index')
                                             // console.log(index)
+                                            const firstName = participant.item.firstName
+                                            const lastName = participant.item.lastName
+                                        if(index === 0){
+                                            return (
+                                                <>
+                                                <View style={{alignItems: 'center', marginBottom: height/40}}>
+                                                    <Title 
+                                                        color={Colors.secondaryColor} 
+                                                        large={true} 
+                                                        style={{
+                                                            marginTop: height/30,  
+                                                            marginRight: width/10,  
+                                                            width: width / 10 * 8, 
+                                                            textAlign:'right'
+                                                            }}
+                                                    >
+                                                            Scoring
+                                                        </Title>
+                                                </View>
+                                                <ScoreListing
+                                                index={index}
+                                                // roster={scoreList}
+                                                rosterChecker={setScoreChange}
+                                                overlayObject={overlayObject} 
+                                                setOverlayObject={setOverlayObject} 
+                                                firstName={participant.item.firstName}
+                                                lastName={participant.item.lastName}
+                                                onPress={()=>{openOverlay(index, firstName)}}
+                                                />
+                                                </>    
+                                            )
+                                        }
                                         return (    
                                                 <ScoreListing
                                                 index={index}
@@ -216,15 +249,15 @@ const ScoreScreen = ({navigation}) =>{
                                                 setOverlayObject={setOverlayObject} 
                                                 firstName={participant.item.firstName}
                                                 lastName={participant.item.lastName}
-                                                onPress={openOverlay}
+                                                onPress={()=>{openOverlay(index, firstName)}}
                                                 />
                                             )
                                         }
                                     } 
                     />}
-                    <View style={styles.footerLine} />
+                    {/* <View style={styles.footerLine} /> */}
 
-                    {canSubmit && 
+                    {/* {canSubmit && 
                         <ModularButton 
                             style={{height: converter(height/15)}} 
                             textSize={converter(width/20)} 
@@ -249,7 +282,7 @@ const ScoreScreen = ({navigation}) =>{
                         >
                             Submit
                         </ModularButton>         
-                    }
+                    } */}
                 </View>
 
                         
@@ -263,20 +296,4 @@ const ScoreScreen = ({navigation}) =>{
 
 
 export default ScoreScreen
-
-// const whatever = [
-//     {"firstName": "Roy", 
-//     "id": "6539f75d550ee9b24fa5fc5c", 
-//     "lastName": "Roseborne", 
-//     "quizScore": "", 
-//     "teamScore": ""}, 
-//     {"firstName": "Sarah", 
-//     "id": "633c5d46e91c58540d160251", 
-//     "lastName": "Wells", 
-//     "quizScore": "", 
-//     "teamScore": ""}
-// ]
-
-// [ObjectId("6539f75d550ee9b24fa5fc5c"),     
-// ObjectId("633c5d46e91c58540d160251")]
 
