@@ -13,12 +13,14 @@ import Loader from '../UI/Loader'
 import BackButton from '../UI/BackButton'
 import ScoreListing from '../components/ProducerComponents/ScoreListing'
 import ModularButton from '../components/ModularButton'
+import ScoreOverlay from '../UI/ScoreOverlay'
 
 const ScoreScreen = ({navigation}) =>{
     const {schedule, updateScoreList} = useContext(ProducerContext)
     const {season} = useContext(SeasonContext)
     const {company} = useContext(CompanyContext)
     const [isLoading, setIsLoading] = useState(true)
+    const [isEditing, setIsEditing] = useState(false)
     const [canSubmit, setCanSubmit] = useState(false)
     const [scoreChange, setScoreChange] = useState(true)
     // const [sudoRoster, setSudoRoster] = useState([])
@@ -147,6 +149,14 @@ const ScoreScreen = ({navigation}) =>{
         navigation.toggleDrawer()
     }
 
+    function openOverlay(){
+        setIsEditing(true)
+    }
+
+    function closeOverlay(){
+        setIsEditing(false)
+    }
+
     // console.log("roster from ScoreScreen: ")
     // console.log(roster)
     
@@ -196,6 +206,7 @@ const ScoreScreen = ({navigation}) =>{
                                                 rosterChecker={setScoreChange} 
                                                 firstName={participant.item.firstName}
                                                 lastName={participant.item.lastName}
+                                                onPress={openOverlay}
                                                 />
                                             )
                                         }
