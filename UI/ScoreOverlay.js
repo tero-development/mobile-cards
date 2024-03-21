@@ -4,12 +4,15 @@ import Colors from '../utils/colors'
 import ModularButton from '../components/ModularButton'
 import  {converterSetup,useStyles} from '../utils/dimensions'
 import Loader from './Loader'
+import { ProducerContext } from '../store/producer-context'
 
-const ScoreOverlay = ({closeFunction}) =>{
+const ScoreOverlay = ({closeFunction, rosterChecker}) =>{
     const [code, setCode] = useState('')
     const [codeError, setCodeError] = useState(false)
-    const [emailError, setEmailError] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
+    const [quizScore, setQuizScore] = useState("")
+    const [teamRank, setTeamRank] = useState("")
+    const { updateQuizScore, updateTeamScore} = useContext(ProducerContext)
 
     const {width, height} = useWindowDimensions()
 
@@ -60,30 +63,18 @@ const ScoreOverlay = ({closeFunction}) =>{
 
     const styles = useStyles(localStyles)
 
-    function setCodeErrorHandler(){
-        setCodeError(true)
-    }
-
-    
-    function codeInputHandler(enteredText){
-        if(codeError){
-            setCodeError(false)
-        }
-        const newText = enteredText.replace(/[^0-9]/g, '')
-        setCode(newText)
-    }
-
     const midContent = 
     <>
             
+            <Text>Quiz Score</Text>
             <TextInput 
                 value ={"quizScore"}
                 onChangeText = {(text) =>  {
-                    // if(!isNaN(text)) { 
-                    //     setQuizScore(text)
-                    //     const numericValue = parseInt(text)
-                    //     setQuizPoints(numericValue)
-                    // } 
+                    if(!isNaN(text)) { 
+                        setQuizScore(text)
+                        const numericValue = parseInt(text)
+                        setQuizPoints(numericValue)
+                    } 
                 }}
                 placeholder=''
                 autoCorrect = {true}
@@ -92,30 +83,15 @@ const ScoreOverlay = ({closeFunction}) =>{
                 keyboardType= 'number-pad'
                 maxLength = {2}
             />
-            <TextInput 
-                value ={"quizScore"}
-                onChangeText = {(text) =>  {
-                    // if(!isNaN(text)) { 
-                    //     setQuizScore(text)
-                    //     const numericValue = parseInt(text)
-                    //     setQuizPoints(numericValue)
-                    // } 
-                }}
-                placeholder=''
-                autoCorrect = {true}
-                autoCapitalize = "none"
-                style={styles.input}
-                keyboardType= 'number-pad'
-                maxLength = {2}
-            />
+            <Text>Team Rank</Text>
             <TextInput 
                 value ={"teamScore"}
                 onChangeText = {(text) =>  {
-                    // if(!isNaN(text)) { 
-                    //     setTeamScore(text); 
-                    //     const numericValue = parseInt(text)
-                    //     setTeamPoints(numericValue)
-                    // } 
+                    if(!isNaN(text)) { 
+                        setTeamRank(text); 
+                        const numericValue = parseInt(text)
+                        setTeamPoints(numericValue)
+                    } 
                 }}  
                 autoCorrect = {true}
                 autoCapitalize = "none"

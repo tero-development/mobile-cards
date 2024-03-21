@@ -23,6 +23,11 @@ const ScoreScreen = ({navigation}) =>{
     const [isEditing, setIsEditing] = useState(false)
     const [canSubmit, setCanSubmit] = useState(false)
     const [scoreChange, setScoreChange] = useState(true)
+    const [overlayObject, setOverlayObject] = useState({
+        quizScore: "",
+        teamRank: "",
+        attendance: ""
+    })
     // const [sudoRoster, setSudoRoster] = useState([])
     const {width, height} = useWindowDimensions()
 
@@ -160,6 +165,9 @@ const ScoreScreen = ({navigation}) =>{
     // console.log("roster from ScoreScreen: ")
     // console.log(roster)
     
+    if(isEditing){
+        return <ScoreOverlay closeFunction={closeOverlay} rosterChecker={setScoreChange} />
+    }
 
     return(
         <LinearGradient style={styles.rootScreen} colors={[Colors.highlightColor, Colors.primaryColor]}>
@@ -203,7 +211,9 @@ const ScoreScreen = ({navigation}) =>{
                                                 <ScoreListing
                                                 index={index}
                                                 // roster={scoreList}
-                                                rosterChecker={setScoreChange} 
+                                                rosterChecker={setScoreChange}
+                                                overlayObject={overlayObject} 
+                                                setOverlayObject={setOverlayObject} 
                                                 firstName={participant.item.firstName}
                                                 lastName={participant.item.lastName}
                                                 onPress={openOverlay}

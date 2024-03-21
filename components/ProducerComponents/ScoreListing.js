@@ -4,8 +4,9 @@ import Colors from '../../utils/colors'
 import { converterSetup, useStyles } from '../../utils/dimensions'
 import { TextInput } from 'react-native-gesture-handler'
 import { ProducerContext } from '../../store/producer-context'
+import IconButton from '../../UI/IconButton'
 
-const ScoreListing=({firstName, lastName, index, roster, rosterChecker})=>{
+const ScoreListing=({firstName, lastName, index, roster, rosterChecker, onPress})=>{
     const [quizScore, setQuizScore] = useState("")
     const [teamScore, setTeamScore] = useState("")
     const { updateQuizScore, updateTeamScore} = useContext(ProducerContext)
@@ -64,9 +65,9 @@ const ScoreListing=({firstName, lastName, index, roster, rosterChecker})=>{
 
     const styles = useStyles(localStyles)
     return( 
-            <View style={styles.container}>
+            <Pressable style={styles.container} onPress={onPress}>
                 <Text style={styles.name}>{`${firstName} ${lastName}`}</Text>
-                <View style={styles.inputContainer}>
+                {/* <View style={styles.inputContainer}>
                     <TextInput 
                         value ={quizScore}
                         onChangeText = {(text) =>  {
@@ -98,8 +99,9 @@ const ScoreListing=({firstName, lastName, index, roster, rosterChecker})=>{
                         keyboardType= 'number-pad'
                         maxLength={2}
                     />
-                </View>
-            </View>
+                </View> */}
+                <IconButton iconName={"create-outline"} iconColor={Colors.highlightColor} />
+            </Pressable>
     )
 }
 
