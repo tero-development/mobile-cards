@@ -20,8 +20,13 @@ function producerReducer(state, action){
         case "update_team_rank":
             const teamIndex = action.payload.index
             let temp = state.scoreList
-            temp.splice(teamIndex, 1, {...temp[teamIndex], teamScore: action.payload.value})
+            temp.splice(teamIndex, 1, {...temp[teamIndex], teamRank: action.payload.value})
             return {...state, scoreList : temp}
+        case "update_attendance":
+            const attendanceIndex = action.payload.index
+            let pseudo = state.scoreList
+            pseudo.splice(attendanceIndex, 1, {...pseudo[attendanceIndex], attendanceMinutes: action.payload.value})
+            return {...state, scoreList : pseudo}
         case "update_current_month":
             return {...state, currentMonth: action.payload}
         default:
@@ -66,6 +71,10 @@ const ProducerContextProvider = ({children}) =>{
         dispatch({type: 'update_team_rank', payload: object})
     }
 
+    async function updateAttenanceMinutes(object){
+        dispatch({type: "update_attendance", payload: object})
+    }
+
     function updateScheduleClear(){
         dispatch({type:"", payload:""})
     }
@@ -79,6 +88,7 @@ const ProducerContextProvider = ({children}) =>{
         updateScoreList: updateScoreList,
         updateQuizScore: updateQuizScore,
         updateTeamRank: updateTeamRank,
+        updateAttenanceMinutes: updateAttenanceMinutes,
         updateScheduleClear: updateScheduleClear
     }
     

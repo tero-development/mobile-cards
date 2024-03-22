@@ -10,7 +10,8 @@ const ScoreOverlay = ({closeFunction, rosterChecker, overlayObject}) =>{
     // const [isLoading, setIsLoading] = useState(false)
     const [quizPoints, setQuizPoints] = useState("")
     const [teamPoints, setTeamPoints] = useState("")
-    const { updateQuizScore, updateTeamRank} = useContext(ProducerContext)
+    const [attendancePoints, setAttendancePoints] = useState("")
+    const { updateQuizScore, updateTeamRank, updateAttenanceMinutes} = useContext(ProducerContext)
 
     const {width, height} = useWindowDimensions()
 
@@ -26,12 +27,16 @@ const ScoreOverlay = ({closeFunction, rosterChecker, overlayObject}) =>{
             alignItems: 'center',
             backgroundColor: Colors.primaryColor100
         },
-        text:{
-            textAlign: 'center',
+        // text:{
+        //     textAlign: 'center',
+        //     color: Colors.secondaryColor,
+        //     marginBottom: height/30,
+        //     fontSize: converter(width/30, width/25, width/35, width/35),
+        //     width: converter(width/2, width/1.5, width/1.9, width/2)
+        // },
+        standardText:{
             color: Colors.secondaryColor,
-            marginBottom: height/30,
-            fontSize: converter(width/30, width/25, width/35, width/35),
-            width: converter(width/2, width/1.5, width/1.9, width/2)
+            fontSize: converter(width/20, width/25, width/35, width/35)
         },
         topText:{
             marginBottom: height / 100,
@@ -46,17 +51,35 @@ const ScoreOverlay = ({closeFunction, rosterChecker, overlayObject}) =>{
         title:{
             fontSize: converter(width/16, width/14, width/16, width/16),
             fontWeight: 'bold',
-            marginBottom: height / 100,
+            marginBottom: height / 20,
             color: Colors.secondaryColor
+        },
+        inputContainer:{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            width: converter(width/10 * 8),
+            marginBottom: converter(height/20),
+            backgroundColor: Colors.primaryColor400,
+            borderRadius: converter(width/25, width/35, width/55, width/60),
+            padding: converter(width/25)
         },
         input:{
             backgroundColor: Colors.highlightColor,
-            height: converter(width/12.5),
-            width: converter(width/12.5),
-            paddingLeft: converter(width/50),
+            height: converter(width/10),
+            width: converter(width/10),
+            paddingLeft: converter(width/40),
             fontSize: width/30,
             borderRadius: converter(width/75)
         },
+    }
+    
+    async function submitHandler(){
+        if(!quizPoints && !teamPoints && !attendancePoints){
+            alert("Check for empty fields!")
+        }else{
+            console.log("data submitted successfully!")
+        }
     }
 
     const styles = useStyles(localStyles)
@@ -74,43 +97,87 @@ const ScoreOverlay = ({closeFunction, rosterChecker, overlayObject}) =>{
         rosterChecker(prev => !prev)
     }
 
+    function applyAttendancePoints(text){
+        updateAttenanceMinutes({index: index, value: text})
+        rosterChecker(prev => !prev)
+    }
+
     const midContent = 
     <>
-            
-            <Text>Quiz Score</Text>
-            <TextInput 
-                value ={quizPoints}
-                onChangeText = {(text) =>  {
-                    if(!isNaN(text)) { 
-                        setQuizPoints(text)
-                        const numericValue = parseInt(text)
-                        applyQuizPoints(numericValue)
-                    } 
-                }}
-                placeholder=''
-                autoCorrect = {true}
-                autoCapitalize = "none"
-                style={styles.input}
-                keyboardType= 'number-pad'
-                maxLength = {2}
-            />
-            <Text>Team Rank</Text>
-            <TextInput 
-                value ={teamPoints}
-                onChangeText = {(text) =>  {
-                    if(!isNaN(text)) { 
-                        setTeamPoints(text); 
-                        const numericValue = parseInt(text)
-                        applyTeamPoints(numericValue)
-                    } 
-                }}  
-                autoCorrect = {true}
-                autoCapitalize = "none"
-                style={styles.input}
-                keyboardType= 'number-pad'
-                maxLength={2}
-            />
-            <ModularButton onPress={closeFunction} buttonColor={Colors.accentColor} textColor={Colors.highlightColor} rippleColor={Colors.secondaryColor}>close</ModularButton>
+            <View style={styles.inputContainer}>
+                <Text style={styles.standardText}>Attendance Minutes</Text>
+                <TextInput 
+                    value ={attendancePoints}
+                    onChangeText = {(text) =>  {
+                        if(!isNaN(text)) { 
+                            setAttendancePoints(text)
+                            const numericValue = parseInt(text)
+                            applyAttendancePoints(numericValue)
+                        } 
+                    }}
+                    placeholder=''
+                    autoCorrect = {true}
+                    autoCapitalize = "none"
+                    style={styles.input}
+                    keyboardType= 'number-pad'
+                    maxLength = {2}
+                />
+            </View>
+            <View style={styles.inputContainer}>
+                <Text style={styles.standardText}>Quiz Score</Text>
+                <TextInput 
+                    value ={quizPoints}
+                    onChangeText = {(text) =>  {
+                        if(!isNaN(text)) { 
+                            setQuizPoints(text)
+                            const numericValue = parseInt(text)
+                            applyQuizPoints(numericValue)
+                        } 
+                    }}
+                    placeholder=''
+                    autoCorrect = {true}
+                    autoCapitalize = "none"
+                    style={styles.input}
+                    keyboardType= 'number-pad'
+                    maxLength = {2}
+                />
+            </View>
+            <View style={styles.inputContainer}>
+                <Text style={styles.standardText}>Team Rank</Text>
+                <TextInput 
+                    value ={teamPoints}
+                    onChangeText = {(text) =>  {
+                        if(!isNaN(text)) { 
+                            setTeamPoints(text); 
+                            const numericValue = parseInt(text)
+                            applyTeamPoints(numericValue)
+                        } 
+                    }}  
+                    autoCorrect = {true}
+                    autoCapitalize = "none"
+                    style={styles.input}
+                    keyboardType= 'number-pad'
+                    maxLength={2}
+                />
+            </View>
+            <ModularButton 
+                textSize={converter(width/20)} 
+                onPress={submitHandler} 
+                buttonColor={Colors.secondaryColor400} 
+                textColor={Colors.highlightColor} 
+                rippleColor={Colors.secondaryColor}
+            >
+                submit
+            </ModularButton>
+            <ModularButton 
+                textSize={converter(width/20)} 
+                onPress={closeFunction} 
+                buttonColor={Colors.accentColor} 
+                textColor={Colors.highlightColor} 
+                rippleColor={Colors.secondaryColor}
+            >
+                close
+            </ModularButton>
             
     </>
 
@@ -121,8 +188,8 @@ const ScoreOverlay = ({closeFunction, rosterChecker, overlayObject}) =>{
     return (
         <KeyboardAvoidingView behavior='height' style={styles.screen}>
             <View style={styles.container}>
-                <Text style={styles.title}>Enter Scores</Text>
-                <Text style={[styles.text, styles.topText]}>{`For ${firstName}` }</Text>
+                <Text style={styles.title}>{`Enter Scores For ${firstName}` }</Text>
+                {/* <Text style={[styles.text, styles.topText]}></Text> */}
                 {/* {isLoading? <Loader size='large' color={Colors.accentColor}/> : midContent} */}
                 {midContent}
             </View>

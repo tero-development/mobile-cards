@@ -99,7 +99,7 @@ const ScoreScreen = ({navigation}) =>{
 
     const styles = useStyles(localStyles)
 
-    const {roster, scoreList, currentMonth} = schedule
+    const {roster, scoreList} = schedule
 
     console.log("ScoreList from ScoreScreen: ")
     console.log(scoreList)
@@ -115,7 +115,8 @@ const ScoreScreen = ({navigation}) =>{
                             firstName: participant.firstName,
                             lastName: participant.lastName,
                             quizScore: "",
-                            teamScore: ""
+                            teamRank: "",
+                            attendanceMinutes: ""
                         }
                     )
                  })
