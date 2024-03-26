@@ -37,9 +37,9 @@ export async function getDetailedRoster(cafeDateId){
     }
 }
 
-export async function sendScores(currentMonth, participantArray, companyId, seasonId){
+export async function sendScore(currentMonth, participantArray, companyId, seasonId){
     try{
-        const response = await axios.post(`${url}/producers/sendscores`, 
+        const response = await axios.post(`${url}/producers/sendscore`, 
         {
            currentMonth:currentMonth,
            participantArray: participantArray,

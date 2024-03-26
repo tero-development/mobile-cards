@@ -129,6 +129,8 @@ const SplashScreen = ({navigation}) =>{
                     else{
                         setIsLoading(false)
                         try{
+                            //** This needs to be bypassed with a conditional checking if
+                            //** the person is tero staff / producer / admin **/
                             const scoreTracker = await getSingleScoreTracker(employee._id)
                             if(scoreTracker){
                                 updateScoreTracker(scoreTracker.score_tracker)

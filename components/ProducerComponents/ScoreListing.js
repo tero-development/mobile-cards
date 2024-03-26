@@ -6,7 +6,7 @@ import { TextInput } from 'react-native-gesture-handler'
 import { ProducerContext } from '../../store/producer-context'
 import IconButton from '../../UI/IconButton'
 
-const ScoreListing=({firstName, lastName, index, roster, rosterChecker, onPress})=>{
+const ScoreListing=({firstName, lastName, index, roster, rosterChecker, onPress, overlayObject, setOverlayObject})=>{
     const [quizScore, setQuizScore] = useState("")
     const [teamScore, setTeamScore] = useState("")
     const { updateQuizScore, updateTeamRank} = useContext(ProducerContext)

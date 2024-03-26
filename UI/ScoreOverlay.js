@@ -1,17 +1,18 @@
 import {KeyboardAvoidingView,View, Text, TextInput, useWindowDimensions} from 'react-native'
-import { useState, useContext} from 'react'
+import { useState, useContext, useEffect} from 'react'
 import Colors from '../utils/colors'
 import ModularButton from '../components/ModularButton'
 import  {converterSetup,useStyles} from '../utils/dimensions'
 // import Loader from './Loader'
 import { ProducerContext } from '../store/producer-context'
+import { sendScore } from '../httpServices/producers'
 
 const ScoreOverlay = ({closeFunction, rosterChecker, overlayObject}) =>{
     // const [isLoading, setIsLoading] = useState(false)
     const [quizPoints, setQuizPoints] = useState("")
     const [teamPoints, setTeamPoints] = useState("")
     const [attendancePoints, setAttendancePoints] = useState("")
-    const { updateQuizScore, updateTeamRank, updateAttenanceMinutes} = useContext(ProducerContext)
+    const {schedule, updateQuizScore, updateTeamRank, updateAttenanceMinutes, updateShallowScoreTracker} = useContext(ProducerContext)
 
     const {width, height} = useWindowDimensions()
 
@@ -73,18 +74,33 @@ const ScoreOverlay = ({closeFunction, rosterChecker, overlayObject}) =>{
             borderRadius: converter(width/75)
         },
     }
+
+    const {shallowScoreTracker} = schedule
+
+    const {index, firstName, dbTracker} = overlayObject
+
+    console.log("Shallow Tracker from ScoreOverlay:")
+    console.log(shallowScoreTracker)
+
+    useEffect(()=>{
+        const quiz = shallowScoreTracker.quizScore.toString()
+        const attendance = shallowScoreTracker.attendanceMinutes.toString()
+        const team = shallowScoreTracker.teamRank.toString()
+        setAttendancePoints(attendance)
+        setTeamPoints(team)
+        setQuizPoints(quiz)
+        return ()=>{}
+    }, [])
     
-    async function submitHandler(){
-        if(!quizPoints && !teamPoints && !attendancePoints){
+    async function submitHandler(currentMonth, participant, companyId, seasonId){
+        if(!quizPoints || !teamPoints || !attendancePoints){
             alert("Check for empty fields!")
         }else{
-            console.log("data submitted successfully!")
+            sendScore(currentMonth, participant, companyId, seasonId)
         }
     }
 
     const styles = useStyles(localStyles)
-
-    const {index, firstName} = overlayObject
 
 
     function applyQuizPoints(text){
@@ -112,7 +128,7 @@ const ScoreOverlay = ({closeFunction, rosterChecker, overlayObject}) =>{
                         if(!isNaN(text)) { 
                             setAttendancePoints(text)
                             const numericValue = parseInt(text)
-                            applyAttendancePoints(numericValue)
+                            // applyAttendancePoints(numericValue)
                         } 
                     }}
                     placeholder=''
@@ -131,7 +147,7 @@ const ScoreOverlay = ({closeFunction, rosterChecker, overlayObject}) =>{
                         if(!isNaN(text)) { 
                             setQuizPoints(text)
                             const numericValue = parseInt(text)
-                            applyQuizPoints(numericValue)
+                            // applyQuizPoints(numericValue)
                         } 
                     }}
                     placeholder=''
@@ -148,9 +164,9 @@ const ScoreOverlay = ({closeFunction, rosterChecker, overlayObject}) =>{
                     value ={teamPoints}
                     onChangeText = {(text) =>  {
                         if(!isNaN(text)) { 
-                            setTeamPoints(text); 
+                            setTeamPoints(text)
                             const numericValue = parseInt(text)
-                            applyTeamPoints(numericValue)
+                            // applyTeamPoints(numericValue)
                         } 
                     }}  
                     autoCorrect = {true}

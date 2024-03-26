@@ -35,25 +35,13 @@ const ProducerClasses = ({navigation, route}) =>{
         },
         nodeContainer:{
             marginBottom:  height / 7
-        },
-        modal:{
-            flex:1
-        },
-        modalInnerContainer:{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: 'turquoise'
         }
     }
 
     const styles = useStyles(localStyles)
 
-    const {classes, currentMonth} = schedule
-    
-    // console.log("current month from ProducerClasses")
-    // console.log(currentMonth)
- 
+    const {classes, roster} = schedule
+
     const routeDesignation = route.params.designation
 
     useEffect(()=>{
@@ -65,13 +53,12 @@ const ProducerClasses = ({navigation, route}) =>{
     }, [classes])
 
 
-    async function navigateAlotmentScreen(cafeDateId, designation){
+    async function navigateBasedOnDesignation(cafeDateId, designation){
         setIsLoading(true)
         try{
             const response = await getDetailedRoster(cafeDateId)
             updateScheduleRoster(response[0].participants)
             if(response){
-               
                 setIsLoading(false)
             }
         }catch(e){
@@ -129,7 +116,7 @@ const ProducerClasses = ({navigation, route}) =>{
                                         title={classInstance.title}
                                         date={classInstance.date_standard}
                                         time={classInstance.time}
-                                        onPress={()=> navigateAlotmentScreen(classInstance._id, routeDesignation)}
+                                        onPress={()=> navigateBasedOnDesignation(classInstance._id, routeDesignation)}
                                     />
                                 }
                             )

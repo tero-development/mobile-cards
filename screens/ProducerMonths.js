@@ -66,8 +66,7 @@ const ProducerMonths = ({navigation, route}) =>{
 
     async function classRouting(month){
          setIsLoading(true)
-         console.log("ClassRouting from ProducerMonths parameter month: ")
-         console.log(month)
+
         updateCurrentMonth(month)
          await getProClasses(month)
         .then(res => {

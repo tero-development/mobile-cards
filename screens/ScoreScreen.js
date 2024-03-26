@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { ProducerContext } from '../store/producer-context'
 import { CompanyContext } from '../store/company-context'
 import { SeasonContext } from '../store/season-context'
-import {  sendScores } from '../httpServices/producers'
+import {  sendScore } from '../httpServices/producers'
 import Colors from '../utils/colors'
 import IconButton from '../UI/IconButton'
 import {converterSetup, useStyles} from '../utils/dimensions'
@@ -14,9 +14,12 @@ import BackButton from '../UI/BackButton'
 import ScoreListing from '../components/ProducerComponents/ScoreListing'
 import ModularButton from '../components/ModularButton'
 import ScoreOverlay from '../UI/ScoreOverlay'
+import { getSingleScoreTracker } from '../httpServices/scoreTrackers'
+import _ from 'lodash'
+
 
 const ScoreScreen = ({navigation}) =>{
-    const {schedule, updateScoreList} = useContext(ProducerContext)
+    const {schedule, updateScoreList, updateShallowScoreTracker} = useContext(ProducerContext)
     const {season} = useContext(SeasonContext)
     const {company} = useContext(CompanyContext)
     const [isLoading, setIsLoading] = useState(true)
@@ -101,8 +104,8 @@ const ScoreScreen = ({navigation}) =>{
 
     const {roster, scoreList} = schedule
 
-    console.log("ScoreList from ScoreScreen: ")
-    console.log(scoreList)
+    // console.log("ScoreList from ScoreScreen: ")
+    // console.log(scoreList)
 
     useEffect(()=>{
         if(roster.length > 0){
@@ -111,7 +114,7 @@ const ScoreScreen = ({navigation}) =>{
                 roster.map(participant =>{
                     return(
                         { 
-                            id: participant._id,
+                            _id: participant._id,
                             firstName: participant.firstName,
                             lastName: participant.lastName,
                             quizScore: "",
@@ -128,18 +131,18 @@ const ScoreScreen = ({navigation}) =>{
     }, [roster])
 
 
-    useEffect(()=>{
-        let response = true
-        const shallowScoreList = scoreList
-        shallowScoreList.forEach(entry => {
+    // useEffect(()=>{
+    //     let response = true
+    //     const shallowScoreList = scoreList
+    //     shallowScoreList.forEach(entry => {
            
-            if(entry.quizScore === "" || entry.teamScore === ""){
-                response = false
-                return
-            }
-        })
-        setCanSubmit(response)
-    }, [scoreChange])
+    //         if(entry.quizScore === "" || entry.teamScore === ""){
+    //             response = false
+    //             return
+    //         }
+    //     })
+    //     setCanSubmit(response)
+    // }, [scoreChange])
 
     // console.log("company from ScoreScreen:")
     // console.log(company)
@@ -152,12 +155,44 @@ const ScoreScreen = ({navigation}) =>{
         navigation.toggleDrawer()
     }
 
-    function openOverlay(index, firstName){
-        setOverlayObject({
-            firstName: firstName,
-            index: index 
-        })
-        setIsEditing(true)
+
+    
+    async function openOverlay(employeeId, index, firstName){
+        try{
+            const response = await getSingleScoreTracker(employeeId)
+            if(response === "not found"){
+                updateShallowScoreTracker({
+                    quizScore: 0,
+                    teamRank: 0,
+                    attendancePoints: 0,
+                    attendanceMinutes:0 
+                })
+                setOverlayObject({
+                    firstName: firstName,
+                    index: index,
+                    dbTracker: null  
+                })
+                setIsEditing(true)
+            } else{
+                const {
+                    _id,
+                    employee_id,
+                    company_id,
+                    season_id,
+                    ...restOfTracker
+                } = response.score_tracker
+                updateShallowScoreTracker(restOfTracker)
+                    setOverlayObject({
+                        firstName: firstName,
+                        index: index,
+                        dbTracker: restOfTracker
+                    })
+                    setIsEditing(true)
+                }
+        }catch(e){
+            alert(e)
+        }
+        
     }
 
     function closeOverlay(){
@@ -170,6 +205,8 @@ const ScoreScreen = ({navigation}) =>{
     if(isEditing){
         return <ScoreOverlay closeFunction={closeOverlay} rosterChecker={setScoreChange} overlayObject={overlayObject} />
     }
+
+    
 
     return(
         <LinearGradient style={styles.rootScreen} colors={[Colors.highlightColor, Colors.primaryColor]}>
@@ -201,16 +238,11 @@ const ScoreScreen = ({navigation}) =>{
                                     keyExtractor={participant => participant._id}
                                     renderItem={participant =>{
                                             let filtered = roster.filter(entry => entry._id === participant.item._id)
-                                            // console.log("filter from the mapping: ")
-                                            // console.log(filtered)
+                                            let employeeId = participant.item._id
                                             let current = filtered[0]
-                                            // console.log("current: ")
-                                            // console.log(current)
                                             let index = roster.indexOf(current)
-                                            // console.log('index')
-                                            // console.log(index)
                                             const firstName = participant.item.firstName
-                                            const lastName = participant.item.lastName
+                                            // const lastName = participant.item.lastName
                                         if(index === 0){
                                             return (
                                                 <>
@@ -236,7 +268,7 @@ const ScoreScreen = ({navigation}) =>{
                                                 setOverlayObject={setOverlayObject} 
                                                 firstName={participant.item.firstName}
                                                 lastName={participant.item.lastName}
-                                                onPress={()=>{openOverlay(index, firstName)}}
+                                                onPress={()=>{openOverlay(employeeId, index, firstName)}}
                                                 />
                                                 </>    
                                             )
@@ -250,7 +282,7 @@ const ScoreScreen = ({navigation}) =>{
                                                 setOverlayObject={setOverlayObject} 
                                                 firstName={participant.item.firstName}
                                                 lastName={participant.item.lastName}
-                                                onPress={()=>{openOverlay(index, firstName)}}
+                                                onPress={()=>{openOverlay(employeeId, index, firstName)}}
                                                 />
                                             )
                                         }
