@@ -151,10 +151,12 @@ const ScoreScreen = ({navigation}) =>{
                 }
                 placeholder[currentMonth] = {
                     quizScore: 0,
-                    teamRank: 0,
-                    attendancePoints: 0,
+                    quizPoints: 0,
+                    quizPercentages: "0%",
+                    teamRank: "none",
+                    teamPoints: 0,
                     attendanceMinutes:0,
-                    maxScore: 60
+                    attendancePoints: 0
                 }
                 updateShallowScoreTracker(placeholder)
                 setOverlayObject({
@@ -177,10 +179,12 @@ const ScoreScreen = ({navigation}) =>{
                     let placeholder = response
                     placeholder[currentMonth] = {
                         quizScore: 0,
-                        teamRank: 0,
-                        attendancePoints: 0,
+                        quizPoints: 0,
+                        quizPercentages: "0%",
+                        teamRank: "none",
+                        teamPoints: 0,
                         attendanceMinutes:0,
-                        maxScore: 60
+                        attendancePoints: 0
                     }
 
                     updateShallowScoreTracker(placeholder)

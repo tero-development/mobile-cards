@@ -35,13 +35,6 @@ const ScoreOverlay = ({closeFunction, rosterChecker, overlayObject}) =>{
             alignItems: 'center',
             backgroundColor: Colors.primaryColor100
         },
-        // text:{
-        //     textAlign: 'center',
-        //     color: Colors.secondaryColor,
-        //     marginBottom: height/30,
-        //     fontSize: converter(width/30, width/25, width/35, width/35),
-        //     width: converter(width/2, width/1.5, width/1.9, width/2)
-        // },
         standardText:{
             color: Colors.secondaryColor,
             fontSize: converter(width/20, width/25, width/35, width/35)
@@ -134,12 +127,20 @@ const ScoreOverlay = ({closeFunction, rosterChecker, overlayObject}) =>{
     // }
 
     useEffect(()=>{
-        const quiz = shallowScoreTracker[currentMonth].quizScore.toString()
-        const attendance = shallowScoreTracker[currentMonth].attendanceMinutes.toString()
-        const team = shallowScoreTracker[currentMonth].teamRank.toString()
-        setAttendanceMinutes(attendance)
-        setTeamRank(team)
-        setQuizScore(quiz)
+        const quizScore = shallowScoreTracker[currentMonth].quizScore.toString()
+        const quizPoints = shallowScoreTracker[currentMonth].quizPoints
+        const quizPercentage = shallowScoreTracker[currentMonth].quizPercentage
+        const teamRank = shallowScoreTracker[currentMonth].teamRank
+        const teamPoints = shallowScoreTracker[currentMonth].teamPoints
+        const attendanceMinutes = shallowScoreTracker[currentMonth].attendanceMinutes.toString()
+        const attendancePoints = shallowScoreTracker[currentMonth].attendancePoints
+        setQuizScore(quizScore)
+        setQuizPoints(quizPoints)
+        setQuizPercentage(quizPercentage)
+        setTeamRank(teamRank)
+        setTeamPoints(teamPoints)
+        setAttendanceMinutes(attendanceMinutes)
+        setAttendancePoints(attendancePoints)
         return ()=>{}
     }, [])
     
@@ -156,7 +157,7 @@ const ScoreOverlay = ({closeFunction, rosterChecker, overlayObject}) =>{
                 teamPoints: teamPoints,
                 attendanceMinutes: parseInt(attendanceMinutes),
                 attendancePoints: attendancePoints, 
-                maxScore: 60,
+                maxScore: pointSystem.max_monthly_points,
                 cafe: currentClass
             }
 
@@ -174,7 +175,6 @@ const ScoreOverlay = ({closeFunction, rosterChecker, overlayObject}) =>{
         }
     }
 
-    console.log(attendancePoints)
     // function applyQuizPoints(text){
     //     updateQuizScore({index: index, value: text})
     //     rosterChecker(prev => !prev)
@@ -331,5 +331,4 @@ const ScoreOverlay = ({closeFunction, rosterChecker, overlayObject}) =>{
 }
 
 export default ScoreOverlay
-
 
