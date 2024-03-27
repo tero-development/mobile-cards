@@ -57,7 +57,9 @@ const ProducerClasses = ({navigation, route}) =>{
         setIsLoading(true)
         try{
             const response = await getDetailedRoster(cafeDateId)
-            updateScheduleRoster(response[0].participants)
+            updateScheduleRoster(
+                response[0].participants.sort((a, b) => a.firstName.localeCompare(b.firstName))
+            )
             if(response){
                 updateCurrentClass(selectedClass)
                 setIsLoading(false)
@@ -67,11 +69,14 @@ const ProducerClasses = ({navigation, route}) =>{
             setIsLoading(false)
         }
 
-        switch(designation){
-            case "scores": navigateScores()
-            break;
-            default: alert("designation issue")
-        }
+        navigateScores()
+
+        // switch(designation){
+        //     case "scores": navigateScores()
+        //     break;
+        //     default: alert("designation issue")
+        // }
+        
         // navigation.navigate('ProducerClasses', {designation: routeDesignation, classes: classes})
     }
 
@@ -86,7 +91,6 @@ const ProducerClasses = ({navigation, route}) =>{
     function openDrawer( ){
         navigation.toggleDrawer()
     }
-
 
     return(
         <LinearGradient style={styles.rootScreen} colors={[Colors.highlightColor, Colors.primaryColor]}>
@@ -121,6 +125,7 @@ const ProducerClasses = ({navigation, route}) =>{
                                         key={classInstance._id}
                                         title={classInstance.title}
                                         date={classInstance.date_standard}
+                                        rosterSize={classInstance.roster.length}
                                         time={classInstance.time}
                                         onPress={()=> navigateBasedOnDesignation(classInstance._id, routeDesignation, selectedClass)}
                                     />

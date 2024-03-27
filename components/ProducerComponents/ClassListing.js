@@ -3,7 +3,7 @@ import Colors from '../../utils/colors'
 import { converterSetup, useStyles } from '../../utils/dimensions'
 import IconButton from '../../UI/IconButton'
 
-const ClassListing=({title, date, time, onPress, locked})=>{
+const ClassListing=({title, date, rosterSize, time, onPress, locked})=>{
     const {width, height} = useWindowDimensions()
 
     const converter = converterSetup(width, height)
@@ -22,16 +22,22 @@ const ClassListing=({title, date, time, onPress, locked})=>{
         },
         listingTitle:{
             color: Colors.highlightColor,
-            fontSize: width/25,
+            fontSize: converter(width/25),
             fontWeight: 'bold'
         },
         listingDate:{
             color: Colors.highlightColor,
-            fontSize: width/30,
+            fontSize: converter(width/30),
         },
         listingTime:{
             color: Colors.highlightColor,
-            fontSize: width/35,
+            fontSize: converter(width/35),
+            marginRight: converter(width/35)
+        },
+        timeAndRoster:{
+            flexDirection: 'row',
+            justifyContent: "space-between",
+            alignItems: 'baseline',
         }
     }
 
@@ -41,7 +47,10 @@ const ClassListing=({title, date, time, onPress, locked})=>{
             <View>
                 <Text style={styles.listingTitle}>{title}</Text>
                 <Text style={styles.listingDate}>{date}</Text>
-                <Text style={styles.listingTime}>{time}</Text>
+                <View style={styles.timeAndRoster}>
+                    <Text style={styles.listingTime}>{time}</Text>
+                    <Text style={styles.listingTime}>{`Roster: ${rosterSize}`}</Text>
+                </View>
             </View>
             <IconButton 
                 isHeader={false} iconName={locked? "lock-closed-outline" : "caret-forward-outline"}   iconColor={Colors.highlightColor} 

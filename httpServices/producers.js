@@ -15,7 +15,7 @@ export async function unlockquiz(cafeDateId){
 
 export async function getMonths(companyId, seasonId){
     try{
-        const response = await axios.get(`${url}/cafes/producerMonths/${companyId}&${seasonId}`)
+        const response = await axios.get(`${url}/cafes/producermonths/${companyId}&${seasonId}`)
         if(response){
             return response.data
 
