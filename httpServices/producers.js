@@ -37,21 +37,23 @@ export async function getDetailedRoster(cafeDateId){
     }
 }
 
-export async function sendScore(currentMonth, participantArray, companyId, seasonId){
-    try{
-        const response = await axios.post(`${url}/producers/sendscore`, 
-        {
-           currentMonth:currentMonth,
-           participantArray: participantArray,
-           companyId: companyId,
-           seasonId: seasonId
-        })
-        if(response){
-            return response.data
+// export async function sendScore(currentMonth, participantArray, companyId, seasonId){
+//     try{
+//         const response = await axios.post(`${url}/producers/sendscore`, 
+//         {
+//            currentMonth:currentMonth,
+//            participantArray: participantArray,
+//            companyId: companyId,
+//            seasonId: seasonId
+//         })
+//         if(response){
+//             return response.data
 
-        }
-    }catch(e){
-        return e
-    }
-}
+//         }
+//     }catch(e){
+//         return e
+//     }
+// }
+
+
 

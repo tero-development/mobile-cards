@@ -29,6 +29,8 @@ function producerReducer(state, action){
             return {...state, scoreList : pseudo}
         case "update_current_month":
             return {...state, currentMonth: action.payload}
+        case "update_current_class":
+            return {...state, currentClass: action.payload}
         case "update_shallow_tracker":
             return {...state, shallowScoreTracker: action.payload}
         default:
@@ -43,11 +45,8 @@ const ProducerContextProvider = ({children}) =>{
         roster: [],
         scoreList: [],
         currentMonth: "",
+        currentClass: {},
         shallowScoreTracker: {
-            quizScore: 0,
-            teamRank: 0,
-            attendancePoints: 0,
-            attendanceMinutes:0
         }
     })
 
@@ -61,6 +60,10 @@ const ProducerContextProvider = ({children}) =>{
 
     async function updateCurrentMonth(month){
         dispatch({type: 'update_current_month', payload: month})
+    }
+
+    async function updateCurrentClass(classObject){
+        dispatch({type: 'update_current_class', payload: classObject})
     }
 
     async function updateScheduleRoster(roster){
@@ -96,6 +99,7 @@ const ProducerContextProvider = ({children}) =>{
         updateScheduleClasses: updateScheduleClasses,
         updateScheduleMonths: updateScheduleMonths,
         updateCurrentMonth: updateCurrentMonth,
+        updateCurrentClass: updateCurrentClass,
         updateScheduleRoster: updateScheduleRoster,
         updateScoreList: updateScoreList,
         updateQuizScore: updateQuizScore,

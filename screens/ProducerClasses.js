@@ -14,7 +14,7 @@ import ClassListing from '../components/ProducerComponents/ClassListing'
 
 
 const ProducerClasses = ({navigation, route}) =>{
-    const {schedule, updateScheduleRoster} = useContext(ProducerContext)
+    const {schedule, updateScheduleRoster, updateCurrentClass} = useContext(ProducerContext)
     const [isLoading, setIsLoading] = useState(true)
 
     const {width, height} = useWindowDimensions()
@@ -53,12 +53,13 @@ const ProducerClasses = ({navigation, route}) =>{
     }, [classes])
 
 
-    async function navigateBasedOnDesignation(cafeDateId, designation){
+    async function navigateBasedOnDesignation(cafeDateId, designation, selectedClass){
         setIsLoading(true)
         try{
             const response = await getDetailedRoster(cafeDateId)
             updateScheduleRoster(response[0].participants)
             if(response){
+                updateCurrentClass(selectedClass)
                 setIsLoading(false)
             }
         }catch(e){
@@ -110,13 +111,18 @@ const ProducerClasses = ({navigation, route}) =>{
                             classes.length < 1 || isLoading ? <Loader size="large" color={Colors.accentColor} /> : 
                             classes.map(
                                 classInstance => {
-                                
+                                    const selectedClass = {
+                                        cafe_id: classInstance._id,
+                                        title: classInstance.title,
+                                        date: classInstance.date_standard,
+                                        time: classInstance.time
+                                    }
                                     return <ClassListing 
                                         key={classInstance._id}
                                         title={classInstance.title}
                                         date={classInstance.date_standard}
                                         time={classInstance.time}
-                                        onPress={()=> navigateBasedOnDesignation(classInstance._id, routeDesignation)}
+                                        onPress={()=> navigateBasedOnDesignation(classInstance._id, routeDesignation, selectedClass)}
                                     />
                                 }
                             )

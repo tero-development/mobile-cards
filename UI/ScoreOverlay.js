@@ -5,14 +5,14 @@ import ModularButton from '../components/ModularButton'
 import  {converterSetup,useStyles} from '../utils/dimensions'
 // import Loader from './Loader'
 import { ProducerContext } from '../store/producer-context'
-import { sendScore } from '../httpServices/producers'
+import { sendSingleScoreTracker } from '../httpServices/scoreTrackers'
 
 const ScoreOverlay = ({closeFunction, rosterChecker, overlayObject}) =>{
     // const [isLoading, setIsLoading] = useState(false)
-    const [quizPoints, setQuizPoints] = useState("")
-    const [teamPoints, setTeamPoints] = useState("")
-    const [attendancePoints, setAttendancePoints] = useState("")
-    const {schedule, updateQuizScore, updateTeamRank, updateAttenanceMinutes, updateShallowScoreTracker} = useContext(ProducerContext)
+    const [quizScore, setQuizScore] = useState("")
+    const [teamRank, setTeamRank] = useState("")
+    const [attendanceMinutes, setAttendanceMinutes] = useState("")
+    const {schedule, updateShallowScoreTracker} = useContext(ProducerContext)
 
     const {width, height} = useWindowDimensions()
 
@@ -75,58 +75,81 @@ const ScoreOverlay = ({closeFunction, rosterChecker, overlayObject}) =>{
         },
     }
 
-    const {shallowScoreTracker} = schedule
-
-    const {index, firstName, dbTracker} = overlayObject
-
-    console.log("Shallow Tracker from ScoreOverlay:")
-    console.log(shallowScoreTracker)
-
-    useEffect(()=>{
-        const quiz = shallowScoreTracker.quizScore.toString()
-        const attendance = shallowScoreTracker.attendanceMinutes.toString()
-        const team = shallowScoreTracker.teamRank.toString()
-        setAttendancePoints(attendance)
-        setTeamPoints(team)
-        setQuizPoints(quiz)
-        return ()=>{}
-    }, [])
-    
-    async function submitHandler(currentMonth, participant, companyId, seasonId){
-        if(!quizPoints || !teamPoints || !attendancePoints){
-            alert("Check for empty fields!")
-        }else{
-            sendScore(currentMonth, participant, companyId, seasonId)
-        }
-    }
-
     const styles = useStyles(localStyles)
 
 
-    function applyQuizPoints(text){
-        updateQuizScore({index: index, value: text})
-        rosterChecker(prev => !prev)
+    const {currentMonth, currentClass, shallowScoreTracker} = schedule
+
+    const {index, firstName} = overlayObject
+
+    
+    // if(currentMonth in shallowScoreTracker){
+    //     console.log("ScoreOverlay key check: ")
+    //     console.log(shallowScoreTracker[currentMonth])
+    // }
+
+    useEffect(()=>{
+        const quiz = shallowScoreTracker[currentMonth].quizScore.toString()
+        const attendance = shallowScoreTracker[currentMonth].attendanceMinutes.toString()
+        const team = shallowScoreTracker[currentMonth].teamRank.toString()
+        setAttendanceMinutes(attendance)
+        setTeamRank(team)
+        setQuizScore(quiz)
+        return ()=>{}
+    }, [])
+    
+    async function submitHandler(currentMonth, shallowScoreTracker){
+        if(!quizScore || !teamRank || !attendanceMinutes){
+            alert("Check for empty fields!")
+        }else{
+            let placeholder = shallowScoreTracker
+            placeholder[currentMonth] = {
+                quizScore: parseInt(quizScore),
+                teamRank: parseInt(teamRank),
+                attendanceMinutes: parseInt(attendanceMinutes),
+                maxScore: 60,
+                cafe: currentClass
+            }
+
+            try{
+                const response = await sendSingleScoreTracker(currentMonth, placeholder)
+                if(response){
+    
+                    updateShallowScoreTracker(placeholder)
+                    closeFunction()
+                }
+            }catch(e){
+                alert(e)
+                closeFunction()
+            }
+        }
     }
 
-    function applyTeamPoints(text){
-        updateTeamRank({index: index, value: text})
-        rosterChecker(prev => !prev)
-    }
 
-    function applyAttendancePoints(text){
-        updateAttenanceMinutes({index: index, value: text})
-        rosterChecker(prev => !prev)
-    }
+    // function applyQuizPoints(text){
+    //     updateQuizScore({index: index, value: text})
+    //     rosterChecker(prev => !prev)
+    // }
+
+    // function applyTeamPoints(text){
+    //     updateTeamRank({index: index, value: text})
+    //     rosterChecker(prev => !prev)
+    // }
+
+    // function applyAttendancePoints(text){
+    //     updateAttenanceMinutes({index: index, value: text})
+    //     rosterChecker(prev => !prev)
+    // }
 
     const midContent = 
     <>
             <View style={styles.inputContainer}>
                 <Text style={styles.standardText}>Attendance Minutes</Text>
                 <TextInput 
-                    value ={attendancePoints}
+                    value ={attendanceMinutes}
                     onChangeText = {(text) =>  {
                         if(!isNaN(text)) { 
-                            setAttendancePoints(text)
+                            setAttendanceMinutes(text)
                             const numericValue = parseInt(text)
                             // applyAttendancePoints(numericValue)
                         } 
@@ -142,10 +165,10 @@ const ScoreOverlay = ({closeFunction, rosterChecker, overlayObject}) =>{
             <View style={styles.inputContainer}>
                 <Text style={styles.standardText}>Quiz Score</Text>
                 <TextInput 
-                    value ={quizPoints}
+                    value ={quizScore}
                     onChangeText = {(text) =>  {
                         if(!isNaN(text)) { 
-                            setQuizPoints(text)
+                            setQuizScore(text)
                             const numericValue = parseInt(text)
                             // applyQuizPoints(numericValue)
                         } 
@@ -161,10 +184,10 @@ const ScoreOverlay = ({closeFunction, rosterChecker, overlayObject}) =>{
             <View style={styles.inputContainer}>
                 <Text style={styles.standardText}>Team Rank</Text>
                 <TextInput 
-                    value ={teamPoints}
+                    value ={teamRank}
                     onChangeText = {(text) =>  {
                         if(!isNaN(text)) { 
-                            setTeamPoints(text)
+                            setTeamRank(text)
                             const numericValue = parseInt(text)
                             // applyTeamPoints(numericValue)
                         } 
@@ -178,7 +201,7 @@ const ScoreOverlay = ({closeFunction, rosterChecker, overlayObject}) =>{
             </View>
             <ModularButton 
                 textSize={converter(width/20)} 
-                onPress={submitHandler} 
+                onPress={()=>{submitHandler(currentMonth, shallowScoreTracker)}} 
                 buttonColor={Colors.secondaryColor400} 
                 textColor={Colors.highlightColor} 
                 rippleColor={Colors.secondaryColor}

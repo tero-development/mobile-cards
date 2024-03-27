@@ -102,10 +102,8 @@ const ScoreScreen = ({navigation}) =>{
 
     const styles = useStyles(localStyles)
 
-    const {roster, scoreList} = schedule
+    const {roster, currentMonth} = schedule
 
-    // console.log("ScoreList from ScoreScreen: ")
-    // console.log(scoreList)
 
     useEffect(()=>{
         if(roster.length > 0){
@@ -131,21 +129,6 @@ const ScoreScreen = ({navigation}) =>{
     }, [roster])
 
 
-    // useEffect(()=>{
-    //     let response = true
-    //     const shallowScoreList = scoreList
-    //     shallowScoreList.forEach(entry => {
-           
-    //         if(entry.quizScore === "" || entry.teamScore === ""){
-    //             response = false
-    //             return
-    //         }
-    //     })
-    //     setCanSubmit(response)
-    // }, [scoreChange])
-
-    // console.log("company from ScoreScreen:")
-    // console.log(company)
 
     function navigateBack(){
         navigation.navigate('ProducerScreen')
@@ -156,17 +139,24 @@ const ScoreScreen = ({navigation}) =>{
     }
 
 
-    
+     
     async function openOverlay(employeeId, index, firstName){
         try{
             const response = await getSingleScoreTracker(employeeId)
             if(response === "not found"){
-                updateShallowScoreTracker({
+                let placeholder = {
+                    company_id: company._id,
+                    season_id: season._id,
+                    employee_id: employeeId,
+                }
+                placeholder[currentMonth] = {
                     quizScore: 0,
                     teamRank: 0,
                     attendancePoints: 0,
-                    attendanceMinutes:0 
-                })
+                    attendanceMinutes:0,
+                    maxScore: 60
+                }
+                updateShallowScoreTracker(placeholder)
                 setOverlayObject({
                     firstName: firstName,
                     index: index,
@@ -174,20 +164,33 @@ const ScoreScreen = ({navigation}) =>{
                 })
                 setIsEditing(true)
             } else{
-                const {
-                    _id,
-                    employee_id,
-                    company_id,
-                    season_id,
-                    ...restOfTracker
-                } = response.score_tracker
-                updateShallowScoreTracker(restOfTracker)
+               
+                if(currentMonth in response){
+                    updateShallowScoreTracker(response)
                     setOverlayObject({
                         firstName: firstName,
                         index: index,
-                        dbTracker: restOfTracker
+                        dbTracker: response
                     })
                     setIsEditing(true)
+                } else{
+                    let placeholder = response
+                    placeholder[currentMonth] = {
+                        quizScore: 0,
+                        teamRank: 0,
+                        attendancePoints: 0,
+                        attendanceMinutes:0,
+                        maxScore: 60
+                    }
+
+                    updateShallowScoreTracker(placeholder)
+                    setOverlayObject({
+                        firstName: firstName,
+                        index: index,
+                        dbTracker: null  
+                    })
+                    setIsEditing(true)
+                }
                 }
         }catch(e){
             alert(e)
@@ -199,9 +202,6 @@ const ScoreScreen = ({navigation}) =>{
         setIsEditing(false)
     }
 
-    // console.log("roster from ScoreScreen: ")
-    // console.log(roster)
-    
     if(isEditing){
         return <ScoreOverlay closeFunction={closeOverlay} rosterChecker={setScoreChange} overlayObject={overlayObject} />
     }
@@ -330,3 +330,11 @@ const ScoreScreen = ({navigation}) =>{
 
 export default ScoreScreen
 
+// const whatever = {"score_tracker": 
+// {"March": {"attendanceMinutes": 45, "attendancePoints": 12, "maxScore": 60, "quizScore": 14, "teamRank": 15}, 
+// "May": {"attendanceMinutes": 0, "attendancePoints": 0, "quizScore": 0, "teamRank": 0}, 
+// "_id": "65fb4d2f360f353c874af6b6", 
+// "company_id": "62d47c7a36aeee14652966cd", 
+// "employee_id": "6539f75d550ee9b24fa5fc5c", 
+// "season_id": "650b8c8746533a5af871ba0a"}
+// }
