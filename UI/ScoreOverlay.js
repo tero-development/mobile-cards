@@ -5,15 +5,22 @@ import ModularButton from '../components/ModularButton'
 import  {converterSetup,useStyles} from '../utils/dimensions'
 // import Loader from './Loader'
 import { ProducerContext } from '../store/producer-context'
+import { CompanyContext } from '../store/company-context'
 import { sendSingleScoreTracker } from '../httpServices/scoreTrackers'
+import { Dropdown } from 'react-native-element-dropdown';
+
 
 const ScoreOverlay = ({closeFunction, rosterChecker, overlayObject}) =>{
     // const [isLoading, setIsLoading] = useState(false)
     const [quizScore, setQuizScore] = useState("")
+    const [quizPoints, setQuizPoints] = useState("")
+    const [quizPercentage, setQuizPercentage] = useState("")
     const [teamRank, setTeamRank] = useState("")
+    const [teamPoints, setTeamPoints] = useState("")
     const [attendanceMinutes, setAttendanceMinutes] = useState("")
+    const [attendancePoints, setAttendancePoints] = useState("")
     const {schedule, updateShallowScoreTracker} = useContext(ProducerContext)
-
+    const {company} = useContext(CompanyContext)    
     const {width, height} = useWindowDimensions()
 
     const converter = converterSetup(width, height)
@@ -73,10 +80,48 @@ const ScoreOverlay = ({closeFunction, rosterChecker, overlayObject}) =>{
             fontSize: width/30,
             borderRadius: converter(width/75)
         },
+        dropDown:{
+            backgroundColor: Colors.highlightColor,
+            width: converter(width / 10 * 1.8),
+            borderRadius: converter(width/75)
+        },
+        dropPlaceholder:{
+            fontSize: converter(width/30),
+            textAlign: "center"
+        },
+        dropTextStyle:{
+            fontSize: converter(width/30),
+            textAlign: "center"
+        },
+        dropInputSearchStyle:{
+        
+        },
+        dropListContainer:{
+            backgroundColor: Colors.secondaryColor,
+            width: converter(width/10*5),
+            borderRadius: converter(width/50, width/35, width/55, width/70),
+            justifyContent: 'center',
+            paddingVertical: '3%',
+            paddingHorizontal: '3%'
+        },
+        dropItemText:{
+            textAlign: 'center'
+        },
+        dropItemContainer:{
+            borderRadius: converter(width/50, width/35, width/55, width/70),
+            backgroundColor: Colors.highlightColor,
+            marginBottom: '2%',
+            elevation: 2,
+            shadowColor: 'black',
+            shadowOpacity: 0.1,
+            shadowOffset: {width: 0, height: 1},
+            shadowRadius: 8,
+        }
     }
 
     const styles = useStyles(localStyles)
 
+    const pointSystem = company.point_system
 
     const {currentMonth, currentClass, shallowScoreTracker} = schedule
 
@@ -105,8 +150,12 @@ const ScoreOverlay = ({closeFunction, rosterChecker, overlayObject}) =>{
             let placeholder = shallowScoreTracker
             placeholder[currentMonth] = {
                 quizScore: parseInt(quizScore),
-                teamRank: parseInt(teamRank),
+                quizPoints: quizPoints,
+                quizPercentage: quizPercentage,
+                teamRank: teamRank,
+                teamPoints: teamPoints,
                 attendanceMinutes: parseInt(attendanceMinutes),
+                attendancePoints: attendancePoints, 
                 maxScore: 60,
                 cafe: currentClass
             }
@@ -125,7 +174,7 @@ const ScoreOverlay = ({closeFunction, rosterChecker, overlayObject}) =>{
         }
     }
 
-
+    console.log(attendancePoints)
     // function applyQuizPoints(text){
     //     updateQuizScore({index: index, value: text})
     //     rosterChecker(prev => !prev)
@@ -141,6 +190,14 @@ const ScoreOverlay = ({closeFunction, rosterChecker, overlayObject}) =>{
     //     rosterChecker(prev => !prev)
     // }
 
+    function convertAttendancePoints(text){
+        const numericValue = parseInt(text)
+        if(numericValue >= pointSystem.cafe_attendance.minimum){
+            return pointSystem.cafe_attendance.present
+        }
+        return pointSystem.cafe_attendance.absent
+    }
+
     const midContent = 
     <>
             <View style={styles.inputContainer}>
@@ -150,8 +207,7 @@ const ScoreOverlay = ({closeFunction, rosterChecker, overlayObject}) =>{
                     onChangeText = {(text) =>  {
                         if(!isNaN(text)) { 
                             setAttendanceMinutes(text)
-                            const numericValue = parseInt(text)
-                            // applyAttendancePoints(numericValue)
+                            setAttendancePoints(convertAttendancePoints(text))
                         } 
                     }}
                     placeholder=''
@@ -164,7 +220,7 @@ const ScoreOverlay = ({closeFunction, rosterChecker, overlayObject}) =>{
             </View>
             <View style={styles.inputContainer}>
                 <Text style={styles.standardText}>Quiz Score</Text>
-                <TextInput 
+                {/* <TextInput 
                     value ={quizScore}
                     onChangeText = {(text) =>  {
                         if(!isNaN(text)) { 
@@ -179,24 +235,60 @@ const ScoreOverlay = ({closeFunction, rosterChecker, overlayObject}) =>{
                     style={styles.input}
                     keyboardType= 'number-pad'
                     maxLength = {2}
+                /> */}
+                <Dropdown
+                mode="modal"
+                style={styles.dropDown}
+                placeholderStyle={styles.dropPlaceholder}
+                selectedTextStyle={styles.dropTextStyle}
+                inputSearchStyle={[styles.dropInputSearchStyle, {borderColor: "magenta"}]}
+                iconStyle={styles.dropIconStyle}
+                data={pointSystem.quiz}
+                containerStyle={styles.dropListContainer}
+                labelField="label"
+                valueField="value"
+                placeholder={shallowScoreTracker.quizScore === 0? "Select" : quizScore}
+                searchPlaceholder="Search..."
+                itemTextStyle={styles.dropItemText}
+                itemContainerStyle={[styles.dropItemContainer]}
+                value={quizScore}
+                // onFocus={() => setIsFocus(true)}
+                // onBlur={() => setIsFocus(false)}
+                onChange={item => {
+                    setQuizScore(item.label)
+                    setQuizPercentage(item.percentage)
+                    setQuizPoints(item.value)
+                }}
+                
                 />
             </View>
             <View style={styles.inputContainer}>
                 <Text style={styles.standardText}>Team Rank</Text>
-                <TextInput 
-                    value ={teamRank}
-                    onChangeText = {(text) =>  {
-                        if(!isNaN(text)) { 
-                            setTeamRank(text)
-                            const numericValue = parseInt(text)
-                            // applyTeamPoints(numericValue)
-                        } 
-                    }}  
-                    autoCorrect = {true}
-                    autoCapitalize = "none"
-                    style={styles.input}
-                    keyboardType= 'number-pad'
-                    maxLength={2}
+                
+                <Dropdown
+                mode="modal"
+                style={styles.dropDown}
+                placeholderStyle={styles.dropPlaceholder}
+                selectedTextStyle={styles.dropTextStyle}
+                inputSearchStyle={[styles.dropInputSearchStyle, {borderColor: "magenta"}]}
+                iconStyle={styles.dropIconStyle}
+                data={pointSystem.teams}
+                containerStyle={styles.dropListContainer}
+                labelField="label"
+                valueField="value"
+                placeholder={shallowScoreTracker.teamRank === 0? "Select" : teamRank}
+                searchPlaceholder="Search..."
+                itemTextStyle={styles.dropItemText}
+                itemContainerStyle={[styles.dropItemContainer]}
+                value={teamRank}
+                // onFocus={() => setIsFocus(true)}
+                // onBlur={() => setIsFocus(false)}
+                onChange={item => {
+                    setTeamRank(item.label)
+                    setTeamPoints(item.value)
+                    // setIsFocus(false)
+                }}
+                
                 />
             </View>
             <ModularButton 
@@ -239,4 +331,5 @@ const ScoreOverlay = ({closeFunction, rosterChecker, overlayObject}) =>{
 }
 
 export default ScoreOverlay
+
 

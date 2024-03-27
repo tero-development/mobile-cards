@@ -135,7 +135,8 @@ const SplashScreen = ({navigation}) =>{
                             if(scoreTracker){
                                 updateScoreTracker(scoreTracker.score_tracker)
                                 setIsLoading(false)
-                                navigation.navigate("SignIn", employee)
+                                // navigation.navigate("SignIn", employee)
+                                navigation.navigate("DrawerGroup")
                             }
                         }catch(e){
                             alert(e)
